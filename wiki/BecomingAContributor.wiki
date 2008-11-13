@@ -16,8 +16,8 @@ Follow either of the two links above to access the appropriate CLA and instructi
 ==Submitting Patches==
 
   # Join [http://groups.google.com/group/opensocial-client-libraries our discussion group] (seriously, we want to talk to you!)
-  # Decide which code you want to submit. A submission should be a set of changes that addresses one issue in the [http://code.google.com/p/opensocial-java-client/issues/list issue tracker].  Please file one change per issue, and address one issue per change. If you want to make a change that doesn't have a corresponding issue in the issue tracker, please file a new ticket!
-  # Ensure that your code adheres to [http://java.sun.com/docs/codeconv/html/CodeConvTOC.doc.html standard Java conventions].
+  # Decide which code you want to submit. A submission should be a set of changes that addresses one issue in the [http://code.google.com/p/opensocial-php-client/issues/list issue tracker].  Please file one change per issue, and address one issue per change. If you want to make a change that doesn't have a corresponding issue in the issue tracker, please file a new ticket!
+  # Ensure that your code adheres to [http://framework.zend.com/manual/en/coding-standard.html standard PHP conventions].
   # Ensure that there are unit tests for your code.
   # Sign a Contributor License Agreement (see above).
   # Attach the code (including unit tests) to the issue it addresses. For brand new files, attach the whole file. For patches to existing files, attach a Subversion diff (that is, svn diff from the project root).  If you want to be really cool, [http://codereview.appspot.com/ request a code review of your patch] on the mailing list.
