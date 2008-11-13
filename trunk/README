@@ -1,0 +1,14 @@
+Welcome to the OpenSocial Platform and REST client libraries!
+
+You may want to first get our sample application up and running so you can see 
+exactly how the library is meant to be used, but you can just as well start 
+building your own application by grabbing the libraries in the client/ directory.
+
+We've created an application called social-nuts that utilizes a lot of Platform
+functionality while remaining fairly simple.  
+
+To get social-nuts running on your own server, you'll want to first open up the
+"social-nuts/config.php" file and modify it with your mysql database
+configuration.  Also, create the necessary table in your database as described
+in the same file.
+
