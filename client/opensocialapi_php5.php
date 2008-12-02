@@ -3,38 +3,42 @@
  * +--------------------------------------------------------------------------+
  * | OpenSocial PHP5 client                                           |
  * +--------------------------------------------------------------------------+
- * Copyright (c) 2008 Google Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
-
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements. See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership. The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License. You may obtain a copy of the License at
  *
  *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
  */
+
+require_once("../Zend/Json.php");
 
 include_once 'opensocial_php5_httplib.php';
 
 class OpenSocialClient {
-  public $secret;
   public $session_key;
-  public $api_key;
+  public $oauth_consumer_key;
+  public $oauth_consumer_secret;
 
   /**
    * Create the client.
    * @param string $session_key 
    */
-  public function OpenSocialClient($api_key, $secret, $session_key=null) {
-    $this->secret       = $secret;
+  public function OpenSocialClient($oauth_consumer_key, $oauth_consumer_secret, $session_key=null) {
     $this->session_key  = $session_key;
-    $this->api_key      = $api_key;
+    $this->oauth_consumer_key      = $oauth_consumer_key;
+    $this->oauth_consumer_secret   = $oauth_consumer_secret;
     $this->server_addr  = OpenSocial::get_container_url('sandbox');
+
 
     if ($GLOBALS['opensocial_config']['debug']) {
       $this->cursor = 0;
@@ -65,9 +69,9 @@ function toggleDisplay(id, type) {
    */
   public function auth_getSession() {
     $hi5apiserver = "http://api.hi5.com/rest/auth/plain/";
-    $httplib = new OpenSocialHttpLib($hi5apiserver);
+    $httplib = new OpenSocialHttpLib($hi5apiserver, $this->oauth_consumer_key, $oauth_consumer_secret);
 
-    $params = array('username' => '', 'password' => '', 'api_key' => '');
+    $params = array('username' => '', 'password' => '', 'oauth_consumer_key' => '');
 
     $post_params = array();
     foreach ($params as $key => &$val) {
@@ -174,10 +178,11 @@ function toggleDisplay(id, type) {
 
     global $error_codes;
 
-    $httplib = new OpenSocialHttpLib($this->server_addr);
+    $httplib = new OpenSocialHttpLib($this->server_addr, $this->oauth_consumer_key, $this->oauth_consumer_secret);
     $xml = $httplib->send_request($endpoints, $params);
 
-    $result = json_decode($xml, true);
+    //$result = json_decode($xml, true);
+    $result = Zend_Json::decode($xml );
 
     if ($GLOBALS['opensocial_config']['debug']) {
       // output the raw xml and its corresponding php object, for debugging:
@@ -207,15 +212,15 @@ function toggleDisplay(id, type) {
 
   public function rpc_fetch($rpc_endpoint, $json_body) {
 
-    $httplib = new OpenSocialHttpLib($this->server_addr);
+    $httplib = new OpenSocialHttpLib($this->server_addr, $this->oauth_consumer_key, $this->oauth_consumer_secret);
     $json_array['method'] = 'people.get';
     $json_array['id'] = 'myself';
     $json_array['params']['userid'] = '@me';
     $json_array['params']['groupid'] = '@self';
 
-    $json_body = json_encode($json_array);
-echo "<br>\n";
-var_dump($json_array);
+    //$json_body = json_encode($json_array);
+    $json_body = Zend_Json::encode($json_array );
+    //var_dump($json_array);
     
     $result = $httplib->send_rpc_request($rpc_endpoint, $json_body);
 

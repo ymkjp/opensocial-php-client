@@ -3,20 +3,21 @@
  * +--------------------------------------------------------------------------+
  * | OpenSocial PHP5 client                                           |
  * +--------------------------------------------------------------------------+
- * Copyright (c) 2008 Google Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
-
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements. See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership. The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License. You may obtain a copy of the License at
  *
  *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
  */
 
 
@@ -43,7 +44,7 @@ else {
 }
 
 if( isset($_GET['st']) && isset($_GET['u']) ) {
-    $token = 'st=' . $_GET['st'];
+    //$token = 'st=' . $_GET['st'];
     $user = $_GET['u'];
 }
 
@@ -121,7 +122,7 @@ if( $tab == '' ) {
   </div>
 
   <div style="float:right; margin: 20px; width:20%;">
-  <a href="?u=<?php echo $user . '&' . $token ?>"><img src="<?php echo $viewer->getThumbnail() ?>"></a><br>
+  <a href="?u=<?php echo $user ?>"><img src="<?php echo $viewer->getThumbnail() ?>"></a><br>
   <div><?php echo $viewer->getFirstName() ?> <?php echo $viewer->getLastName() ?></div>
   </div>
 
@@ -152,7 +153,7 @@ if( $tab == '' ) {
     $cnt = 0;
     foreach( $userFriends['entry'] as $i => $f ) {
         echo '<div style="float:left; width: 100px; height: 110px; font-weight:normal; font-size:80%; margin:5px; padding:5px;">';
-        echo '<a href="?tab=received&to=' . $f['id'] . '&u=' . $user . '&' . $token . '">';
+        echo '<a href="?tab=received&to=' . $f['id'] . '&u=' . $user . '">';
         echo '<img src="' . $f['thumbnailUrl'] . '"></a><br>';
         echo '<input type="radio" name="to" value="' . htmlentities($f['id']) . '"><br>';
         echo htmlentities($f['name']['givenName']) . " " . htmlentities($f['name']['familyName']) . '<br>';
@@ -171,7 +172,6 @@ if( $tab == '' ) {
 
 <?php
 
-echo $token;
 
 }
 
@@ -189,7 +189,7 @@ if( $tab == 'received' ) {
     foreach( $userFriends['entry'] as $i => $f ) {
         echo '<div style="float:left; width: 100px; height: 110px; font-weight:normal; font-size:80%; margin:5px; padding:5px;">';
         echo '<input type="radio" name="to" value="' . htmlentities($f['id']) . '"><br><br>';
-        echo '<a href="?tab=received&to=' . $f['id'] . '&u=' . $user . '&' . $token . '">';
+        echo '<a href="?tab=received&to=' . $f['id'] . '&u=' . $user . '">';
         echo '<img src="' . $f['thumbnailUrl'] . '"></a><br>';
         echo htmlentities($f['name']['givenName']) . " " . htmlentities($f['name']['familyName']) . '<br>';
         echo '</div>';
