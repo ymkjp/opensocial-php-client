@@ -21,7 +21,7 @@
  */
 
 
-include_once 'opensocialapi_php5.php';
+include_once 'OpenSocialClient.php';
 
 class OpenSocial {
   public $os_client;
@@ -32,51 +32,47 @@ class OpenSocial {
   public $os_params;
   public $user;
 
+  /**
+   * Create the object
+   * @param     string   $oauth_consumer_key   
+   * @param     string   $oauth_consumer_secret   
+   */
   public function OpenSocial($oauth_consumer_key, $oauth_consumer_secret) {
     $this->oauth_consumer_key    = $oauth_consumer_key;
-    $this->oauth_consumer_secret     = $oauth_consumer_secret;
-
+    $this->oauth_consumer_secret = $oauth_consumer_secret;
 
     $this->os_client = new OpenSocialClient($oauth_consumer_key, $oauth_consumer_secret);
   }
 
-  public function do_get_session($auth_token) {
-    try {
-      return $this->os_client->auth_getSession($auth_token);
-    } catch (OpenSocialClientException $e) {
-      // API_EC_PARAM means we don't have a logged in user, otherwise who
-      // knows what it means, so just throw it.
-      if ($e->getCode() != OpenSocialAPIErrorCodes::API_EC_PARAM) {
-        throw $e;
-      }
-    }
+  /**
+   * set current user
+   * @param     string   $user   
+   * @param     string   $session_key   
+   */
+  public function set_user($user, $session_key, $expires=null) {
+    $this->user = $user;
+    $this->os_client->session_key = $session_key;
   }
 
+  /**
+   * get current user
+   */
   public function get_current_user() {
     return $this->user;
   }
 
+  /**
+   * 
+   */
   public static function current_url() {
     return 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
   }
 
-  public function require_login() {
-    if ($user = $this->get_loggedin_user()) {
-      return $user;
-    }
-  }
-
+  /**
+   * 
+   */
   public static function get_container_url($subdomain='www') {
     return 'http://' . $subdomain . '.orkut.com/social/rest/';
-  }
-
-  public function get_add_url($next=null) {
-    return self::get_opensocial_url();
-  }
-
-  public function set_user($user, $session_key, $expires=null) {
-    $this->user = $user;
-    $this->os_client->session_key = $session_key;
   }
 
   /**

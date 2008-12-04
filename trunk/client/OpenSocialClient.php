@@ -22,7 +22,7 @@
 
 require_once("../Zend/Json.php");
 
-include_once 'opensocial_php5_httplib.php';
+include_once 'OpenSocialHttpRequest.php';
 
 class OpenSocialClient {
   public $session_key;
@@ -31,7 +31,8 @@ class OpenSocialClient {
 
   /**
    * Create the client.
-   * @param string $session_key 
+   * @param string $oauth_consumer_key 
+   * @param string $oauth_consumer_secret 
    */
   public function OpenSocialClient($oauth_consumer_key, $oauth_consumer_secret, $session_key=null) {
     $this->session_key  = $session_key;
@@ -59,51 +60,6 @@ function toggleDisplay(id, type) {
 <?php
     }
 
-  }
-
-  /**
-   * Returns the session information
-   * @param string $auth_token the token returned by auth_createToken or
-   *  passed back to your callback_url.
-   * @return assoc array containing session_key, uid
-   */
-  public function auth_getSession() {
-    $hi5apiserver = "http://api.hi5.com/rest/auth/plain/";
-    $httplib = new OpenSocialHttpLib($hi5apiserver, $this->oauth_consumer_key, $oauth_consumer_secret);
-
-    $params = array('username' => '', 'password' => '', 'oauth_consumer_key' => '');
-
-    $post_params = array();
-    foreach ($params as $key => &$val) {
-      if (is_array($val)) $val = implode(',', $val);
-      $get_params[] = $key.'='.$val;
-      //$get_params[] = $key.'='.urlencode($val);
-    }
-    //var_dump($get_params);
-    $post_string = implode('&', $get_params);
-    $post_url = $hi5apiserver;  
-   
-    //echo "POST: " . $post_url . ":" . $post_string;
-
-    if (function_exists('curl_init')) {
-      // Use CURL if installed...
-      $ch = curl_init();
-      curl_setopt($ch, CURLOPT_URL, $post_url);
-      curl_setopt($ch, CURLOPT_POSTFIELDS, $post_string);
-      curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-      curl_setopt($ch, CURLOPT_USERAGENT, 'OpenSocial API PHP5 Client 1.0 (curl) ' . phpversion());
-      $result = curl_exec($ch);
-      curl_close($ch);
-    }
-
-
-    //$sxml = simplexml_load_string($result);
-    //$result = self::convert_simplexml_to_array($sxml);
-
-    $this->session_key = $result;
-    //echo "SESSION: " . $this->session_key . " END";
-
-    return $result;
   }
 
   /**
