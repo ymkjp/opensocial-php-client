@@ -63,14 +63,6 @@ else {
 }
 
 
-if( !isset($userInfo['entry']['thumbnailUrl']) ) {
-    echo '<h1>Sorry session expired.</h1>';
-    echo '<h2>You have to pass both user and session token manually like this</h2>';
-    echo '<h3>http://shawnshen/opensocial-platform/socialnuts/?u=[user id]&st=[#########]</h3>';
-    echo 'e.g. http://shawnshen/opensocial-platform/socialnuts/?st=AFinprShzbF9oAA6NLNnnryktutuaxPuXQ7dFjmnBZFboBpLvSRQp77wR1mUEldPLht7Io4VG7uqPuKPyna8pFXQDhoCbK4jRTiVSo7DK0UuwhsUZeMq81I&u=06751168115507970644';
-    exit;
-}
-
 $viewerThumbnail = $userInfo['entry']['thumbnailUrl'];
 $viewerFirstName = $userInfo['entry']['name']['givenName'];
 $viewerLastName = $userInfo['entry']['name']['familyName'];
