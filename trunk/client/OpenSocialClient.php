@@ -130,36 +130,37 @@ function toggleDisplay(id, type) {
 
   /* utility */
 
-  public function rest_fetch($endpoints, $params) {
+  public function rest_fetch($endpoint, $params) {
 
     global $error_codes;
 
     $httplib = new OpenSocialHttpLib($this->server_addr, $this->oauth_consumer_key, $this->oauth_consumer_secret);
-    $xml = $httplib->send_request($endpoints, $params);
+    $json_result = $httplib->send_request($endpoint, $params);
 
-    //$result = json_decode($xml, true);
-    $result = Zend_Json::decode($xml );
+    // json_encode is supported after PHP 5.2.0 so for simplicity Zend library is included and used
+    // $result = json_decode($json_result, true);
+    $result = Zend_Json::decode($json_result);
 
     if ($GLOBALS['opensocial_config']['debug']) {
       // output the raw xml and its corresponding php object, for debugging:
       print '<div style="margin: 10px 30px; padding: 5px; border: 2px solid black; background: gray; color: white; font-size: 12px; font-weight: bold;">';
       $this->cursor++;
-      print $this->cursor . ': Called ' . $endpoints . ', show ' .
+      print $this->cursor . ': Called ' . $endpoint . ', show ' .
             '<a href=# onclick="return toggleDisplay(' . $this->cursor . ', \'params\');">Params</a> | '.
             '<a href=# onclick="return toggleDisplay(' . $this->cursor . ', \'xml\');">XML</a> | '.
             '<a href=# onclick="return toggleDisplay(' . $this->cursor . ', \'sxml\');">SXML</a> | '.
             '<a href=# onclick="return toggleDisplay(' . $this->cursor . ', \'php\');">PHP</a>';
       print '<pre id="params'.$this->cursor.'" style="display: none; overflow: auto;">'.print_r($params, true).'</pre>';
-      print '<pre id="xml'.$this->cursor.'" style="display: none; overflow: auto;">'.htmlspecialchars($xml).'</pre>';
+      print '<pre id="xml'.$this->cursor.'" style="display: none; overflow: auto;">'.htmlspecialchars($json_result).'</pre>';
       print '<pre id="php'.$this->cursor.'" style="display: none; overflow: auto;">'.print_r($result, true).'</pre>';
       print '<pre id="sxml'.$this->cursor.'" style="display: none; overflow: auto;">'.print_r($sxml, true).'</pre>';
       print '</div>';
     }
    
-    //var_dump( $result );
-
     return $result;
   }
+
+  // RPC functions
 
   public function rpcGetMyInfo() {
     $rpc_endpoint = "http://sandbox.orkut.com/social/rpc";
@@ -174,34 +175,13 @@ function toggleDisplay(id, type) {
     $json_array['params']['userid'] = '@me';
     $json_array['params']['groupid'] = '@self';
 
-    //$json_body = json_encode($json_array);
     $json_body = Zend_Json::encode($json_array );
-    //var_dump($json_array);
     
     $result = $httplib->send_rpc_request($rpc_endpoint, $json_body);
-
-    var_dump( $result );
 
     return $result;
   }
 
-  public static function convert_simplexml_to_array($sxml) {
-    $arr = array();
-    if ($sxml) {
-      foreach ($sxml as $k => $v) {
-        if ($sxml['list']) {
-          $arr[] = self::convert_simplexml_to_array($v);
-        } else {
-          $arr[$k] = self::convert_simplexml_to_array($v);
-        }
-      }
-    }
-    if (sizeof($arr) > 0) {
-      return $arr;
-    } else {
-      return (string)$sxml;
-    }
-  }
 }
 
 class OpenSocialClientException extends Exception {
@@ -221,10 +201,6 @@ class OpenSocialAPIErrorCodes {
   const OS_ERROR_UNKNOWN = 1;
   const OS_ERROR_SERVICE = 2;
   const OS_ERROR_METHOD = 3;
-}
-
-function flatten($item, $key, $flat_array) {
-     $flat_array[$key] = $item;
 }
 
 $filter_array = array(
