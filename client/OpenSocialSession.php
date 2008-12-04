@@ -20,7 +20,9 @@
  * specific language governing permissions and limitations under the License.
  */
 
-
+/* 
+Initialize session 
+ */
 function init_session($uid)
 {
   global $sess_save_path;

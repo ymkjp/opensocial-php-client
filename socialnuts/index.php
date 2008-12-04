@@ -22,10 +22,10 @@
 
 
 // the opensocial client library
-include_once '../client/opensocial.php';
+include_once '../client/OpenSocial.php';
 
 // the opensocial client library
-include_once '../client/opensocial_php5_session.php';
+include_once '../client/OpenSocialSession.php';
 
 // some basic library functions
 include_once 'lib.php';
