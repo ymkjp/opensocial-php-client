@@ -30,10 +30,10 @@ function get_nuts($user, $flag='sent') {
   $conn = get_db_conn();
 
   if( $flag === 'sent' ) {
-      $res = mysql_query('SELECT `from`, `to`, `ts`, `nut` FROM socialnuts WHERE `from`="' . $user . '" ORDER BY `ts` DESC', $conn);
+      $res = mysql_query('SELECT `from`, `to`, `ts`, `nut`, `comments` FROM socialnuts WHERE `from`="' . $user . '" ORDER BY `ts` DESC', $conn);
   }
   else {
-      $res = mysql_query('SELECT `from`, `to`, `ts`, `nut` FROM socialnuts WHERE `to`="' . $user . '" ORDER BY `ts` DESC', $conn);
+      $res = mysql_query('SELECT `from`, `to`, `ts`, `nut`, `comments` FROM socialnuts WHERE `to`="' . $user . '" ORDER BY `ts` DESC', $conn);
   }
   $nuts = array(); 
 
@@ -46,11 +46,11 @@ function get_nuts($user, $flag='sent') {
   return $nuts;
 }
 
-function send_nut($from, $to, $nut) {
+function send_nut($from, $to, $nut, $comments) {
   global $opensocial;
 
   $conn = get_db_conn();
-  mysql_query('INSERT INTO socialnuts SET `from`="'.$from.'", `ts`='.time().', `to`="'.$to.'", `nut`="'.$nut.'"', $conn);
+  mysql_query('INSERT INTO socialnuts SET `from`="'.$from.'", `ts`='.time().', `to`="'.$to.'", `nut`="'.$nut.'", `comments`="'.$comments.'"', $conn);
 
   $nuts = get_nuts($from);
   return $nuts;

@@ -1,19 +1,21 @@
 <?php
   require_once("../client/OAuth.php");
+  require_once ('config.php');
  
   if (verifySignature()) {
-    print ('Validated HMAC!');
+    //print ('Validated HMAC!');
   } else {
     print ('Spoofed HMAC');
+	die;
   }
 
   function verifySignature() {
+	global $oauth_consumer_secret;
     //Build a request object from the current request
     $request = OAuthRequest::from_request(null, null, array_merge($_GET, $_POST));
 
     // Initialize consumer info. including consumer key and secret
-    $consumer = new OAuthConsumer('orkut.com:623061448914', 'uynAeXiWTisflWX99KU1D2q5', null);
-
+    $consumer = new OAuthConsumer($_GET['oauth_consumer_key'], $oauth_consumer_secret, null);
     //Initialize the new signature method
     $signature_method = new OAuthSignatureMethod_HMAC_SHA1();
  
