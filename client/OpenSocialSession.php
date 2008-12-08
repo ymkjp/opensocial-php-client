@@ -23,12 +23,14 @@
 /* 
 Initialize session 
  */
-function init_session($uid)
+function init_session($uid, $reset)
 {
   global $sess_save_path;
 
-  if( isset($_SESSION) ) {
-      session_destroy();
+  if($reset === true) {
+    if( isset($_SESSION) ) {
+     session_destroy();
+    }
   }
 
   session_id($uid);

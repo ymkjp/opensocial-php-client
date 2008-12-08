@@ -23,12 +23,8 @@
 // 
 require_once("../client/OAuth.php");
 
-$oauth_consumer_key = 'orkut.com:623061448914';
-$oauth_consumer_secret = 'uynAeXiWTisflWX99KU1D2q5';
-
-// Temporary user id for orkut
-// Until 2-legged oauth is ready to authenticate
-$user = '04996716008119675151';
+$oauth_consumer_key = 'orkut.com:YOUR_CONSUMER_KEY_HERE';
+$oauth_consumer_secret = 'YOUR_CONSUMER_SECRET_HERE';
 
 if( isset($_GET['debug']) && $_GET['debug'] == 1 ) {
     $opensocial_config['debug'] = true;
@@ -45,13 +41,13 @@ $opensocial = new OpenSocial($oauth_consumer_key, $oauth_consumer_secret);
 
 
 // The IP address of your database
-$db_ip = 'localhost';           
+$db_ip = 'YOUR_SERVER_IP';           
 
-$db_user = 'nuts123';
-$db_pass = 'opensocial';  // change to YOUR_DB_PASSWORD
+$db_user = 'YOUR_DATABASE_USERNAME';
+$db_pass = 'YOUR_DATABASE_PASSWORD';  // change to YOUR_DB_PASSWORD
 
 // the name of the database that you create for footprints.
-$db_name = 'socialnuts';
+$db_name = 'YOUR_DATABASE_NAME';
 
 /* create this table on the database:
 DROP TABLE IF EXISTS `socialnuts`; 
@@ -60,6 +56,7 @@ CREATE TABLE `socialnuts` (
   `to` varchar(50) NOT NULL default '0',
   `nut` varchar(20) NOT NULL default '0',
   `ts` int(11) NOT NULL default '0',
+  `comments` varchar(255) NOT NULL default '0',
   KEY `from` (`from`),
   KEY `to` (`to`)
 )
