@@ -99,7 +99,7 @@ function toggleDisplay(id, type) {
   }
 
   // get groups associated with a user
-  public function group_getUserGroups($guid, $group_id, $fields = Array()) {
+  public function group_getUserGroups($guid, $group_id = 1, $fields = Array()) {
     $rest_endpoint = $this->server_addr . 'group/' . $guid . '/' . $group_id;
     return $this->rest_fetch($rest_endpoint, $fields);
   }
