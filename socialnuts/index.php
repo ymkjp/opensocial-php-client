@@ -24,7 +24,7 @@
 require_once '../client/OpenSocial.php';
 
 // the opensocial client library
-require_once '../client/OpenSocialSession.php';
+require_once 'session.php';
 
 // some basic library functions
 require_once 'lib.php';
