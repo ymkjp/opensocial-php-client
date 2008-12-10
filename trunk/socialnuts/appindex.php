@@ -25,7 +25,7 @@
 include_once '../client/OpenSocial.php';
 
 // the opensocial client library
-include_once '../client/OpenSocialSession.php';
+include_once 'session.php';
 
 // some basic library functions
 include_once 'lib.php';
