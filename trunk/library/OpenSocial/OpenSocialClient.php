@@ -15,9 +15,11 @@
  * limitations under the License.
  */
 
-require_once("../Zend/Json.php");
+require_once("Zend/Json.php");
 
 include_once 'OpenSocialHttpRequest.php';
+include_once 'OpenSocialCollection.php';
+include_once 'OpenSocialPerson.php';
 
 class OpenSocialClient {
   public $session_key;
@@ -70,7 +72,8 @@ function toggleDisplay(id, type) {
 
   public function people_getFriendsInfo($guid, $fields = Array()) {
     $rest_endpoint = $this->server_addr . 'people/' . $guid . '/@friends';
-    return $this->rest_fetch($rest_endpoint, $fields);
+    $result = $this->rest_fetch($rest_endpoint, $fields);
+    return OpenSocialPerson::parseCollectionFromJsonResponse($result);
   }
 
   public function people_getAllInfo($guid, $fields = Array()) {
@@ -90,7 +93,8 @@ function toggleDisplay(id, type) {
 
   public function people_getFriendInfo($guid, $fid, $fields = Array()) {
     $rest_endpoint = $this->server_addr . 'people/' . $guid . '/@all/' . $fid;
-    return $this->rest_fetch($rest_endpoint, $fields);
+    $result = $this->rest_fetch($rest_endpoint, $fields);
+    return OpenSocialPerson::parseCollectionFromJsonResponse($result);
   }
 
   // get groups associated with a user
