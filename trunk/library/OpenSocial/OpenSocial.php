@@ -17,7 +17,7 @@
 
 require_once("Zend/Json.php");
 require_once("OAuth/OAuth.php");
-require_once("OpenSocialHttpRequest.php");
+require_once("OpenSocialHttpLib.php");
 require_once("OpenSocialCollection.php");
 require_once("OpenSocialPerson.php");
 
@@ -35,10 +35,14 @@ class OpenSocial {
    * Initializes this client object with the supplied configuration.
    */
   public function __construct($config, $httplib=null, $cache=null) {
-    if (!isSet($httplib)) {
-      $httplib = new SocketHttpLib();
+    if (isSet($httplib)) {
+      $this->httplib = $httplib;          // Allow overriding default httplibs.
+    } else if (function_exists('curl_init')) {
+      $httplib = new CurlHttpLib();       // Use curl on compatible systems.
+    } else {
+      $httplib = new SocketHttpLib();     // Default to using raw sockets.
     }
-    $this->httplib = $httplib;
+
     $this->oauth_consumer_key = $config["oauth_consumer_key"];
     $this->oauth_consumer_secret = $config["oauth_consumer_secret"];
     $this->server_rest_base = $config["server_rest_base"];
