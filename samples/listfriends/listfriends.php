@@ -10,10 +10,13 @@ set_include_path(get_include_path() . PATH_SEPARATOR .
 require_once('OpenSocial/OpenSocial.php');
 
 
-$opensocial = new OpenSocial('orkut.com:623061448914', 'uynAeXiWTisflWX99KU1D2q5');
-$user = '04996716008119675151';
-
-$result = $opensocial->os_client->people_getFriendsInfo('04996716008119675151');
+$config = array(
+  "oauth_consumer_key" => "orkut.com:623061448914",
+  "oauth_consumer_secret" => "uynAeXiWTisflWX99KU1D2q5",
+  "server_rest_base" => "http://sandbox.orkut.com/social/rest/"
+);
+$opensocial = new OpenSocial($config);
+$result = $opensocial->fetchFriends('04996716008119675151');
 
 // Print the paging information
 echo sprintf("Showing friends %s to %s of %s", $result->startIndex + 1, 
