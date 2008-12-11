@@ -17,9 +17,9 @@
  
 // Add the library directory to the include path
 set_include_path(get_include_path() . PATH_SEPARATOR . 
-    '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'library');
+    '..' . DIRECTORY_SEPARATOR . 'library');
 
-require_once 'PHPUnit/Framework.php';
+require_once('PHPUnit/Framework.php');
 require_once('OpenSocial/OpenSocial.php');
 
 class TestOpenSocial extends PHPUnit_Framework_TestCase {
