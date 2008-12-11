@@ -67,13 +67,14 @@ function toggleDisplay(id, type) {
    */
   public function people_getUserInfo($guid, $fields = Array()) {
     $rest_endpoint = $this->server_addr . 'people/' . $guid . '/@self';
-    return $this->rest_fetch($rest_endpoint, $fields);
+    $result = $this->rest_fetch($rest_endpoint, $fields);
+    return OpenSocialPerson::parseJson($result);
   }
 
   public function people_getFriendsInfo($guid, $fields = Array()) {
     $rest_endpoint = $this->server_addr . 'people/' . $guid . '/@friends';
     $result = $this->rest_fetch($rest_endpoint, $fields);
-    return OpenSocialPerson::parseCollectionFromJsonResponse($result);
+    return OpenSocialPerson::parseJsonCollection($result);
   }
 
   public function people_getAllInfo($guid, $fields = Array()) {
@@ -94,7 +95,7 @@ function toggleDisplay(id, type) {
   public function people_getFriendInfo($guid, $fid, $fields = Array()) {
     $rest_endpoint = $this->server_addr . 'people/' . $guid . '/@all/' . $fid;
     $result = $this->rest_fetch($rest_endpoint, $fields);
-    return OpenSocialPerson::parseCollectionFromJsonResponse($result);
+    return OpenSocialPerson::parseJsonCollection($result);
   }
 
   // get groups associated with a user
