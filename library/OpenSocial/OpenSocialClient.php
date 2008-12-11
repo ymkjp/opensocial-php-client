@@ -16,10 +16,9 @@
  */
 
 require_once("Zend/Json.php");
-
-include_once 'OpenSocialHttpRequest.php';
-include_once 'OpenSocialCollection.php';
-include_once 'OpenSocialPerson.php';
+require_once("OpenSocialHttpRequest.php");
+require_once("OpenSocialCollection.php");
+require_once("OpenSocialPerson.php");
 
 class OpenSocialClient {
   public $session_key;
@@ -36,27 +35,6 @@ class OpenSocialClient {
     $this->oauth_consumer_key      = $oauth_consumer_key;
     $this->oauth_consumer_secret   = $oauth_consumer_secret;
     $this->server_addr  = OpenSocial::get_container_url('sandbox');
-
-
-    if ($GLOBALS['opensocial_config']['debug']) {
-      $this->cursor = 0;
-      ?>
-<script type="text/javascript">
-var types = ['params', 'xml', 'php', 'sxml'];
-function toggleDisplay(id, type) {
-  for each (var t in types) {
-    if (t != type || document.getElementById(t + id).style.display == 'block') {
-      document.getElementById(t + id).style.display = 'none';
-    } else {
-      document.getElementById(t + id).style.display = 'block';
-    }
-  }
-  return false;
-}
-</script>
-<?php
-    }
-
   }
 
   /**
@@ -140,22 +118,6 @@ function toggleDisplay(id, type) {
     // json_encode is supported after PHP 5.2.0 so for simplicity Zend library is included and used
     // $result = json_decode($json_result, true);
     $result = Zend_Json::decode($json_result);
-
-    if ($GLOBALS['opensocial_config']['debug']) {
-      // output the raw xml and its corresponding php object, for debugging:
-      print '<div style="margin: 10px 30px; padding: 5px; border: 2px solid black; background: gray; color: white; font-size: 12px; font-weight: bold;">';
-      $this->cursor++;
-      print $this->cursor . ': Called ' . $endpoint . ', show ' .
-            '<a href=# onclick="return toggleDisplay(' . $this->cursor . ', \'params\');">Params</a> | '.
-            '<a href=# onclick="return toggleDisplay(' . $this->cursor . ', \'xml\');">XML</a> | '.
-            '<a href=# onclick="return toggleDisplay(' . $this->cursor . ', \'sxml\');">SXML</a> | '.
-            '<a href=# onclick="return toggleDisplay(' . $this->cursor . ', \'php\');">PHP</a>';
-      print '<pre id="params'.$this->cursor.'" style="display: none; overflow: auto;">'.print_r($params, true).'</pre>';
-      print '<pre id="xml'.$this->cursor.'" style="display: none; overflow: auto;">'.htmlspecialchars($json_result).'</pre>';
-      print '<pre id="php'.$this->cursor.'" style="display: none; overflow: auto;">'.print_r($result, true).'</pre>';
-      print '<pre id="sxml'.$this->cursor.'" style="display: none; overflow: auto;">'.print_r($sxml, true).'</pre>';
-      print '</div>';
-    }
    
     return $result;
   }

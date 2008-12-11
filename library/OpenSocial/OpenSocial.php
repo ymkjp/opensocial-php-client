@@ -40,47 +40,10 @@ class OpenSocial {
   }
 
   /**
-   * set current user
-   * @param     string   $user   
-   * @param     string   $session_key   
-   */
-  public function set_user($user, $session_key, $expires=null) {
-    $this->user = $user;
-    $this->os_client->session_key = $session_key;
-  }
-
-  /**
-   * get current user
-   */
-  public function get_current_user() {
-    return $this->user;
-  }
-
-  /**
-   * 
-   */
-  public static function current_url() {
-    return 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-  }
-
-  /**
    * 
    */
   public static function get_container_url($subdomain='www') {
     return 'http://' . $subdomain . '.orkut.com/social/rest/';
-  }
-
-  /**
-   * Handle magic quotes
-   * @param     string   $v   
-   * @return    string   v without added slashes
-   */
-  public static function no_magic_quotes($v) {
-    if (get_magic_quotes_gpc()) {
-      return stripslashes($v);
-    } else {
-      return $v;
-    }
   }
 }
 

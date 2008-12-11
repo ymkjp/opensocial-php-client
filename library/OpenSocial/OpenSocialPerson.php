@@ -61,7 +61,7 @@ class OpenSocialPerson {
    * Converts a JSON response containing people data into an 
    * OpenSocialCollection of OpenSocialPerson objects.
    */
-  public static function parseJsonCollectionFrom($data) {
+  public static function parseJsonCollection($data) {
     $start = $data["startIndex"];
     $total = $data["totalResults"]; 
     $items = array();
