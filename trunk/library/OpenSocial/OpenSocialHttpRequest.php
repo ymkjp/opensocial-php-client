@@ -59,39 +59,14 @@ class OpenSocialHttpLib {
     //echo "BASE: " . $request->base_string . "<BR>\n";
 
     $post_url = $rest_endpoint . '?' . $request->get_signable_parameters() . '&oauth_signature=' .  OAuthUtil::urlencodeRFC3986($request->get_parameter("oauth_signature"));
-    $post_string = "";
-
 
     if ( function_exists('curl_init')) {
       // Use CURL if installed...
-      $ch = curl_init();
-      curl_setopt($ch, CURLOPT_URL, $post_url);
-      //curl_setopt($ch, CURLOPT_POSTFIELDS, $post_string);
-      curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-      curl_setopt($ch, CURLOPT_USERAGENT, 'OpenSocial API PHP5 Client 1.0 (curl) ' . phpversion());
-      $result = curl_exec($ch);
-      curl_close($ch);
+      return $this->send_curl($post_url);
     } else {
       // Non-CURL based version...
-      $context =
-        array('http' =>
-              array('method' => 'GET',
-                    'header' => 'Content-type: application/x-www-form-urlencoded'."\r\n".
-                                'User-Agent: OpenSocial API PHP5 Client 1.0 (non-curl) '.phpversion()."\r\n".
-                                'Content-length: ' . strlen($post_string),
-                    'content' => $post_string));
-      $contextid=stream_context_create($context);
-
-      $sock=fopen($post_url, 'r', false, $contextid);
-      if ($sock) {
-        $result='';
-        while (!feof($sock))
-          $result.=fgets($sock, 4096);
-
-        fclose($sock);
-      }
+      return $this->send_socket("GET", $post_url);
     }
-    return $result;
   }
 
   public function send_rpc_request($rpc_endpoint, $json_body) {
@@ -113,37 +88,60 @@ class OpenSocialHttpLib {
 
     $post_url = $rpc_endpoint . '?' . $this->get_signable_parameters_x($request->get_parameters(), $json_body) . '&oauth_signature=' .  OAuthUtil::urlencodeRFC3986($request->get_parameter("oauth_signature"));
 
+    // TODO: Split this out into proper OOP
     if ( function_exists('curl_init')) {
       // Use CURL if installed...
-      $ch = curl_init();
-      curl_setopt($ch, CURLOPT_URL, $post_url);
-      curl_setopt($ch, CURLOPT_POSTFIELDS, $json_body);
-      curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-      curl_setopt($ch, CURLOPT_USERAGENT, 'OpenSocial API PHP5 Client 1.0 (curl) ' . phpversion());
-      $result = curl_exec($ch);
-      curl_close($ch);
+      return $this->send_curl($post_url, $json_body);
     } else {
       // Non-CURL based version...
-      $context =
-        array('http' =>
-              array('method' => 'POST',
-                    'header' => 'Content-type: application/x-www-form-urlencoded'."\r\n".
-                                'Content-length: ' . strlen($json_body),
-                    'content' => $json_body));
-      $contextid=stream_context_create($context);
-
-      $sock=fopen($post_url, 'r', false, $contextid);
-      if ($sock) {
-        $result='';
-        while (!feof($sock))
-          $result.=fgets($sock, 4096);
-
-        fclose($sock);
-      }
+      return $this->send_socket("POST", $post_url, $json_body);
     }
+  }
+  
+  function send_curl($url, $body=null) {
+    //TODO: Move this out into a class property
+    $user_agent = sprintf("OpenSocial API Client (curl) %s", phpversion());
+    
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    if (isSet($body)) {
+      curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+    }
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_USERAGENT, $user_agent);
+    $result = curl_exec($ch);
+    curl_close($ch);
+    
     return $result;
   }
-
+  
+  function send_socket($method, $url, $body="") {
+    $user_agent = sprintf("OpenSocial API Client (socket) %s", phpversion());
+    $headers = array(
+        "Content-type: application/x-www-form-urlencoded",
+        sprintf("User-Agent: %s", $user_agent),
+        sprintf("Content-length: %s", strlen($body))
+    );
+    $context = array(
+        "http" => array(
+            "method" => $method, 
+            "header" => implode("\r\n", $headers),
+            "content" => $body
+        )
+    );
+    
+    $context_id=stream_context_create($context);
+    $sock=fopen($url, "r", false, $context_id);
+    if ($sock) {
+      $result="";
+      while (!feof($sock)) {
+        $result .= fgets($sock, 4096);
+      }
+      fclose($sock);
+    }
+    
+    return $result;
+  }
 
   public function get_signable_parameters_x($parameters, $json_body) {/*{{{*/
     // Grab all parameters
