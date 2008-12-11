@@ -15,6 +15,8 @@
  * limitations under the License.
  */
 
+require_once('OAuth/OAuth.php');
+
 class OpenSocialHttpLib {
   public $server_addr; 
   public $oauth_consumer_key;
