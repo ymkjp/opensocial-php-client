@@ -48,6 +48,13 @@ class OpenSocialPerson {
   public function isViewer() {
     return $this->getField("isViewer") == 1;
   }
+  
+  /**
+   * Returns a string representation of this person.
+   */
+  public function __toString() {
+    return sprintf("%s [%s]", $this->getDisplayName(), $this->getId());
+  }
     
   /**
    * Converts a JSON response containing a single person's data into an

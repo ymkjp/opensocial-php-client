@@ -46,6 +46,21 @@ class TestOpenSocial extends PHPUnit_Framework_TestCase {
   }
   
   /**
+   * Does a live fetch person test against orkut
+   */
+  public function testOrkutFetchPerson() {
+    $orkut_config = array(
+      "oauth_consumer_key" => "orkut.com:623061448914",
+      "oauth_consumer_secret" => "uynAeXiWTisflWX99KU1D2q5",
+      "server_rest_base" => "http://sandbox.orkut.com/social/rest/"
+    );
+    $orkutclient = new OpenSocial($orkut_config);
+    $person = $this->opensocial->fetchPerson("04996716008119675151");
+    
+    $this->assertEquals("04996716008119675151", $person->getId());
+  }
+  
+  /**
    * Placeholder test
    */
   public function testNothing() {
