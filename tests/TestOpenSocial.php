@@ -24,18 +24,18 @@ require_once('OpenSocial/OpenSocial.php');
 
 class TestOpenSocial extends PHPUnit_Framework_TestCase {
   protected $opensocial;
+  protected $orkut_config = array(
+    "oauth_consumer_key" => "orkut.com:623061448914",
+    "oauth_consumer_secret" => "uynAeXiWTisflWX99KU1D2q5",
+    "server_rest_base" => "http://sandbox.orkut.com/social/rest/"
+  );
   
   /**
    * Initializes the test class with an OpenSocial object attached to a mock
    * server.
    */
   public function setUp() {
-    $config = array(
-      "oauth_consumer_key" => "orkut.com:623061448914",
-      "oauth_consumer_secret" => "uynAeXiWTisflWX99KU1D2q5",
-      "server_rest_base" => "http://sandbox.orkut.com/social/rest/"
-    );
-    $this->opensocial = new OpenSocial($config);
+    $this->opensocial = new OpenSocial($this->orkut_config);
   }
   
   /**
@@ -46,25 +46,29 @@ class TestOpenSocial extends PHPUnit_Framework_TestCase {
   }
   
   /**
-   * Does a live fetch person test against orkut
+   * Tests an instance of a client against expected live orkut data.
    */
-  public function testOrkutFetchPerson() {
-    $orkut_config = array(
-      "oauth_consumer_key" => "orkut.com:623061448914",
-      "oauth_consumer_secret" => "uynAeXiWTisflWX99KU1D2q5",
-      "server_rest_base" => "http://sandbox.orkut.com/social/rest/"
-    );
-    $orkutclient = new OpenSocial($orkut_config);
-    $person = $this->opensocial->fetchPerson("04996716008119675151");
-    
+  private function validateOrkutFetchPerson($orkut_client) {
+    $person = $orkut_client->fetchPerson("04996716008119675151");
     $this->assertEquals("04996716008119675151", $person->getId());
   }
   
   /**
-   * Placeholder test
+   * Does a live fetch person test against orkut using sockets.
    */
-  public function testNothing() {
-    $this->assertTrue(True);
+  public function testOrkutSocketFetchPerson() {
+    $httplib = new SocketHttpLib();
+    $orkut_client = new OpenSocial($this->orkut_config, $httplib);
+    $this->validateOrkutFetchPerson($orkut_client);
+  }
+  
+  /**
+   * Does a live fetch person test against orkut using curl.
+   */
+  public function testOrkutCurlFetchPerson() {
+    $httplib = new CurlHttpLib();
+    $orkut_client = new OpenSocial($this->orkut_config, $httplib);
+    $this->validateOrkutFetchPerson($orkut_client);
   }
 }
   
