@@ -15,18 +15,63 @@
  * limitations under the License.
  */
 
-require_once('OAuth/OAuth.php');
+interface OpenSocialHttpLib {
+  public function send_request($oauth_request);
+}
 
-class OpenSocialHttpLib {
-  public $server_addr; 
-  public $oauth_consumer_key;
-  public $oauth_consumer_secret;
+class SocketHttpLib implements OpenSocialHttpLib {
+  private static $user_agent = "OpenSocial API Client (socket)";
+  
+  public function send_request($oauth_request) {
+    // Determine whether this is a GET or a POST, PUT, or DELETE 
+    if ($oauth_request->get_normalized_http_method() == "GET") {
+      $url = $oauth_request->to_url();
+      $body = null;
+    } else {
+      $url = $oauth_request->get_normalized_http_url();
+      $body = $oauth_request->to_postdata();
+    }
+  
+    // Define the headers for the request.
+    $headers = array(
+        "Content-type: application/x-www-form-urlencoded",
+        sprintf("User-Agent: %s", $user_agent),
+        sprintf("Content-length: %s", strlen($body))
+    );
+    
+    $context = array(
+        "http" => array(
+            "method" => $method, 
+            "header" => implode("\r\n", $headers),
+            "content" => $body
+        )
+    );
+    
+    $context_id = stream_context_create($context);
+    $socket = fopen($url, "r", false, $context_id);
+    if ($socket) {
+      $result = "";
+      while (!feof($socket)) {
+        $result .= fgets($socket, 4096);
+      }
+      // TODO: Determine whether this should be in a try/catch/finally block
+      fclose($socket);
+    }
+    
+    return $result;
+  }
+}
 
-  /**
-   * Create the client.
-   */
-  public function OpenSocialHttpLib($server_addr, $oauth_consumer_key, $oauth_consumer_secret) {
-     $this->server_addr  = $server_addr; 
+/*
+class OpenSocialHttpLib { 
+//  public $oauth_consumer_key;
+//  public $oauth_consumer_secret;
+  
+  public function __construct() {
+  }
+  
+
+  public function OpenSocialHttpLib($oauth_consumer_key, $oauth_consumer_secret) {
      $this->oauth_consumer_key = $oauth_consumer_key;
      $this->oauth_consumer_secret = $oauth_consumer_secret;
   }
@@ -143,7 +188,7 @@ class OpenSocialHttpLib {
     return $result;
   }
 
-  public function get_signable_parameters_x($parameters, $json_body) {/*{{{*/
+  public function get_signable_parameters_x($parameters, $json_body) {
     // Grab all parameters
     $params = $parameters;
 
@@ -182,7 +227,7 @@ class OpenSocialHttpLib {
 
     // Return the pairs, concated with &
     return implode('&', $pairs);
-  }/*}}}*/
+  }
 }
-
+*/
 ?>

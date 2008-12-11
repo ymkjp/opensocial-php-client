@@ -16,6 +16,7 @@
  */
 
 require_once("Zend/Json.php");
+require_once("OAuth/OAuth.php");
 require_once("OpenSocialHttpRequest.php");
 require_once("OpenSocialCollection.php");
 require_once("OpenSocialPerson.php");
@@ -28,11 +29,16 @@ class OpenSocial {
   private $oauth_consumer_secret;
   private $server_rest_base;
   private $server_rpc_base;
+  private $httplib;
 
   /**
    * Initializes this client object with the supplied configuration.
    */
   public function __construct($config, $httplib=null, $cache=null) {
+    if (!isSet($httplib)) {
+      $httplib = new SocketHttpLib();
+    }
+    $this->httplib = $httplib;
     $this->oauth_consumer_key = $config["oauth_consumer_key"];
     $this->oauth_consumer_secret = $config["oauth_consumer_secret"];
     $this->server_rest_base = $config["server_rest_base"];
@@ -43,13 +49,9 @@ class OpenSocial {
    * Fetches data for a single person.
    */
   public function fetchPerson($guid, $fields = Array()) {
-    //TODO: Must refactor out this code
-    global $user;
-    $user = $guid;
-    
     //TODO: Build this URL in a better way that supports a more arbitrary config
     $rest_endpoint = $this->server_rest_base . 'people/' . $guid . '/@self';
-    $result = $this->rest_fetch($rest_endpoint, $fields);
+    $result = $this->rest_fetch($rest_endpoint, $fields, $guid);
     return OpenSocialPerson::parseJson($result);
   }
   
@@ -57,12 +59,8 @@ class OpenSocial {
    * Fetches data for the friends of the specified user.
    */
   public function fetchFriends($guid, $fields = Array()) {
-    //TODO: Must refactor out this code
-    global $user;
-    $user = $guid;
-    
     $rest_endpoint = $this->server_rest_base . 'people/' . $guid . '/@friends';
-    $result = $this->rest_fetch($rest_endpoint, $fields);
+    $result = $this->rest_fetch($rest_endpoint, $fields, $guid);
     return OpenSocialPerson::parseJsonCollection($result);
   }
   
@@ -84,12 +82,8 @@ class OpenSocial {
   }
 
   public function people_getFriendInfo($guid, $fid, $fields = Array()) {
-    //TODO: Must refactor out this code
-    global $user;
-    $user = $guid;
-    
     $rest_endpoint = $this->server_rest_base . 'people/' . $guid . '/@all/' . $fid;
-    $result = $this->rest_fetch($rest_endpoint, $fields);
+    $result = $this->rest_fetch($rest_endpoint, $fields, $guid);
     return OpenSocialPerson::parseJsonCollection($result);
   }
 
@@ -125,14 +119,29 @@ class OpenSocial {
 
   /* utility */
 
-  public function rest_fetch($endpoint, $params) {
+  public function rest_fetch($endpoint, $params, $requestor=null) {
+    // Build a request object from the current request.
+    $signature_method = new OAuthSignatureMethod_HMAC_SHA1();
 
-    $httplib = new OpenSocialHttpLib(
-        $this->server_rest_base, 
+    // Initialize consumer info. including consumer key and secret.
+    $consumer = new OAuthConsumer(
         $this->oauth_consumer_key, 
-        $this->oauth_consumer_secret
+        $this->oauth_consumer_secret, 
+        null
     );
-    $json_result = $httplib->send_request($endpoint, $params);
+
+    // Build a request object from the current request.
+    $request = OAuthRequest::from_consumer_and_token(
+        $consumer, 
+        null, 
+        "GET", 
+        $endpoint, 
+        array('xoauth_requestor_id' => $requestor) 
+    );
+    
+    // Sign the request.
+    $request->sign_request($signature_method, $consumer, null);
+    $json_result = $this->httplib->send_request($request);
 
     // json_encode is supported after PHP 5.2.0 so for simplicity Zend library is included and used
     $result = Zend_Json::decode($json_result);
@@ -147,8 +156,12 @@ class OpenSocial {
   }
 
   public function rpc_fetch($rpc_endpoint, $json_body) {
-
-    $httplib = new OpenSocialHttpLib($this->server_addr, $this->oauth_consumer_key, $this->oauth_consumer_secret);
+/*
+    $httplib = new OpenSocialHttpLib(
+        null, 
+        $this->oauth_consumer_key, 
+        $this->oauth_consumer_secret
+    );
     $json_array['method'] = 'people.get';
     $json_array['id'] = 'myself';
     $json_array['params']['userid'] = '@me';
@@ -159,8 +172,8 @@ class OpenSocial {
     $result = $httplib->send_rpc_request($rpc_endpoint, $json_body);
 
     return $result;
+*/
   }
-
 }
 
 ?>
