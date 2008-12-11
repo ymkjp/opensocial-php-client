@@ -9,11 +9,13 @@ set_include_path(get_include_path() . PATH_SEPARATOR .
 // Include the client library
 require_once('OpenSocial/OpenSocial.php');
 
-
-$opensocial = new OpenSocial('orkut.com:623061448914', 'uynAeXiWTisflWX99KU1D2q5');
-$user = '04996716008119675151';
-
-$person = $opensocial->os_client->people_getUserInfo('04996716008119675151');
+$config = array(
+  "oauth_consumer_key" => "orkut.com:623061448914",
+  "oauth_consumer_secret" => "uynAeXiWTisflWX99KU1D2q5",
+  "server_rest_base" => "http://sandbox.orkut.com/social/rest/"
+);
+$opensocial = new OpenSocial($config);
+$person = $opensocial->fetchPerson('04996716008119675151');
 ?>
 
 <table>

@@ -61,9 +61,6 @@ class OpenSocialHttpLib {
     $post_url = $rest_endpoint . '?' . $request->get_signable_parameters() . '&oauth_signature=' .  OAuthUtil::urlencodeRFC3986($request->get_parameter("oauth_signature"));
     $post_string = "";
 
-    if ($GLOBALS['opensocial_config']['debug']) {
-        echo "POST: " . $post_url;
-    }
 
     if ( function_exists('curl_init')) {
       // Use CURL if installed...
