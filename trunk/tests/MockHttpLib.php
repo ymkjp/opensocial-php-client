@@ -21,6 +21,7 @@
  */
 class MockHttpLib implements OpenSocialHttpLib {
   private $response;
+  private $request;
   
   /**
    * Sets the text that this mock will return when sendRequest is called.
@@ -31,11 +32,20 @@ class MockHttpLib implements OpenSocialHttpLib {
   }
   
   /**
+   * Returns the last request that was sent to this library.
+   * @return OAuthRequest The last request that was sent to this library.
+   */
+  public function getRequest() {
+    return $this->request;
+  }
+  
+  /**
    * Queries the specified server and returns the response as text.
    * @param mixed $oauth_request An OAuthRequest object that should be signed.
    * @return string The text returned by the server.
    */
   public function sendRequest($oauth_request) {
+    $this->request = $oauth_request;
     return $this->response;
   }
 }
