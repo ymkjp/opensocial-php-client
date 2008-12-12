@@ -16,6 +16,12 @@
  */
 
 /**
+ * OpenSocial Client Library for PHP
+ * 
+ * @package OpenSocial
+ */
+ 
+/**
  * Creates an interface through which clients may define classes to use custom
  * HTTP libraries.
  */

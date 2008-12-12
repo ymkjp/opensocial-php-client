@@ -14,6 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+ 
+/**
+ * OpenSocial Client Library for PHP
+ * 
+ * @package OpenSocial
+ */
 
 require_once("Zend/Json.php");
 require_once("OAuth/OAuth.php");
