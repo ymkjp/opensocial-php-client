@@ -1,14 +1,10 @@
-Welcome to the OpenSocial Platform and REST client libraries!
+Example pages using the library are located in /samples
 
-You may want to first get our sample application up and running so you can see 
-exactly how the library is meant to be used, but you can just as well start 
-building your own application by grabbing the libraries in the client/ directory.
+To build docs, from the project root run:
+phpdoc -d library/OpenSocial/ -t doc -ti "OpenSocial PHP Client Library"
 
-We've created an application called social-nuts that utilizes a lot of Platform
-functionality while remaining fairly simple.  
+To run test, from the /tests directory run:
+phpunit AllTests
 
-To get social-nuts running on your own server, you'll want to first open up the
-"social-nuts/config.php" file and modify it with your mysql database
-configuration.  Also, create the necessary table in your database as described
-in the same file.
-
+For pretty reports, from the /tests directory run:
+phpunit --coverage-html report AllTests
