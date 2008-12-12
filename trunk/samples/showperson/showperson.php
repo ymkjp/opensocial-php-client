@@ -31,7 +31,7 @@ $config = array(
   "server_rest_base" => "http://sandbox.orkut.com/social/rest/"
 );
 $opensocial = new OpenSocial($config);
-$person = $opensocial->fetchPerson('04996716008119675151');
+$person = $opensocial->fetchPerson('03067092798963641994');
 ?>
 
 <table>
