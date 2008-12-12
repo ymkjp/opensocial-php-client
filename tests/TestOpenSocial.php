@@ -49,8 +49,8 @@ class TestOpenSocial extends PHPUnit_Framework_TestCase {
    * Tests an instance of a client against expected live orkut data.
    */
   private function validateOrkutFetchPerson($orkut_client) {
-    $person = $orkut_client->fetchPerson("04996716008119675151");
-    $this->assertEquals("04996716008119675151", $person->getId());
+    $person = $orkut_client->fetchPerson("03067092798963641994");
+    $this->assertEquals("03067092798963641994", $person->getId());
   }
   
   /**

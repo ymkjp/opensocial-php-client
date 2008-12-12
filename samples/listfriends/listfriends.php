@@ -32,7 +32,7 @@ $config = array(
   "server_rest_base" => "http://sandbox.orkut.com/social/rest/"
 );
 $opensocial = new OpenSocial($config);
-$result = $opensocial->fetchFriends('04996716008119675151');
+$result = $opensocial->fetchFriends('03067092798963641994');
 
 // Print the paging information
 echo sprintf("Showing friends %s to %s of %s", $result->startIndex + 1, 
