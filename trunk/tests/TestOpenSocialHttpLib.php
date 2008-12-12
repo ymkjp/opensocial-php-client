@@ -20,25 +20,63 @@ set_include_path(get_include_path() . PATH_SEPARATOR .
     '..' . DIRECTORY_SEPARATOR . 'library');
 
 require_once('PHPUnit/Framework.php');
+require_once('OAuth/OAuth.php');
 require_once('OpenSocial/OpenSocialHttpLib.php');
 
-class TestOpenSocialHttpLib extends PHPUnit_Framework_TestCase {
+/**
+ * Tests the socket http library implementation.
+ */
+abstract class AbstractHttpLibTest extends PHPUnit_Framework_TestCase {
+  protected $httplib;
+  
+  /**
+   * Returns an appropriate OpenSocialHttpLib implementation to use.
+   * @return OpenSocialHttpLib An instance of the type of HttpLib to test.
+   */
+  abstract function getHttpLib();
+  
   /**
    * Initializes the test class.
    */
   public function setUp() {
+    $this->httplib = $this->getHttpLib();
   }
   
   /**
    * Cleans up after each test.
    */
   public function tearDown() {
+    unset($this->httplib);
   }
-
+  
   /**
-   * Placeholder test
+   * Tests GET requests.
    */
-  public function testNothing() {
-    $this->assertTrue(True);
+  public function testGet() {
+    $request = new OAuthRequest(
+        "GET", 
+        "http://osda.appspot.com/js/samplejson.js", 
+        null);
+    $result = $this->httplib->sendRequest($request);
+    $expected_result = '{ "Success" : true }';
+    $this->assertEquals($result, $expected_result);
+  }
+}
+
+/**
+ * Tests the socket http library implementation.
+ */
+class TestSocketHttpLib extends AbstractHttpLibTest {
+  public function getHttpLib() {
+    return new SocketHttpLib();
+  }
+}
+
+/**
+ * Tests the curl http library implementation.
+ */
+class TestCurlHttpLib extends AbstractHttpLibTest {
+  public function getHttpLib() {
+    return new CurlHttpLib();
   }
 }
