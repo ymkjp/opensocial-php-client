@@ -44,9 +44,9 @@ class OpenSocial {
     if (isSet($httplib)) {
       $this->httplib = $httplib;          // Allow overriding default httplibs.
     } else if (function_exists('curl_init')) {
-      $httplib = new CurlHttpLib();       // Use curl on compatible systems.
+      $this->httplib = new CurlHttpLib();       // Use curl on compatible systems.
     } else {
-      $httplib = new SocketHttpLib();     // Default to using raw sockets.
+      $this->httplib = new SocketHttpLib();     // Default to using raw sockets.
     }
 
     $this->oauth_consumer_key = $config["oauth_consumer_key"];
