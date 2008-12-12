@@ -17,6 +17,7 @@
 
 require_once("PHPUnit/Framework.php");
 require_once("TestOpenSocial.php");
+require_once("TestOpenSocialHttpLib.php");
 
 /**
  * Aggregates all of the test classes so that they may be run at once.
@@ -27,7 +28,8 @@ class AllTests
     {
         $suite = new PHPUnit_Framework_TestSuite("PHPUnit");
         $suite->addTestSuite("TestOpenSocial");
-
+        $suite->addTestSuite("TestSocketHttpLib");
+        $suite->addTestSuite("TestCurlHttpLib");
         return $suite;
     }
 }

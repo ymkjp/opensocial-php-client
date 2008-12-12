@@ -145,7 +145,7 @@ class OpenSocial {
     
     // Sign the request.
     $request->sign_request($signature_method, $consumer, null);
-    $json_result = $this->httplib->send_request($request);
+    $json_result = $this->httplib->sendRequest($request);
 
     // json_encode is supported after PHP 5.2.0 so for simplicity Zend library is included and used
     $result = Zend_Json::decode($json_result);

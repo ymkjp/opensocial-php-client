@@ -25,7 +25,7 @@ interface OpenSocialHttpLib {
    * @param mixed $oauth_request An OAuthRequest object that should be signed.
    * @return string The text returned by the server.
    */
-  public function send_request($oauth_request);
+  public function sendRequest($oauth_request);
 }
 
 /**
@@ -43,7 +43,7 @@ class SocketHttpLib implements OpenSocialHttpLib {
    * @param mixed $oauth_request An OAuthRequest object that should be signed.
    * @return string The text returned by the server.
    */
-  public function send_request($oauth_request) {
+  public function sendRequest($oauth_request) {
     // Determine whether this is a GET or a POST, PUT, or DELETE 
     if ($oauth_request->get_normalized_http_method() == "GET") {
       $url = $oauth_request->to_url();
@@ -100,7 +100,7 @@ class CurlHttpLib implements OpenSocialHttpLib {
    * @param mixed $oauth_request An OAuthRequest object that should be signed.
    * @return string The text returned by the server.
    */
-  public function send_request($oauth_request) {
+  public function sendRequest($oauth_request) {
     // Determine whether this is a GET or a POST, PUT, or DELETE.
     if ($oauth_request->get_normalized_http_method() == "GET") {
       $url = $oauth_request->to_url();
