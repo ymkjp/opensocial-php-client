@@ -121,6 +121,7 @@ class OpenSocialHttpRequest {
    * @return array An array of header strings, one header per string.
    */
   public function getHeaders() {
+    // TODO: Consider making headers work more like parameters, with setHeader.
     $headers = array();
     if ($this->getMethod() != "GET") {
       $headers[] = sprintf("Content-length: %s", strlen($this->getBody()));
