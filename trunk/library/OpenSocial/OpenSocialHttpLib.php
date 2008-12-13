@@ -46,36 +46,24 @@ class SocketHttpLib implements OpenSocialHttpLib {
   
   /**
    * Queries the specified server and returns the response as text.
-   * @param mixed $oauth_request An OAuthRequest object that should be signed.
+   * @param mixed $request An OpenSocialHttpRequest object.
    * @return string The text returned by the server.
    */
-  public function sendRequest($oauth_request) {
-    // Determine whether this is a GET or a POST, PUT, or DELETE 
-    if ($oauth_request->get_normalized_http_method() == "GET") {
-      $url = $oauth_request->to_url();
-      $body = null;
-    } else {
-      $url = $oauth_request->get_normalized_http_url();
-      $body = $oauth_request->to_postdata();
-    }
-  
-    // Define the headers for the request.
-    $headers = array(
-        "Content-type: application/x-www-form-urlencoded",
-        sprintf("User-Agent: %s", self::USER_AGENT),
-        sprintf("Content-length: %s", strlen($body))
-    );
+  public function sendRequest($request) {
+    // Get the headers for the request.
+    $headers = $request->getHeaders();
+    $headers[] = sprintf("User-Agent: %s", self::USER_AGENT);
     
     $context = array(
         "http" => array(
-            "method" => $method, 
+            "method" => $request->getMethod(), 
             "header" => implode("\r\n", $headers),
-            "content" => $body
+            "content" => $request->getBody()
         )
     );
     
     $context_id = stream_context_create($context);
-    $socket = fopen($url, "r", false, $context_id);
+    $socket = fopen($request->getUrl(), "r", false, $context_id);
     if ($socket) {
       $result = "";
       while (!feof($socket)) {
@@ -103,23 +91,16 @@ class CurlHttpLib implements OpenSocialHttpLib {
   
   /**
    * Queries the specified server and returns the response as text.
-   * @param mixed $oauth_request An OAuthRequest object that should be signed.
+   * @param mixed $request An OpenSocialHttpRequest object.
    * @return string The text returned by the server.
    */
-  public function sendRequest($oauth_request) {
-    // Determine whether this is a GET or a POST, PUT, or DELETE.
-    if ($oauth_request->get_normalized_http_method() == "GET") {
-      $url = $oauth_request->to_url();
-      $body = null;
-    } else {
-      $url = $oauth_request->get_normalized_http_url();
-      $body = $oauth_request->to_postdata();
-    }
-    
+  public function sendRequest($request) {    
     // Configure the curl parameters.
+    $url = $request->getUrl();
+    $body = $request->getBody();
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
-    if (isSet($body)) {
+    if ($request->getMethod() != "GET") {
       curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
     }
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
