@@ -23,6 +23,7 @@
 
 require_once("Zend/Json.php");
 require_once("OAuth/OAuth.php");
+require_once("OpenSocialHttpRequest.php");
 require_once("OpenSocialHttpLib.php");
 require_once("OpenSocialCollection.php");
 require_once("OpenSocialPerson.php");
@@ -31,8 +32,8 @@ require_once("OpenSocialPerson.php");
  * Client library helper for making OpenSocial requests.
  */
 class OpenSocial {
-  private $oauth_consumer_key;
-  private $oauth_consumer_secret;
+  private $signature_method;
+  private $oauth_consumer;
   private $server_rest_base;
   private $server_rpc_base;
   private $httplib;
@@ -49,10 +50,18 @@ class OpenSocial {
       $this->httplib = new SocketHttpLib();     // Default to using raw sockets.
     }
 
-    $this->oauth_consumer_key = $config["oauth_consumer_key"];
-    $this->oauth_consumer_secret = $config["oauth_consumer_secret"];
     $this->server_rest_base = $config["server_rest_base"];
     $this->server_rpc_base = $config["server_rpc_base"];
+    
+    // TODO: Support more methods of signing requests.
+    $this->signature_method = new OAuthSignatureMethod_HMAC_SHA1();
+
+    // Initialize consumer info. including consumer key and secret.
+    $this->oauth_consumer = new OAuthConsumer(
+        $config["oauth_consumer_key"], 
+        $config["oauth_consumer_secret"], 
+        null
+    );
   }
   
   /**
@@ -130,27 +139,10 @@ class OpenSocial {
   /* utility */
 
   public function rest_fetch($endpoint, $params, $requestor=null) {
-    // Build a request object from the current request.
-    $signature_method = new OAuthSignatureMethod_HMAC_SHA1();
-
-    // Initialize consumer info. including consumer key and secret.
-    $consumer = new OAuthConsumer(
-        $this->oauth_consumer_key, 
-        $this->oauth_consumer_secret, 
-        null
-    );
-
-    // Build a request object from the current request.
-    $request = OAuthRequest::from_consumer_and_token(
-        $consumer, 
-        null, 
-        "GET", 
-        $endpoint, 
-        array('xoauth_requestor_id' => $requestor) 
-    );
+    $signing_params = array("xoauth_requestor_id" => $requestor);
+    $request = new OpenSocialHttpRequest("GET", $endpoint, $signing_params);
     
-    // Sign the request.
-    $request->sign_request($signature_method, $consumer, null);
+    $request->sign($this->oauth_consumer, $this->signature_method);
     $json_result = $this->httplib->sendRequest($request);
 
     // json_encode is supported after PHP 5.2.0 so for simplicity Zend library is included and used

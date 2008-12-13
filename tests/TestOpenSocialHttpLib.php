@@ -53,10 +53,9 @@ abstract class AbstractHttpLibTest extends PHPUnit_Framework_TestCase {
    * Tests GET requests.
    */
   public function testGet() {
-    $request = new OAuthRequest(
+    $request = new OpenSocialHttpRequest(
         "GET", 
-        "http://osda.appspot.com/js/samplejson.js", 
-        null);
+        "http://osda.appspot.com/js/samplejson.js");
     $result = $this->httplib->sendRequest($request);
     $expected_result = '{ "Success" : true }';
     $this->assertEquals($result, $expected_result);
