@@ -70,5 +70,33 @@ class TestOpenSocial extends PHPUnit_Framework_TestCase {
     $orkut_client = new OpenSocial($this->orkut_config, $httplib);
     $this->validateOrkutFetchPerson($orkut_client);
   }
+  
+  /**
+   * Test whether passing strings with an ending / or not break the library.
+   */
+  public function testUrlConfigStrings() {
+    $httplib = new MockHttpLib();
+    $req = new FetchPersonRequest("12345");
+    
+    $client_a = new OpenSocial(array(
+      "server_rest_base" => "http://example.com/social/rest/"
+    ), $httplib);
+    
+    $client_b = new OpenSocial(array(
+      "server_rest_base" => "http://example.com/social/rest"
+    ), $httplib);
+      
+
+    $client_a->request($req);
+    $http_req_a = $httplib->getRequest();
+    
+    $client_b->request($req);
+    $http_req_b = $httplib->getRequest();
+    
+    $this->assertEquals(
+        $http_req_a->getNormalizedUrl(),
+        $http_req_b->getNormalizedUrl()
+    );
+  }
 }
   

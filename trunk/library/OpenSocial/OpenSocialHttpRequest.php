@@ -69,6 +69,26 @@ class OpenSocialHttpRequest {
   }
   
   /**
+   * Sets multiple parameters for this request.
+   * @param array $parameters An array of key value string pairs to assign
+   *     as parameters.
+   */
+  public function setParameters($parameters) {
+    foreach ($parameters as $name => $value) {
+      $this->setParameter($name, $value);
+    }
+  }
+  
+  /**
+   * Returns the value of the specified parameter.  Used for unit testing.
+   * @param string $name The name of the parameter to retrieve.
+   * @return string The value of the parameter.
+   */
+  public function getParameter($name) {
+    return $this->oauth_request->get_parameter($name);
+  }
+  
+  /**
    * Signs the current request with the supplied credentials.
    * @param mixed $consumer The OAuthConsumer credential object.
    * @param mixed $signature_method The OAuthSignatureMethod object indicating
@@ -80,10 +100,13 @@ class OpenSocialHttpRequest {
     $nonce = md5(microtime() . mt_rand());
     
     // TODO: See if there's a case for supporting oauth_token
-    $this->setParameter("oauth_version", OAuthRequest::$version);
-    $this->setParameter("oauth_nonce", $nonce);
-    $this->setParameter("oauth_timestamp", time());
-    $this->setParameter("oauth_consumer_key", $consumer->key);
+    $parameters = array(
+      "oauth_nonce" => $nonce,
+      "oauth_version" => OAuthRequest::$version,
+      "oauth_timestamp" => time(),
+      "oauth_consumer_key" => $consumer->key
+    );
+    $this->setParameters($parameters);
     
     $this->oauth_request->sign_request($signature_method, $consumer, null);
     $this->is_signed = True;
@@ -105,6 +128,16 @@ class OpenSocialHttpRequest {
     // Put all the signed parameters into the URL because we're not doing
     // application/x-www-form-urlencoded POST bodies.
     return $this->oauth_request->to_url();
+  }
+  
+  /**
+   * Returns a normalized URL without querystring parameters for the current 
+   * request.  This is to be mostly used for unit testing - if you want to get
+   * an actual url to request, use the getUrl() method instead.
+   * @return string A normalized URL without query parameters.
+   */
+  public function getNormalizedUrl() {
+    return $this->oauth_request->get_normalized_http_url();
   }
   
   /**
