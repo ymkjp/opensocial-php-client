@@ -44,11 +44,11 @@ class OpenSocial {
    */
   public function __construct($config, $httplib=null, $cache=null) {
     if (isSet($httplib)) {
-      $this->httplib = $httplib;          // Allow overriding default httplibs.
+      $this->httplib = $httplib;              // Allow overriding httplib.
     } else if (function_exists('curl_init')) {
-      $this->httplib = new CurlHttpLib();       // Use curl on compatible systems.
+      $this->httplib = new CurlHttpLib();     // Use curl on compatible systems.
     } else {
-      $this->httplib = new SocketHttpLib();     // Default to using raw sockets.
+      $this->httplib = new SocketHttpLib();   // Default to using raw sockets.
     }
 
     $this->server_rest_base = $this->cleanUrl($config["server_rest_base"]);
