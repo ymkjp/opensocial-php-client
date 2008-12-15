@@ -84,4 +84,41 @@ EOM;
     $this->assertEquals("Sample Testington", 
         $result->getDisplayName());
   }
+
+  /**
+   * General FetchPeopleRequest test.
+   */
+  public function testFetchPeopleRequest() {
+    $req = new FetchPeopleRequest("12345", "@friends");
+    $text_response = <<<EOM
+{  
+  "startIndex" : 1,
+  "itemsPerPage" : 2,
+  "totalResults" : 100,
+  "entry": [
+    { 
+      "id":"23456",
+      "isViewer":false,
+      "isOwner":false,
+      "name":{ "familyName":"Testington", "givenName":"Alice" }
+    },
+    { 
+      "id":"34567",
+      "isViewer":false,
+      "isOwner":false,
+      "name":{ "familyName":"Testington", "givenName":"Bob" }
+    }
+  ]
+}
+EOM;
+    $this->httplib->setResponse($text_response);
+    $result = $this->client->request($req);
+    $http_req = $this->httplib->getRequest();
+    
+    $this->assertEquals(count($result), 2);
+    $this->assertEquals($result->startIndex, 1);
+    $this->assertEquals($result->totalResults, 100);
+    $this->assertEquals($result[0]->getId(), "23456");
+    $this->assertEquals($result[1]->getId(), "34567");
+  }
 }

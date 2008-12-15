@@ -24,7 +24,8 @@
 /**
  * Represents a collection of OpenSocial objects.  Can be iterated over.
  */
-class OpenSocialCollection implements IteratorAggregate, Countable {
+class OpenSocialCollection implements 
+    IteratorAggregate, Countable, ArrayAccess {
   public $startIndex = 0;
   public $totalResults = 0;
   private $items = null;
@@ -39,17 +40,39 @@ class OpenSocialCollection implements IteratorAggregate, Countable {
   }
   
   /**
-   * Part of the IteratorAggregate interface.  Allows using foreach on this
-   * class.
+   * Implements IteratorAggregate.  Allows using foreach on this class.
    */
   public function getIterator() {
     return new ArrayIterator($this->items);
   }
 
   /**
-   * Part of the Countable interface.  Allows using count() on this class.
+   * Implements Countable.  Allows using count() on this class.
    */
   public function count() {
     return count($this->items);
+  }
+  
+  /**
+   * Implements ArrayAccess.  Allows using [$index] access on this class.
+   */
+  public function offsetExists($offset) {
+    return isSet($this->items[$offset]);
+  }
+  
+  public function offsetGet($offset) {
+    if (isSet($this->items[$offset])) {
+      return $this->items[$offset];
+    } else {
+      return null;
+    }
+  }
+  
+  public function offsetSet($offset, $value) {
+    $this->items[$offset] = $value;
+  }
+  
+  public  function offsetUnset($offset) {
+    unset($this->items[$offset]);
   }
 }
