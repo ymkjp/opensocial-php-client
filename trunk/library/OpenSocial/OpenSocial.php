@@ -33,6 +33,7 @@ require_once("OpenSocialPerson.php");
  * Client library helper for making OpenSocial requests.
  */
 class OpenSocial {
+  const DEBUG = False;
   private $signature_method;
   private $oauth_consumer;
   private $server_rest_base;
@@ -134,6 +135,7 @@ class OpenSocial {
     $http_request = $request->getRestRequest($this->server_rest_base);
     $http_request->sign($this->oauth_consumer, $this->signature_method);
     $text_result = $this->httplib->sendRequest($http_request);
+    if (self::DEBUG) { print sprintf("\n%s\n", $text_result); }
     $json_result = Zend_Json::decode($text_result);
     $result = $request->processJsonResponse($json_result);
     return $result;

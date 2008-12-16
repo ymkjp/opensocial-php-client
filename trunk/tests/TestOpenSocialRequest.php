@@ -52,9 +52,9 @@ class TestOpenSocialRequest extends PHPUnit_Framework_TestCase {
   }
   
   /**
-   * General FetchPersonRequest test.
+   * General REST FetchPersonRequest test.
    */
-  public function testFetchPersonRequest() {
+  public function testRestFetchPersonRequest() {
     $req = new FetchPersonRequest("12345");
     $text_response = <<<EOM
 {  
@@ -86,9 +86,9 @@ EOM;
   }
 
   /**
-   * General FetchPeopleRequest test.
+   * General REST FetchPeopleRequest test.
    */
-  public function testFetchPeopleRequest() {
+  public function testRestFetchPeopleRequest() {
     $req = new FetchPeopleRequest("12345", "@friends");
     $text_response = <<<EOM
 {  
@@ -115,10 +115,50 @@ EOM;
     $result = $this->client->request($req);
     $http_req = $this->httplib->getRequest();
     
+    $this->assertEquals("GET", 
+         $http_req->getMethod());
+    $this->assertEquals("http://example.com/rest/people/12345/@friends",
+        $http_req->getNormalizedUrl());
+    $this->assertEquals("12345", 
+        $http_req->getParameter("xoauth_requestor_id"));
+    $this->assertEquals("test_consumer_key",
+        $http_req->getParameter("oauth_consumer_key"));
+
     $this->assertEquals(count($result), 2);
     $this->assertEquals($result->startIndex, 1);
     $this->assertEquals($result->totalResults, 100);
     $this->assertEquals($result[0]->getId(), "23456");
     $this->assertEquals($result[1]->getId(), "34567");
+  }
+  
+  /**
+   * General REST FetchAppDataRequest test.
+   */
+  public function testRestFetchAppDataRequest() {
+    $req = new FetchAppDataRequest("12345", "@self");
+    $text_response = <<<EOM
+{
+  "entry" : {
+    "12345" : {
+      "key1" : "value1"
+    }
+  }
+}
+EOM;
+    $this->httplib->setResponse($text_response);
+    $result = $this->client->request($req);
+    $http_req = $this->httplib->getRequest();
+    
+    $this->assertEquals("GET", 
+         $http_req->getMethod());
+    $this->assertEquals("http://example.com/rest/appdata/12345/@self/@app",
+        $http_req->getNormalizedUrl());
+    $this->assertEquals("12345", 
+        $http_req->getParameter("xoauth_requestor_id"));
+    $this->assertEquals("test_consumer_key",
+        $http_req->getParameter("oauth_consumer_key"));
+        
+    $this->assertEquals(count($result), 1);
+    $this->assertEquals($result["12345"]["key1"], "value1");
   }
 }
