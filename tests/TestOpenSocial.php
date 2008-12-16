@@ -72,6 +72,17 @@ class TestOpenSocial extends PHPUnit_Framework_TestCase {
   }
   
   /**
+   * Does a live fetch appdata test against orkut.
+   */
+  public function testOrkutFetchAppData() {
+    $orkut_client = new OpenSocial($this->orkut_config);
+    $req = new FetchAppDataRequest("03067092798963641994", "@self");
+    $app_data = $orkut_client->request($req);
+    $this->assertTrue(is_array($app_data["03067092798963641994"]));
+    $this->assertEquals(1, count($app_data));
+  }
+  
+  /**
    * Test whether passing strings with an ending / or not break the library.
    */
   public function testUrlConfigStrings() {
