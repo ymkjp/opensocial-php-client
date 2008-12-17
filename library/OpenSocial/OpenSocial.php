@@ -160,7 +160,7 @@ class OpenSocial {
     $http_request = new OpenSocialHttpRequest(
         "POST", 
         $this->server_rpc_base, 
-        null,   // TODO: See if we need querystring params for RPC 
+        null,   
         $body
     );
     if (isSet($requestor)) {
