@@ -16,17 +16,20 @@
  */
 
 require_once("PHPUnit/Framework.php");
-require_once("OnlineTests.php");
-require_once("OfflineTests.php");
+require_once("TestOpenSocialHttpLib.php");
+require_once("TestOrkut.php");
+require_once("TestMySpace.php");
 
 /**
- * Aggregates all of the test classes so that they may be run at once.
+ * Aggregates all of the online test classes. (Needs internet connectivity)
  */
-class AllTests {
+class OnlineTests {
     public static function suite() {
-        $suite = new PHPUnit_Framework_TestSuite("PHPUnit");
-        $suite->addTest(OnlineTests::suite());
-        $suite->addTest(OfflineTests::suite());
+        $suite = new PHPUnit_Framework_TestSuite("PHPUnit Online");
+        $suite->addTestSuite("TestSocketHttpLib");
+        $suite->addTestSuite("TestCurlHttpLib");
+        $suite->addTestSuite("TestOrkut");
+        $suite->addTestSuite("TestMySpace");
         return $suite;
     }
 }

@@ -38,6 +38,10 @@ class OpenSocialAppData implements IteratorAggregate, Countable, ArrayAccess {
     return new OpenSocialAppData($data["entry"]);
   }
   
+  public function toJsonObject() {
+    return $this->data;
+  }
+    
   /**
    * Implements IteratorAggregate.  Allows using foreach on this class.
    */

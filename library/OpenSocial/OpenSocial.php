@@ -21,6 +21,12 @@
  * @package OpenSocial
  */
 
+define("OS_DEBUG", True);
+function OSLOG($label, $data) {
+  $line = str_repeat("=", strlen($label) + 1);
+  print(sprintf("\n%s:\n%s\n%s\n", $label, $line, print_r($data, True)));
+}
+
 require_once("Zend/Json.php");
 require_once("OAuth/OAuth.php");
 require_once("OpenSocialHttpRequest.php");
@@ -33,7 +39,6 @@ require_once("OpenSocialPerson.php");
  * Client library helper for making OpenSocial requests.
  */
 class OpenSocial {
-  const DEBUG = False;
   private $signature_method;
   private $oauth_consumer;
   private $server_rest_base;
@@ -107,7 +112,39 @@ class OpenSocial {
    * 
    */
   protected function sendRpcRequests($requests) {
-    return array();
+    $body = array();
+    $reqs = array();
+    if (is_array($requests)) {
+      foreach ($requests as $request) {
+        $body[] = $request->getRpcBody();
+        $reqs[$request->getId()] = $request;
+      }      
+    } else {
+      $body[] = $requests->getRpcBody();
+      $reqs[$requests->getId()] = $requests;
+    }
+    $http_request = new OpenSocialHttpRequest(
+        "POST", 
+        $this->server_rpc_base, 
+        null,   // TODO: See if we need querystring params for RPC 
+        $body
+    );
+    $http_request->sign($this->oauth_consumer, $this->signature_method);
+    $text_result = $this->httplib->sendRequest($http_request);
+    
+    $ret = array();
+    $json_result = Zend_Json::decode($text_result);
+    
+    foreach ($json_result as $response) {
+      $id = $response["id"];
+      $data = $reqs[$id]->processJsonResponse($response["data"]);
+      if (is_array($requests)) {
+        $ret[$id] = $data;
+      } else {
+        return $data;
+      }
+    }
+    return $ret;
   }
   
   /**
@@ -133,9 +170,9 @@ class OpenSocial {
    */
   protected function sendRestRequest($request) {
     $http_request = $request->getRestRequest($this->server_rest_base);
+//    $http_request->signWithToken("AFinprSNzAKnq7fSx4-SXjfE8ME3tN1WzejOGwDdwCHj0pmIdeZ7COhjVfs3PdyT3Fsy-mRd0Q8jNQaqVWPnbZRmw0aJLb_Qw3TFpgl245g34_-lvYEI-gk");
     $http_request->sign($this->oauth_consumer, $this->signature_method);
     $text_result = $this->httplib->sendRequest($http_request);
-    if (self::DEBUG) { print sprintf("\n%s\n", $text_result); }
     $json_result = Zend_Json::decode($text_result);
     $result = $request->processJsonResponse($json_result);
     return $result;

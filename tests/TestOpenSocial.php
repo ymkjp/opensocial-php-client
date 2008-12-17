@@ -23,64 +23,15 @@ require_once('PHPUnit/Framework.php');
 require_once('OpenSocial/OpenSocial.php');
 
 class TestOpenSocial extends PHPUnit_Framework_TestCase {
-  protected $opensocial;
-  protected $orkut_config = array(
-    "oauth_consumer_key" => "orkut.com:623061448914",
-    "oauth_consumer_secret" => "uynAeXiWTisflWX99KU1D2q5",
-    "server_rest_base" => "http://sandbox.orkut.com/social/rest/"
-  );
+  /**
+   * Initializes the test class
+   */
+  public function setUp() { }
   
   /**
-   * Initializes the test class with an OpenSocial object attached to a mock
-   * server.
+   * Cleans up after each test.
    */
-  public function setUp() {
-    $this->opensocial = new OpenSocial($this->orkut_config);
-  }
-  
-  /**
-   * Removes the reference to the OpenSocial class instance.
-   */
-  public function tearDown() {
-    unset($this->opensocial);
-  }
-  
-  /**
-   * Tests an instance of a client against expected live orkut data.
-   */
-  private function validateOrkutFetchPerson($orkut_client) {
-    $person = $orkut_client->fetchPerson("03067092798963641994");
-    $this->assertEquals("03067092798963641994", $person->getId());
-  }
-  
-  /**
-   * Does a live fetch person test against orkut using sockets.
-   */
-  public function testOrkutSocketFetchPerson() {
-    $httplib = new SocketHttpLib();
-    $orkut_client = new OpenSocial($this->orkut_config, $httplib);
-    $this->validateOrkutFetchPerson($orkut_client);
-  }
-  
-  /**
-   * Does a live fetch person test against orkut using curl.
-   */
-  public function testOrkutCurlFetchPerson() {
-    $httplib = new CurlHttpLib();
-    $orkut_client = new OpenSocial($this->orkut_config, $httplib);
-    $this->validateOrkutFetchPerson($orkut_client);
-  }
-  
-  /**
-   * Does a live fetch appdata test against orkut.
-   */
-  public function testOrkutFetchAppData() {
-    $orkut_client = new OpenSocial($this->orkut_config);
-    $req = new FetchAppDataRequest("03067092798963641994", "@self");
-    $app_data = $orkut_client->request($req);
-    $this->assertTrue(is_array($app_data["03067092798963641994"]));
-    $this->assertEquals(1, count($app_data));
-  }
+  public function tearDown() { }
   
   /**
    * Test whether passing strings with an ending / or not break the library.

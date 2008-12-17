@@ -16,17 +16,17 @@
  */
 
 require_once("PHPUnit/Framework.php");
-require_once("OnlineTests.php");
-require_once("OfflineTests.php");
+require_once("TestOpenSocial.php");
+require_once("TestOpenSocialRequest.php");
 
 /**
- * Aggregates all of the test classes so that they may be run at once.
+ * Aggregates all of the offline test classes.
  */
-class AllTests {
+class OfflineTests {
     public static function suite() {
-        $suite = new PHPUnit_Framework_TestSuite("PHPUnit");
-        $suite->addTest(OnlineTests::suite());
-        $suite->addTest(OfflineTests::suite());
+        $suite = new PHPUnit_Framework_TestSuite("PHPUnit Offline");
+        $suite->addTestSuite("TestOpenSocial");
+        $suite->addTestSuite("TestOpenSocialRequest");
         return $suite;
     }
 }
