@@ -22,6 +22,7 @@
  */
  
 require_once("OAuth/OAuth.php");
+require_once("Zend/Json.php");
 
 /**
  * Abstracts a request object to be sent to the OpenSocialHttpLib class.
@@ -31,6 +32,7 @@ class OpenSocialHttpRequest {
   private $body;
   private $is_signed;
   private $consumer;
+  private $requestor;
   
   /**
    * Creates a request to be sent to an OpenSocial server.   
@@ -80,6 +82,16 @@ class OpenSocialHttpRequest {
   }
   
   /**
+   * For the two-legged OAuth case, some requests need a viewer context.  This
+   * method assigns the appropriate VIEWER id to the xoauth_requestor_id
+   * OAuth parameter.
+   * @param string $id ID of the VIEWER.
+   */
+  public function setRequestor($id) {
+    $this->requestor = $id;
+  }
+  
+  /**
    * Returns the value of the specified parameter.  Used for unit testing.
    * @param string $name The name of the parameter to retrieve.
    * @return string The value of the parameter.
@@ -106,9 +118,35 @@ class OpenSocialHttpRequest {
       "oauth_timestamp" => time(),
       "oauth_consumer_key" => $consumer->key
     );
-    $this->setParameters($parameters);
     
+    // Add requestor data if it exists.
+    if (isSet($this->requestor)) {
+      $parameters["xoauth_requestor_id"] = $this->requestor;
+    }
+    
+    // Ugly hack because implementations currently need the body to be signed.
+    $body = $this->getBody();
+    if (isSet($body)) {
+      $parameters[$body] = null;
+    }
+    
+    $this->setParameters($parameters);
     $this->oauth_request->sign_request($signature_method, $consumer, null);
+    $this->is_signed = True;
+    
+    // Undo the ugly hack by removing the body value from the querystring.
+    // TODO: Make oauth_request->parameters private once this is fixed.
+    if (isSet($body)) {
+      unset($this->oauth_request->parameters[$body]);
+    }
+  }
+  
+  /**
+   * Allows signing a request with a security token instead of OAuth.
+   * @param string $token The security token to use.
+   */
+  public function signWithToken($token) {
+    $this->setParameter("st", $token);
     $this->is_signed = True;
   }
   
@@ -146,7 +184,14 @@ class OpenSocialHttpRequest {
    */
   public function getBody() {
     // Return the supplied body code (not signed).
-    return $this->body;
+    if (!isSet($this->body)) {
+      return null;
+    } else if (is_string($this->body)) {
+      return $this->body;
+    } else {
+      // TODO: This feels like it's in the wrong place.
+      return Zend_Json::encode($this->body);
+    }
   }
   
   /**
@@ -159,6 +204,12 @@ class OpenSocialHttpRequest {
     if ($this->getMethod() != "GET") {
       $headers[] = sprintf("Content-length: %s", strlen($this->getBody()));
     }
+    
+    // TODO: Only set this if we know for sure the body is JSON.
+    if ($this->getBody() != null) {
+      $headers[] = "Content-type: application/json";
+    }
+    
     return $headers;
   }
 }

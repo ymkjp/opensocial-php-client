@@ -94,7 +94,12 @@ class CurlHttpLib implements OpenSocialHttpLib {
    * @param mixed $request An OpenSocialHttpRequest object.
    * @return string The text returned by the server.
    */
-  public function sendRequest($request) {    
+  public function sendRequest($request) { 
+    OSLOG("CurlHttpLib::sendRequest - request->getMethod()", $request->getMethod());
+    OSLOG("CurlHttpLib::sendRequest - request->getUrl()", $request->getUrl());
+    OSLOG("CurlHttpLib::sendRequest - request->getBody()", $request->getBody());
+    OSLOG("CurlHttpLib::sendRequest - request", $request);
+       
     // Configure the curl parameters.
     $url = $request->getUrl();
     $body = $request->getBody();
@@ -102,6 +107,9 @@ class CurlHttpLib implements OpenSocialHttpLib {
     curl_setopt($ch, CURLOPT_URL, $url);
     if ($request->getMethod() != "GET") {
       curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+      curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $request->getMethod());
+    } else {
+      curl_setopt($ch, CURLOPT_HTTPGET, 1);
     }
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_USERAGENT, self::USER_AGENT);
@@ -110,6 +118,7 @@ class CurlHttpLib implements OpenSocialHttpLib {
     $result = curl_exec($ch);
     curl_close($ch);
     
+    OSLOG("CurlHttpLib::sendRequest - result", $result);
     return $result;
   }
 }

@@ -37,6 +37,7 @@ abstract class OpenSocialRequest {
   private $rpc_entity;
   private $rpc_operation;
   private $rpc_params;
+  private $requestor;
   
   /**
    * Constructor
@@ -80,6 +81,17 @@ abstract class OpenSocialRequest {
   }
   
   /**
+   * For the two-legged OAuth case, some requests need a viewer context.  This
+   * method assigns the appropriate VIEWER id to the xoauth_requestor_id
+   * OAuth parameter.
+   * @param string $id ID of the VIEWER.
+   */
+  protected function setRequestor($id) {
+    // TODO: Parse the user_id to see if it's an ID number or @me, etc
+    $this->requestor = $id;
+  }
+  
+  /**
    * Returns the string ID of this request.
    * @return string An ID tagging this request.
    */
@@ -102,6 +114,11 @@ abstract class OpenSocialRequest {
         $this->rest_params, 
         $this->rest_data
     );
+    
+    if (isSet($this->requestor)) {
+      $request->setRequestor($this->requestor);
+    }
+    
     return $request;
   }
   
@@ -141,11 +158,8 @@ class FetchPeopleRequest extends OpenSocialRequest {
   public function __construct($user_id, $group_id, $params=array(), $id=null) {
     parent::__construct($id);
     
-    // TODO: There's probably a better place to inject xoauth_requestor_id.
-    // TODO: Parse the user_id to see if it's an ID number or @me, etc
-    $params["xoauth_requestor_id"] = $user_id;
-    
     // Set up the REST request.
+    $this->setRequestor($user_id);
     $url = sprintf("/people/%s/%s", $user_id, $group_id);
     $this->setRestParams("GET", $url, $params);
     
@@ -213,11 +227,8 @@ class FetchAppDataRequest extends OpenSocialRequest {
       $app_id = "@app";
     }
     
-    // TODO: There's probably a better place to inject xoauth_requestor_id.
-    // TODO: Parse the user_id to see if it's an ID number or @me, etc
-    $params["xoauth_requestor_id"] = $user_id;
-    
     // Set up the REST request.
+    $this->setRequestor($user_id);
     $rest_params = $params;    // PHP should value copy this array.
     $url = sprintf("/appdata/%s/%s/%s", $user_id, $group_id, $app_id);
     if (isSet($keys)) {
@@ -242,5 +253,46 @@ class FetchAppDataRequest extends OpenSocialRequest {
    */
   public function processJsonResponse($response) {
     return OpenSocialAppData::parseJson($response);
+  }
+}
+
+
+/**
+ * Represents a request to get app data.
+ */
+class UpdateAppDataRequest extends OpenSocialRequest {
+  public function __construct($user_id, $data, $id=null) {
+    parent::__construct($id);
+        
+    // Map the data into app data
+    $app_data = new OpenSocialAppData($data);
+    
+    // Set up the REST request.
+    $this->setRequestor($user_id);
+    $key_string = implode(",", array_keys($data));
+    $params = array(
+        "fields" => $key_string
+    );
+    $url = sprintf("/appdata/@me/@self/@app", $user_id);
+    $this->setRestParams("PUT", $url, $params, $app_data->toJsonObject());
+    
+    // Set up the RPC request.
+    $rpc_params = array(
+        "userId" => "@me",
+        "groupId" => "@self",
+        "appId" => "@app",
+        "data" => $app_data->toJsonObject()
+    );
+    $this->setRpcParams("appdata", "update", $rpc_params);
+  }
+  
+  /**
+   * Converts a valid JSON response to an OpenSocialAppData object.
+   * @param mixed $response A JSON parsed response from the server.
+   * @return OpenSocialAppData An object representing the returned app data.
+   */
+  public function processJsonResponse($response) {
+    OSLOG("UpdateAppDataRequest::processJsonResponse - response", $response);
+    return True;
   }
 }
