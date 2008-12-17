@@ -5,5 +5,7 @@
 
 find . -path '*/.svn' -prune -o  -name "*.htm*" -print0 | xargs -0  -r  svn propset svn:mime-type text/html
 find . -path '*/.svn' -prune -o  -name "*.css" -print0 | xargs -0  -r  svn propset svn:mime-type text/css
-#
+find . -path '*/.svn' -prune -o  -name "*.png" -print0 | xargs -0  -r  svn propset svn:mime-type image/png
+find . -path '*/.svn' -prune -o  -name "*.gif" -print0 | xargs -0  -r  svn propset svn:mime-type image/gif
+
 
