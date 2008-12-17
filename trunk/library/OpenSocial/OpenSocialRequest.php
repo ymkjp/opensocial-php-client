@@ -86,9 +86,17 @@ abstract class OpenSocialRequest {
    * OAuth parameter.
    * @param string $id ID of the VIEWER.
    */
-  protected function setRequestor($id) {
+  public function setRequestor($id) {
     // TODO: Parse the user_id to see if it's an ID number or @me, etc
     $this->requestor = $id;
+  }
+  
+  /**
+   * Returns this request's requestor, if set.
+   * @return string The value passed to setRequestor().
+   */
+  public function getRequestor() {
+    return $this->requestor;
   }
   
   /**
@@ -277,22 +285,23 @@ class UpdateAppDataRequest extends OpenSocialRequest {
         
     // Map the data into app data
     $app_data = new OpenSocialAppData($data);
-    
+    $keys = array_keys($data);
+        
     // Set up the REST request.
     $this->setRequestor($user_id);
-    $key_string = implode(",", array_keys($data));
     $params = array(
-        "fields" => $key_string
+        "fields" => implode(",", $keys)
     );
-    $url = sprintf("/appdata/@me/@self/@app", $user_id);
+    $url = sprintf("/appdata/@viewer/@self/@app", $user_id);
     $this->setRestParams("PUT", $url, $params, $app_data->toJsonObject());
     
     // Set up the RPC request.
     $rpc_params = array(
-        "userId" => "@me",
+        "userId" => "@viewer",
         "groupId" => "@self",
         "appId" => "@app",
-        "data" => $app_data->toJsonObject()
+        "data" => $app_data->toJsonObject(),
+        "fields" => $keys
     );
     $this->setRpcParams("appdata", "update", $rpc_params);
   }

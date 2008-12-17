@@ -22,8 +22,8 @@
  */
 
 define("OS_DEBUG", False);
-function OSLOG($label, $data) {
-  if (OS_DEBUG) {
+function OSLOG($label, $data, $override=False) {
+  if (OS_DEBUG || $override) {
     $line = str_repeat("=", strlen($label) + 1);
     print(sprintf("\n%s:\n%s\n%s\n", $label, $line, print_r($data, True)));
   }
@@ -116,14 +116,24 @@ class OpenSocial {
   protected function sendRpcRequests($requests) {
     $body = array();
     $reqs = array();
+    $requestor = null;
+    // TODO: Refactor this a bit... too much overlapping code.
     if (is_array($requests)) {
       foreach ($requests as $request) {
         $body[] = $request->getRpcBody();
         $reqs[$request->getId()] = $request;
+        $req_requestor = $request->getRequestor();
+        if (isSet($req_requestor)) {
+          $requestor = $req_requestor;
+        }
       }      
     } else {
       $body[] = $requests->getRpcBody();
       $reqs[$requests->getId()] = $requests;
+      $req_requestor = $requests->getRequestor();
+      if (isSet($req_requestor)) {
+        $requestor = $req_requestor;
+      }
     }
     $http_request = new OpenSocialHttpRequest(
         "POST", 
@@ -131,6 +141,9 @@ class OpenSocial {
         null,   // TODO: See if we need querystring params for RPC 
         $body
     );
+    if (isSet($requestor)) {
+      $http_request->setRequestor($requestor);
+    }
     $http_request->sign($this->oauth_consumer, $this->signature_method);
     $text_result = $this->httplib->sendRequest($http_request);
     
