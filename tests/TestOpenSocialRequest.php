@@ -28,11 +28,17 @@ require_once('MockHttpLib.php');
  */
 class TestOpenSocialRequest extends PHPUnit_Framework_TestCase {
   protected $httplib;
-  protected $client;
-  protected $config = array(
+  protected $rest_client;
+  protected $rpc_client;
+  protected $rest_config = array(
     "oauth_consumer_key" => "test_consumer_key",
     "oauth_consumer_secret" => "test_consumer_secret",
     "server_rest_base" => "http://example.com/rest/"
+  );
+  protected $rpc_config = array(
+    "oauth_consumer_key" => "test_consumer_key",
+    "oauth_consumer_secret" => "test_consumer_secret",
+    "server_rpc_base" => "http://example.com/rpc/"
   );
   
   /**
@@ -40,7 +46,8 @@ class TestOpenSocialRequest extends PHPUnit_Framework_TestCase {
    */
   public function setUp() {
     $this->httplib = new MockHttpLib();
-    $this->client = new OpenSocial($this->config, $this->httplib);
+    $this->rest_client = new OpenSocial($this->rest_config, $this->httplib);
+    $this->rpc_client = new OpenSocial($this->rpc_config, $this->httplib);
   }
   
   /**
@@ -48,7 +55,8 @@ class TestOpenSocialRequest extends PHPUnit_Framework_TestCase {
    */
   public function tearDown() {
     unset($this->httplib);
-    unset($this->client);
+    unset($this->rest_client);
+    unset($this->rpc_client);
   }
   
   /**
@@ -67,7 +75,7 @@ class TestOpenSocialRequest extends PHPUnit_Framework_TestCase {
 }
 EOM;
     $this->httplib->setResponse($text_response);
-    $result = $this->client->request($req);
+    $result = $this->rest_client->request($req);
     $http_req = $this->httplib->getRequest();
     
     $this->assertEquals("GET", 
@@ -85,6 +93,54 @@ EOM;
         $result->getDisplayName());
   }
 
+  /**
+   * General RPC FetchPeopleRequest test.
+   */
+  public function testRpcFetchPeopleRequest() {
+    $req = new FetchPeopleRequest("12345", "@friends", null, "request1");
+    $text_response = <<<EOM
+[
+  { 
+    "id" : "request1",
+    "data" : { 
+      "startIndex" : 0,
+      "totalResults" : 5,
+      "list" : [
+        { 
+          "id" : "23456", 
+          "isViewer" : false,
+          "isOwner" : false,
+          "name" : { "familyName" : "Testington", "givenName" : "Alice" }
+        },
+        {
+          "id" : "34567",
+          "isViewer" : false,
+          "isOwner" : false,
+          "name" : { "familyName" : "Testington", "givenName" : "Bob" }
+        }
+      ]
+    }
+  }
+]
+EOM;
+    $this->httplib->setResponse($text_response);
+    $result = $this->rpc_client->request($req);
+    $http_req = $this->httplib->getRequest();
+
+    $this->assertEquals("POST", 
+         $http_req->getMethod());
+    $this->assertEquals("http://example.com/rpc",
+        $http_req->getNormalizedUrl());
+    $this->assertEquals("test_consumer_key",
+        $http_req->getParameter("oauth_consumer_key"));
+
+    $this->assertEquals(count($result), 2);
+    $this->assertEquals($result->startIndex, 0);
+    $this->assertEquals($result->totalResults, 5);
+    $this->assertEquals($result[0]->getId(), "23456");
+    $this->assertEquals($result[1]->getId(), "34567");
+  }
+  
   /**
    * General REST FetchPeopleRequest test.
    */
@@ -112,7 +168,7 @@ EOM;
 }
 EOM;
     $this->httplib->setResponse($text_response);
-    $result = $this->client->request($req);
+    $result = $this->rest_client->request($req);
     $http_req = $this->httplib->getRequest();
     
     $this->assertEquals("GET", 
@@ -146,7 +202,7 @@ EOM;
 }
 EOM;
     $this->httplib->setResponse($text_response);
-    $result = $this->client->request($req);
+    $result = $this->rest_client->request($req);
     $http_req = $this->httplib->getRequest();
     
     $this->assertEquals("GET", 

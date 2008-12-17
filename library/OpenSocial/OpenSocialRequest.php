@@ -157,8 +157,12 @@ class FetchPeopleRequest extends OpenSocialRequest {
    * @param string @operation One of "get", "create", "update", or "delete".
    * @param string @user_id The user id to fetch for this request.
    */
-  public function __construct($user_id, $group_id, $params=array(), $id=null) {
+  public function __construct($user_id, $group_id, $params=null, $id=null) {
     parent::__construct($id);
+    
+    if (!isSet($params)) {
+      $params = array();
+    }
     
     // Set up the REST request.
     $this->setRequestor($user_id);

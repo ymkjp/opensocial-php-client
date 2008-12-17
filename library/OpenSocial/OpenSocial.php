@@ -21,10 +21,12 @@
  * @package OpenSocial
  */
 
-define("OS_DEBUG", True);
+define("OS_DEBUG", False);
 function OSLOG($label, $data) {
-  $line = str_repeat("=", strlen($label) + 1);
-  print(sprintf("\n%s:\n%s\n%s\n", $label, $line, print_r($data, True)));
+  if (OS_DEBUG) {
+    $line = str_repeat("=", strlen($label) + 1);
+    print(sprintf("\n%s:\n%s\n%s\n", $label, $line, print_r($data, True)));
+  }
 }
 
 require_once("Zend/Json.php");
