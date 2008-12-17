@@ -4,5 +4,6 @@
 # on Linux is probably the best option
 
 find . -path '*/.svn' -prune -o  -name "*.htm*" -print0 | xargs -0  -r  svn propset svn:mime-type text/html
+find . -path '*/.svn' -prune -o  -name "*.css" -print0 | xargs -0  -r  svn propset svn:mime-type text/css
 #
 
