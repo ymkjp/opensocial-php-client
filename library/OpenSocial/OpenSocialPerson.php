@@ -82,18 +82,16 @@ class OpenSocialPerson {
    * OpenSocialPerson object.
    */
   public static function parseJson($data) {
-    return new OpenSocialPerson($data["entry"]);
+    return new OpenSocialPerson($data);
   }
   
   /**
    * Converts a JSON response containing people data into an 
    * OpenSocialCollection of OpenSocialPerson objects.
    */
-  public static function parseJsonCollection($data) {
-    $start = $data["startIndex"];
-    $total = $data["totalResults"]; 
+  public static function parseJsonCollection($start, $total, $data) {
     $items = array();
-    foreach ($data["entry"] as $persondata) {
+    foreach ($data as $persondata) {
       $items[] = new OpenSocialPerson($persondata);
     }
     return new OpenSocialCollection($start, $total, $items);

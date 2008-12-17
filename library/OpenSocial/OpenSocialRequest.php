@@ -140,9 +140,11 @@ abstract class OpenSocialRequest {
    * Abstract function that should parse a JSON object and return a native
    * library object.
    * @param mixed $response A response that has been JSON decoded.
+   * @param string $protocol Either "REST" or "RPC" depending on the protocol 
+   *     used in the request.
    * @return mixed An initialized OpenSocial client library object.
    */
-  abstract function processJsonResponse($response);
+  abstract function processJsonResponse($response, $protocol);
 }
 
 
@@ -176,8 +178,11 @@ class FetchPeopleRequest extends OpenSocialRequest {
    * @param string $response Text of a successful response from the server.
    * @return OpenSocialCollection A Collection of Person instances.
    */
-  public function processJsonResponse($response) {
-    return OpenSocialPerson::parseJsonCollection($response);
+  public function processJsonResponse($response, $protocol) {
+    $start = $response["startIndex"];
+    $total = $response["totalResults"];
+    $data = ($protocol == "REST") ? $response["entry"] : $response["list"];
+    return OpenSocialPerson::parseJsonCollection($start, $total, $data);
   }
 }
 
@@ -201,8 +206,9 @@ class FetchPersonRequest extends FetchPeopleRequest {
    * @param string $response Text of a successful response from the server.
    * @return OpenSocialPerson A Person instance.
    */
-  public function processJsonResponse($response) {
-    return OpenSocialPerson::parseJson($response);
+  public function processJsonResponse($response, $protocol) {
+    $data = ($protocol == "REST") ? $response["entry"] : $response;
+    return OpenSocialPerson::parseJson($data);
   }
 }
 
@@ -251,8 +257,9 @@ class FetchAppDataRequest extends OpenSocialRequest {
    * @param mixed $response A JSON parsed response from the server.
    * @return OpenSocialAppData An object representing the returned app data.
    */
-  public function processJsonResponse($response) {
-    return OpenSocialAppData::parseJson($response);
+  public function processJsonResponse($response, $protocol) {
+    $data = ($protocol == "REST") ? $response["entry"] : $response;
+    return OpenSocialAppData::parseJson($data);
   }
 }
 
@@ -291,7 +298,7 @@ class UpdateAppDataRequest extends OpenSocialRequest {
    * @param mixed $response A JSON parsed response from the server.
    * @return OpenSocialAppData An object representing the returned app data.
    */
-  public function processJsonResponse($response) {
+  public function processJsonResponse($response, $protocol) {
     OSLOG("UpdateAppDataRequest::processJsonResponse - response", $response);
     return True;
   }

@@ -137,7 +137,7 @@ class OpenSocial {
     
     foreach ($json_result as $response) {
       $id = $response["id"];
-      $data = $reqs[$id]->processJsonResponse($response["data"]);
+      $data = $reqs[$id]->processJsonResponse($response["data"], "RPC");
       if (is_array($requests)) {
         $ret[$id] = $data;
       } else {
@@ -174,7 +174,7 @@ class OpenSocial {
     $http_request->sign($this->oauth_consumer, $this->signature_method);
     $text_result = $this->httplib->sendRequest($http_request);
     $json_result = Zend_Json::decode($text_result);
-    $result = $request->processJsonResponse($json_result);
+    $result = $request->processJsonResponse($json_result, "REST");
     return $result;
   }
   
