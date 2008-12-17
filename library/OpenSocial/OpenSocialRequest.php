@@ -21,6 +21,9 @@
  * @package OpenSocial
  */
  
+/**
+ * Library requires the Zend JSON library.
+ */
 require_once("Zend/Json.php");
 require_once("OpenSocial/OpenSocialPerson.php");
 require_once("OpenSocial/OpenSocialAppData.php");
@@ -28,6 +31,7 @@ require_once("OpenSocial/OpenSocialAppData.php");
 /**
  * Represents an atomic OpenSocial operation that can be converted to either
  * a REST or RPC request.
+ * @package OpenSocial
  */
 abstract class OpenSocialRequest {
   private $rest_url;
@@ -158,6 +162,7 @@ abstract class OpenSocialRequest {
 
 /**
  * Represents a request for multiple people.
+ * @package OpenSocial
  */
 class FetchPeopleRequest extends OpenSocialRequest {
   /**
@@ -201,6 +206,7 @@ class FetchPeopleRequest extends OpenSocialRequest {
 
 /**
  * Represents a request working with a single person.
+ * @package OpenSocial
  */
 class FetchPersonRequest extends FetchPeopleRequest {
   /**
@@ -227,6 +233,7 @@ class FetchPersonRequest extends FetchPeopleRequest {
 
 /**
  * Represents a request to get app data.
+ * @package OpenSocial
  */
 class FetchAppDataRequest extends OpenSocialRequest {
   /**
@@ -278,6 +285,7 @@ class FetchAppDataRequest extends OpenSocialRequest {
 
 /**
  * Represents a request to get app data.
+ * @package OpenSocial
  */
 class UpdateAppDataRequest extends OpenSocialRequest {
   /**

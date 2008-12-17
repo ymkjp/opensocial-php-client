@@ -24,6 +24,7 @@
 /**
  * Creates an interface through which clients may define classes to use custom
  * HTTP libraries.
+ * @package OpenSocial
  */
 interface OpenSocialHttpLib {
   /**
@@ -37,6 +38,7 @@ interface OpenSocialHttpLib {
 /**
  * An implementation of the OpenSocialHttpLib interface that uses raw sockets.
  * This implementation should be widely compatible but is unsophisticated.
+ * @package OpenSocial
  */
 class SocketHttpLib implements OpenSocialHttpLib {
   /**
@@ -82,6 +84,7 @@ class SocketHttpLib implements OpenSocialHttpLib {
  * An implementation of the OpenSocialHttpLib interface that uses curl.
  * This implementation should be more robust than the sockets implementation
  * but requires curl to be built into PHP.
+ * @package OpenSocial
  */
 class CurlHttpLib implements OpenSocialHttpLib {
   /**

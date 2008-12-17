@@ -23,6 +23,7 @@
  
 /**
  * Represents AppData stored on an OpenSocial container.
+ * @package OpenSocial
  */
 class OpenSocialAppData implements IteratorAggregate, Countable, ArrayAccess {
   private $data;

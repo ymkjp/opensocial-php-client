@@ -23,6 +23,7 @@
  
 /**
  * Represents information about an OpenSocial Person account.
+ * @package OpenSocial
  */
 class OpenSocialPerson {
   private $fields = null;

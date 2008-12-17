@@ -1,0 +1,627 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<!-- template designed by Marco Von Ballmoos -->
+			<title>Docs For Class OpenSocial</title>
+			<link rel="stylesheet" href="../media/stylesheet.css" />
+			<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
+		</head>
+		<body>
+			<div class="page-body">			
+<h2 class="class-name">Class OpenSocial</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Description</div>
+	<div class="nav-bar">
+					<span class="disabled">Description</span> |
+															<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+						
+					</div>
+	<div class="info-box-body">
+        		<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Client library helper for making OpenSocial requests.</p>
+		<p class="notes">
+			Located in <a class="field" href="_OpenSocial.php.html">/OpenSocial.php</a> (line <span class="field">27</span>)
+		</p>
+		
+				
+		<pre></pre>
+	
+			</div>
+</div>
+
+
+
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+												<span class="disabled">Methods</span> (<a href="#sec-methods">details</a>)
+		</div>
+		<div class="info-box-body">			
+			<div class="method-summary">
+																																																																																																																												
+												<div class="method-definition">
+											<span class="method-result">OpenSocial</span>
+										<a href="#__construct" title="details" class="method-name">__construct</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$config</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$httplib</span> = <span class="var-default">null</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$cache</span> = <span class="var-default">null</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#activity_getFriendActivity" title="details" class="method-name">activity_getFriendActivity</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$guid</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$fields</span> = <span class="var-default">array()</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#activity_getUserActivity" title="details" class="method-name">activity_getUserActivity</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$guid</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$fields</span> = <span class="var-default">array()</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#appdata_getFriendsAppData" title="details" class="method-name">appdata_getFriendsAppData</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$guid</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$appid</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$fields</span> = <span class="var-default">array()</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#appdata_getUserAppData" title="details" class="method-name">appdata_getUserAppData</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$guid</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$appid</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$fields</span> = <span class="var-default">array()</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#fetchFriends" title="details" class="method-name">fetchFriends</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$guid</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$fields</span> = <span class="var-default">array()</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#fetchPerson" title="details" class="method-name">fetchPerson</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$guid</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$fields</span> = <span class="var-default">array()</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#group_getUserGroups" title="details" class="method-name">group_getUserGroups</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$guid</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$group_id</span> = <span class="var-default">1</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$fields</span> = <span class="var-default">array()</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#people_getAllInfo" title="details" class="method-name">people_getAllInfo</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$guid</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$fields</span> = <span class="var-default">array()</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#people_getFriendInfo" title="details" class="method-name">people_getFriendInfo</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$guid</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$fid</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$fields</span> = <span class="var-default">array()</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#people_getGroupFriends" title="details" class="method-name">people_getGroupFriends</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$guid</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$group_id</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$fields</span> = <span class="var-default">array()</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#people_getMyInfo" title="details" class="method-name">people_getMyInfo</a>
+											([<span class="var-type"></span>&nbsp;<span class="var-name">$fields</span> = <span class="var-default">array()</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#rest_fetch" title="details" class="method-name">rest_fetch</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$endpoint</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$params</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$requestor</span> = <span class="var-default">null</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#rpcGetMyInfo" title="details" class="method-name">rpcGetMyInfo</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#rpc_fetch" title="details" class="method-name">rpc_fetch</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$rpc_endpoint</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$json_body</span>)
+									</div>
+								</div>
+		</div>
+	</div>		
+
+	
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+																<a href="#sec-method-summary">Methods</a> (<span class="disabled">details</span>)
+						
+		</div>
+		<div class="info-box-body">
+			<A NAME='method_detail'></A>
+
+<a name="method__construct" id="__construct"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">Constructor __construct</span> (line <span class="line-number">37</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Initializes this client object with the supplied configuration.</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">OpenSocial</span>
+		<span class="method-name">
+			__construct
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$config</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$httplib</span> = <span class="var-default">null</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$cache</span> = <span class="var-default">null</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$config</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$httplib</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$cache</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodactivity_getFriendActivity" id="activity_getFriendActivity"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">activity_getFriendActivity</span> (line <span class="line-number">107</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			activity_getFriendActivity
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$guid</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$fields</span> = <span class="var-default">array()</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$guid</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$fields</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodactivity_getUserActivity" id="activity_getUserActivity"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">activity_getUserActivity</span> (line <span class="line-number">101</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			activity_getUserActivity
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$guid</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$fields</span> = <span class="var-default">array()</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$guid</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$fields</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodappdata_getFriendsAppData" id="appdata_getFriendsAppData"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">appdata_getFriendsAppData</span> (line <span class="line-number">119</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			appdata_getFriendsAppData
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$guid</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$appid</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$fields</span> = <span class="var-default">array()</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$guid</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$appid</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$fields</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodappdata_getUserAppData" id="appdata_getUserAppData"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">appdata_getUserAppData</span> (line <span class="line-number">113</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			appdata_getUserAppData
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$guid</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$appid</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$fields</span> = <span class="var-default">array()</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$guid</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$appid</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$fields</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodfetchFriends" id="fetchFriends"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">fetchFriends</span> (line <span class="line-number">65</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Fetches data for the friends of the specified user.</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			fetchFriends
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$guid</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$fields</span> = <span class="var-default">array()</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$guid</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$fields</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodfetchPerson" id="fetchPerson"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">fetchPerson</span> (line <span class="line-number">55</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Fetches data for a single person.</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			fetchPerson
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$guid</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$fields</span> = <span class="var-default">array()</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$guid</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$fields</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodgroup_getUserGroups" id="group_getUserGroups"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">group_getUserGroups</span> (line <span class="line-number">95</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			group_getUserGroups
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$guid</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$group_id</span> = <span class="var-default">1</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$fields</span> = <span class="var-default">array()</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$guid</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$group_id</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$fields</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodpeople_getAllInfo" id="people_getAllInfo"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">people_getAllInfo</span> (line <span class="line-number">73</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">TODO: Continue refactoring below this line *</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			people_getAllInfo
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$guid</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$fields</span> = <span class="var-default">array()</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$guid</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$fields</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodpeople_getFriendInfo" id="people_getFriendInfo"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">people_getFriendInfo</span> (line <span class="line-number">88</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			people_getFriendInfo
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$guid</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$fid</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$fields</span> = <span class="var-default">array()</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$guid</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$fid</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$fields</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodpeople_getGroupFriends" id="people_getGroupFriends"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">people_getGroupFriends</span> (line <span class="line-number">78</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			people_getGroupFriends
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$guid</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$group_id</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$fields</span> = <span class="var-default">array()</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$guid</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$group_id</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$fields</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodpeople_getMyInfo" id="people_getMyInfo"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">people_getMyInfo</span> (line <span class="line-number">83</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			people_getMyInfo
+		</span>
+					([<span class="var-type"></span>&nbsp;<span class="var-name">$fields</span> = <span class="var-default">array()</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$fields</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodrest_fetch" id="rest_fetch"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">rest_fetch</span> (line <span class="line-number">126</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			rest_fetch
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$endpoint</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$params</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$requestor</span> = <span class="var-default">null</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$endpoint</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$params</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$requestor</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodrpcGetMyInfo" id="rpcGetMyInfo"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">rpcGetMyInfo</span> (line <span class="line-number">158</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			rpcGetMyInfo
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodrpc_fetch" id="rpc_fetch"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">rpc_fetch</span> (line <span class="line-number">162</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			rpc_fetch
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$rpc_endpoint</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$json_body</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$rpc_endpoint</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$json_body</span>			</li>
+				</ul>
+		
+			
+	</div>
+						
+		</div>
+	</div>
+
+
+	<p class="notes" id="credit">
+		Documentation generated on Thu, 11 Dec 2008 16:56:24 -0800 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.2</a>
+	</p>
+	</div></body>
+</html>

@@ -52,6 +52,7 @@ require_once("OpenSocialPerson.php");
 
 /**
  * Client library helper for making OpenSocial requests.
+ * @package OpenSocial
  */
 class OpenSocial {
   private $signature_method;
