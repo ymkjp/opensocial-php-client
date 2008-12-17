@@ -21,7 +21,20 @@
  * @package OpenSocial
  */
 
+/**
+ * Set this to True if you want all debugging statements to print.  Certainly
+ * not suitable for production.
+ */
 define("OS_DEBUG", False);
+
+/**
+ * Logging functionality for debugging library methods.  This only outputs 
+ * data if OS_DEBUG is set to True or the override parameter is set.
+ * @param string $label The label to print.
+ * @param object $data An object to output as a string using print_r.
+ * @param boolean $override Set this to true to print this output even if 
+ *     OS_DEBUG is set to False.
+ */
 function OSLOG($label, $data, $override=False) {
   if (OS_DEBUG || $override) {
     $line = str_repeat("=", strlen($label) + 1);
@@ -93,10 +106,13 @@ class OpenSocial {
    * Accepts a list of OpenSocialRequest objects and sends each to the 
    * configured container, attempting to use RPC by default, but falling back
    * to REST if RPC is not configured.
-   * @param mixed $requests An array of OpenSocialRequest objects.
+   * @param mixed $requests An array of OpenSocialRequest objects or a single
+   *     OpenSocialRequest object.
    * @param boolean $use_rest An override to prevent default behavior.  Set this
    *     to True to use REST even if RPC is configured.
-   * @return array An array of the parsed responses from these requests.
+   * @return mixed If an array was passed in, an array of the parsed responses 
+   *     from these requests.  Otherwise, if a single request was passed, the
+   *     single response from the request.
    */
   public function request($requests, $use_rest=False) {
     if ($use_rest === False && isSet($this->server_rpc_base)) {
@@ -111,7 +127,12 @@ class OpenSocial {
   }
   
   /**
-   * 
+   * Sends a request or set of requests using the RPC protocol.  
+   * @param mixed $requests A single OpenSocialRequest or an array of 
+   *     OpenSocialRequest objects.
+   * @return mixed If an array was passed in, an array of the parsed responses 
+   *     from these requests.  Otherwise, if a single request was passed, the
+   *     single response from the request.
    */
   protected function sendRpcRequests($requests) {
     $body = array();
@@ -184,8 +205,10 @@ class OpenSocial {
    * @return mixed The parsed response of the request.
    */
   protected function sendRestRequest($request) {
+    // If you want to sign a request using a security token, you can use
+    // $http_request->signWithToken("<token>"); although this is not part
+    // of the spec.
     $http_request = $request->getRestRequest($this->server_rest_base);
-//    $http_request->signWithToken("AFinprSNzAKnq7fSx4-SXjfE8ME3tN1WzejOGwDdwCHj0pmIdeZ7COhjVfs3PdyT3Fsy-mRd0Q8jNQaqVWPnbZRmw0aJLb_Qw3TFpgl245g34_-lvYEI-gk");
     $http_request->sign($this->oauth_consumer, $this->signature_method);
     $text_result = $this->httplib->sendRequest($http_request);
     $json_result = Zend_Json::decode($text_result);

@@ -34,10 +34,20 @@ class OpenSocialAppData implements IteratorAggregate, Countable, ArrayAccess {
     $this->data = $data;
   }
   
+  /**
+   * Converts a JSON structure to an OpenSocialAppData instance.
+   * @param mixed $data Parsed JSON.
+   * @return OpenSocialAppData An initialized app data object.
+   */
   public static function parseJson($data) {
     return new OpenSocialAppData($data);
   }
   
+  /**
+   * Converts an OpenSocialAppData instance to a data structure suitable for
+   * sending to a json_encode type of function.
+   * @return array An object that is JSON serializable.
+   */
   public function toJsonObject() {
     return $this->data;
   }
@@ -63,6 +73,9 @@ class OpenSocialAppData implements IteratorAggregate, Countable, ArrayAccess {
     return isSet($this->data[$offset]);
   }
   
+  /**
+   * Implements ArrayAccess.  Allows using [$index] access on this class.
+   */
   public function offsetGet($offset) {
     if (isSet($this->data[$offset])) {
       return $this->data[$offset];
@@ -71,10 +84,16 @@ class OpenSocialAppData implements IteratorAggregate, Countable, ArrayAccess {
     }
   }
   
+  /**
+   * Implements ArrayAccess.  Allows using [$index] access on this class.
+   */
   public function offsetSet($offset, $value) {
     $this->items[$data] = $value;
   }
   
+  /**
+   * Implements ArrayAccess.  Allows using [$index] access on this class.
+   */
   public  function offsetUnset($offset) {
     unset($this->items[$data]);
   }

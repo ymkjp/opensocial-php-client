@@ -60,6 +60,9 @@ class OpenSocialCollection implements
     return isSet($this->items[$offset]);
   }
   
+  /**
+   * Implements ArrayAccess.  Allows using [$index] access on this class.
+   */
   public function offsetGet($offset) {
     if (isSet($this->items[$offset])) {
       return $this->items[$offset];
@@ -68,10 +71,16 @@ class OpenSocialCollection implements
     }
   }
   
+  /**
+   * Implements ArrayAccess.  Allows using [$index] access on this class.
+   */
   public function offsetSet($offset, $value) {
     $this->items[$offset] = $value;
   }
   
+  /**
+   * Implements ArrayAccess.  Allows using [$index] access on this class.
+   */
   public  function offsetUnset($offset) {
     unset($this->items[$offset]);
   }

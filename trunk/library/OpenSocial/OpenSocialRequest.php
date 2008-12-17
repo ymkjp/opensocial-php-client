@@ -280,6 +280,13 @@ class FetchAppDataRequest extends OpenSocialRequest {
  * Represents a request to get app data.
  */
 class UpdateAppDataRequest extends OpenSocialRequest {
+  /**
+   * Constructor.
+   * @param string $user_id The ID of the user to update app data for.
+   * @param array $data An associative array of key value pairs representing
+   *     the App Data to set.
+   * @param string $id A string identifier for this request.
+   */
   public function __construct($user_id, $data, $id=null) {
     parent::__construct($id);
         
