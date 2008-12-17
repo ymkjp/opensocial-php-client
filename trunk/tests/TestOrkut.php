@@ -80,11 +80,7 @@ class TestOrkut extends AbstractTestContainer {
     );
     $req = new UpdateAppDataRequest("03067092798963641994", $app_data);
     $response = $client->request($req);
-    print_r($response);
-        
-    $req_2 = new FetchAppDataRequest("03067092798963641994", "@self");
-    $response_2 = $client->request($req_2);
-    print_r($response_2);
+    $this->assertEquals($date, $response["03067092798963641994"]["date"]);        
   }
   
   /**
