@@ -1,10 +1,19 @@
+= SAMPLES ======================================================================
 Example pages using the library are located in /samples
 
+= DOCUMENTATION ================================================================
 To build docs, from the project root run:
-phpdoc -d library/OpenSocial/ -t doc -ti "OpenSocial PHP Client Library"
+    phpdoc -d library/OpenSocial/ -t doc -ti "OpenSocial PHP Client Library"
 
-To run test, from the /tests directory run:
-phpunit AllTests
+= UNIT TESTS ===================================================================
+To run all the unit tests, from the /tests directory run:
+    phpunit AllTests
+
+To run only tests that do not require an internet connection run:
+    phpunit OfflineTests
+    
+To run tests that fetch live data from the internet (live containers) run:
+    phpunit OnlineTests
 
 For pretty reports, from the /tests directory run:
-phpunit --coverage-html report AllTests
+    phpunit --coverage-html report AllTests
