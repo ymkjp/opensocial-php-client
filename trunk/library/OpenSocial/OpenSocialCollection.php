@@ -23,6 +23,7 @@
  
 /**
  * Represents a collection of OpenSocial objects.  Can be iterated over.
+ * @package OpenSocial
  */
 class OpenSocialCollection implements 
     IteratorAggregate, Countable, ArrayAccess {

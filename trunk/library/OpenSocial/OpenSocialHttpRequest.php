@@ -21,11 +21,15 @@
  * @package OpenSocial
  */
  
+/**
+ * Library requires our modified OAuth library and the Zend JSON library.
+ */
 require_once("OAuth/OAuth.php");
 require_once("Zend/Json.php");
 
 /**
  * Abstracts a request object to be sent to the OpenSocialHttpLib class.
+ * @package OpenSocial
  */
 class OpenSocialHttpRequest {
   private $oauth_request;
