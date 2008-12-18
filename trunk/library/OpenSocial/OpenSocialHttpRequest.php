@@ -53,7 +53,12 @@ class OpenSocialHttpRequest {
   public function __construct($method, $url, $signed_params=null, $body=null) {
     $is_signed = False;
     $this->body = $body;
-    
+    if (!$signed_params) {
+      // So the client library won't initialize oauth_request if $method is not
+      // GET or POST and $signed_params is empty - so let's insert some junk
+      // data into the request to get around this for the time being :P
+      $signed_params = array("opensocial_method" => $method);
+    }
     $this->oauth_request = OAuthRequest::from_request(
         $method,
         $url,

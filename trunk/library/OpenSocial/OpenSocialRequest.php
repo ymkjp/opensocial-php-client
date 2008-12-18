@@ -67,6 +67,9 @@ abstract class OpenSocialRequest {
   protected function setRestParams($method, $url, $params=null, $data=null) {
     $this->rest_url = $url;
     $this->rest_data = $data;
+    if (!isSet($params)) {
+      $params = array();
+    }
     $this->rest_params = $params;
     $this->rest_method = $method;
   }
@@ -81,6 +84,9 @@ abstract class OpenSocialRequest {
   protected function setRpcParams($entity, $operation, $params=null) {
     $this->rpc_entity = $entity;
     $this->rpc_operation = $operation;
+    if (!isSet($params)) {
+      $params = array();
+    }
     $this->rpc_params = $params;
   }
   
@@ -327,7 +333,47 @@ class UpdateAppDataRequest extends OpenSocialRequest {
    * @return OpenSocialAppData An object representing the returned app data.
    */
   public function processJsonResponse($response, $protocol) {
-    OSLOG("UpdateAppDataRequest::processJsonResponse - response", $response);
+    return True;
+  }
+}
+
+/**
+ * Represents a request to create a new activity.
+ * @package OpenSocial
+ */
+class CreateActivityRequest extends OpenSocialRequest {
+  public function __construct($user_id, $title, $body, $id=null) {
+    parent::__construct($id);
+        
+    // Map the data into app data
+    $activity = array(
+        "title" => $title,
+        "body" => $body
+    );
+        
+    // Set up the REST request.
+    $this->setRequestor($user_id);
+    $url = sprintf("/activities/@viewer/@self/@app", $user_id);
+    $this->setRestParams("PUT", $url, null, $activity);
+    
+    // Set up the RPC request.
+    $rpc_params = array(
+        "userId" => "@viewer",
+        "groupId" => "@self",
+        "appId" => "@app",
+        "activity" => $activity
+    );
+    
+    // TODO: Spec says "activity", orkut expects "activities" - get this fixed
+    $this->setRpcParams("activities", "create", $rpc_params);
+  }
+  
+  /**
+   * Converts a valid JSON response to an OpenSocialAppData object.
+   * @param mixed $response A JSON parsed response from the server.
+   * @return OpenSocialAppData An object representing the returned app data.
+   */
+  public function processJsonResponse($response, $protocol) {
     return True;
   }
 }

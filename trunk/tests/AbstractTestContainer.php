@@ -97,10 +97,23 @@ abstract class AbstractTestContainer extends PHPUnit_Framework_TestCase {
     }
   }
   
+  public function testRestCreateActivity() {
+    if (isSet($this->rest_client)) {
+      $this->validateCreateActivity($this->rest_client);  
+    } 
+  }
+  
+  public function testRpcCreateActivity() {
+    if (isSet($this->rpc_client)) {
+      $this->validateCreateActivity($this->rpc_client);  
+    }
+  }
+  
   protected abstract function getRestConfig();
   protected abstract function getRpcConfig();
   protected function validateFetchAppData($client) {}
   protected function validateUpdateAppData($client) {}
   protected function validateFetchPerson($client) {}
   protected function validateFetchPeople($client) {}
+  protected function validateCreateActivity($client) {}
 }

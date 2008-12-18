@@ -103,10 +103,24 @@ class TestOrkut extends AbstractTestContainer {
     $req = new FetchPeopleRequest("03067092798963641994", "@friends");
     $result = $client->request($req);
 
-    $this->assertEquals(count($result), 5);
+    // TODO: These are pretty brittle tests - if the test orkut account adds
+    // a friend, these tests break :(
+    $this->assertEquals(count($result), 6);
     $this->assertEquals($result->startIndex, 0);
-    $this->assertEquals($result->totalResults, 5);
-    $this->assertEquals($result[0]->getId(), "04285289033838943214");
-    $this->assertEquals($result[1]->getId(), "02529645406784203776");
+    $this->assertEquals($result->totalResults, 6);
+    $this->assertEquals("13314698784882897227", $result[0]->getId());
+    $this->assertEquals("04285289033838943214", $result[1]->getId());
+  }
+  
+  /**
+   * Tests creating an activity on orkut.
+   */
+  protected function validateCreateActivity($client) {
+    $date = date('l jS \of F Y h:i:s A');
+    $req = new CreateActivityRequest(
+        "03067092798963641994", "Test activity", $date);
+    $result = $client->request($req);
+    
+    // TODO: assertions here (orkut actually fails this test right now)
   }
 }
