@@ -51,6 +51,18 @@ require_once("OpenSocialCollection.php");
 require_once("OpenSocialPerson.php");
 
 /**
+ * Base exception class for OpenSocial client library errors.  Contains const
+ * values defining standard error codes.
+ * @package OpenSocial
+ */
+class OpenSocialException extends Exception {
+  /**
+   * There was a problem with the configuration of the client.
+   */
+  const INVALID_CONFIG = 1;
+}
+
+/**
  * Client library helper for making OpenSocial requests.
  * @package OpenSocial
  */
@@ -76,6 +88,13 @@ class OpenSocial {
     $this->server_rest_base = $this->cleanUrl($config["server_rest_base"]);
     $this->server_rpc_base = $this->cleanUrl($config["server_rpc_base"]);
     
+    if (!isSet($this->server_rpc_base) && !isSet($this->server_rest_base)) {
+      throw new OpenSocialException(
+          "Neither REST nor RPC endpoint was configured",
+          OpenSocialException::INVALID_CONFIG
+      );
+    }
+    
     // TODO: Support more methods of signing requests.
     $this->signature_method = new OAuthSignatureMethod_HMAC_SHA1();
 
@@ -94,9 +113,13 @@ class OpenSocial {
    * @return string A cleaned url.
    */
   private function cleanUrl($url=null) {
-    // TODO: Throw a configuration exception if this doesn't start with http://
-    // or isn't a valid url in some other way.
     if (isSet($url)) {
+      if (substr($url, 0, 4) !== "http") {
+        throw new OpenSocialException(
+            "Endpoint URLs must be absolute",
+            OpenSocialException::INVALID_CONFIG
+        );
+      }
       return rtrim($url, "/ ?");
     } else {
       return null;

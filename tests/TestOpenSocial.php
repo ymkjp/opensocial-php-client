@@ -34,6 +34,31 @@ class TestOpenSocial extends PHPUnit_Framework_TestCase {
   public function tearDown() { }
   
   /**
+   * Test that the constructor throws an exception if you create a new client
+   * library instance and don't specify either a REST or RPC endpoint.
+   */
+  public function testNoEndpointsSpecified() {
+    try {
+      $client = new OpenSocial(array());
+      $this->fail("Setting no protocol endpoints should throw an exception.");
+    } catch (OpenSocialException $e) {
+      $this->assertEquals(OpenSocialException::INVALID_CONFIG, $e->getCode());
+    }
+  }
+  
+  /**
+   * Test that relative configuration urls throw an exception.
+   */
+  public function testRelativeConfigUrls() {
+    try {
+      $client = new OpenSocial(array("server_rest_base" => "/path"));
+      $this->fail("Setting a relative endpoint should throw an exception.");
+    } catch (OpenSocialException $e) {
+      $this->assertEquals(OpenSocialException::INVALID_CONFIG, $e->getCode());
+    }
+  }
+  
+  /**
    * Test whether passing strings with an ending / or not break the library.
    */
   public function testUrlConfigStrings() {
