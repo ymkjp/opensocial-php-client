@@ -1,7 +1,6 @@
 #summary Where to find client library samples
 #labels Featured
 
-= Samples =
 To run the samples, simply unzip the client library distribution to a web accessible directory on a server that supports PHP.  
 
 If you unzip the library to `http://www.example.com/` then you can find samples under `http://www.example.com/opensocial-php-client/samples`.  
