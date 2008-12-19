@@ -60,6 +60,7 @@ class OpenSocialException extends Exception {
    * There was a problem with the configuration of the client.
    */
   const INVALID_CONFIG = 1;
+  const HTTPLIB_ERROR = 2;
 }
 
 /**
@@ -190,7 +191,8 @@ class OpenSocial {
       $http_request->setRequestor($requestor);
     }
     $http_request->sign($this->oauth_consumer, $this->signature_method);
-    $text_result = $this->httplib->sendRequest($http_request);
+    $http_result = $this->httplib->sendRequest($http_request);
+    $text_result = $http_result->getText();
     
     $ret = array();
     $json_result = Zend_Json::decode($text_result);
@@ -234,7 +236,8 @@ class OpenSocial {
     // of the spec.
     $http_request = $request->getRestRequest($this->server_rest_base);
     $http_request->sign($this->oauth_consumer, $this->signature_method);
-    $text_result = $this->httplib->sendRequest($http_request);
+    $http_result = $this->httplib->sendRequest($http_request);
+    $text_result = $http_result->getText();
     $json_result = Zend_Json::decode($text_result);
     $result = $request->processJsonResponse($json_result, "REST");
     return $result;
