@@ -23,8 +23,8 @@ require_once('PHPUnit/Framework.php');
 require_once('OpenSocial/OpenSocial.php');
 
 abstract class AbstractTestContainer extends PHPUnit_Framework_TestCase {
-  private $rest_client;  
-  private $rpc_client;
+  protected $rest_client;  
+  protected $rpc_client;
   
   /**
    * Initializes the test class with an OpenSocial object attached to a mock

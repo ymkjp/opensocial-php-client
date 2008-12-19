@@ -74,7 +74,8 @@ class TestOpenSocialRequest extends PHPUnit_Framework_TestCase {
   }
 }
 EOM;
-    $this->httplib->setResponse($text_response);
+    $response = new OpenSocialHttpResponse("200", null, $text_response);
+    $this->httplib->setResponse($response);
     $result = $this->rest_client->request($req);
     $http_req = $this->httplib->getRequest();
     
@@ -123,7 +124,8 @@ EOM;
   }
 ]
 EOM;
-    $this->httplib->setResponse($text_response);
+    $response = new OpenSocialHttpResponse("200", null, $text_response);
+    $this->httplib->setResponse($response);
     $result = $this->rpc_client->request($req);
     $http_req = $this->httplib->getRequest();
 
@@ -167,7 +169,8 @@ EOM;
   ]
 }
 EOM;
-    $this->httplib->setResponse($text_response);
+    $response = new OpenSocialHttpResponse("200", null, $text_response);
+    $this->httplib->setResponse($response);
     $result = $this->rest_client->request($req);
     $http_req = $this->httplib->getRequest();
     
@@ -201,7 +204,8 @@ EOM;
   }
 }
 EOM;
-    $this->httplib->setResponse($text_response);
+    $response = new OpenSocialHttpResponse("200", null, $text_response);
+    $this->httplib->setResponse($response);
     $result = $this->rest_client->request($req);
     $http_req = $this->httplib->getRequest();
     

@@ -221,7 +221,10 @@ class FetchPersonRequest extends FetchPeopleRequest {
    * @param array $params Additional request parameters.
    * @param string $id String identifier for this request.
    */
-  public function __construct($user_id, $params=array(), $id=null) {
+  public function __construct($user_id, $params=null, $id=null) {
+    if (!isSet($params)) {
+      $params = array();
+    }
     parent::__construct($user_id, "@self", $params, $id);
   }
   

@@ -21,6 +21,8 @@
  * @package OpenSocial
  */
  
+require_once("OpenSocialHttpResponse.php");
+
 /**
  * Creates an interface through which clients may define classes to use custom
  * HTTP libraries.
@@ -30,10 +32,11 @@ interface OpenSocialHttpLib {
   /**
    * Queries the specified server and returns the response as text.
    * @param mixed $oauth_request An OAuthRequest object that should be signed.
-   * @return string The text returned by the server.
+   * @return OpenSocialHttpResponse A response object.
    */
   public function sendRequest($oauth_request);
 }
+
 
 /**
  * An implementation of the OpenSocialHttpLib interface that uses raw sockets.
@@ -41,15 +44,32 @@ interface OpenSocialHttpLib {
  * @package OpenSocial
  */
 class SocketHttpLib implements OpenSocialHttpLib {
+  private $http_status;
+  
   /**
    * The value sent as the User-Agent header when this makes a request.
    */
   const USER_AGENT = "OpenSocial API Client (socket)";
   
+  public function onRequestNotification($notification_code, $severity, $message, 
+      $message_code, $bytes_transferred, $bytes_max) {
+    
+    switch ($notification_code) {
+      case STREAM_NOTIFY_FAILURE:
+        if (isSet($message_code)) {
+          $this->http_status = (string)$message_code;
+        }
+        break;
+      case STREAM_NOTIFY_CONNECT:
+        $this->http_status = "200";
+        break;
+    }
+  }
+  
   /**
    * Queries the specified server and returns the response as text.
    * @param mixed $request An OpenSocialHttpRequest object.
-   * @return string The text returned by the server.
+   * @return OpenSocialHttpResponse A response object.
    */
   public function sendRequest($request) {
     // Get the headers for the request.
@@ -65,17 +85,41 @@ class SocketHttpLib implements OpenSocialHttpLib {
     );
     
     $context_id = stream_context_create($context);
-    $socket = fopen($request->getUrl(), "r", false, $context_id);
-    if ($socket) {
-      $result = "";
-      while (!feof($socket)) {
-        $result .= fgets($socket, 4096);
+    
+    $this->http_status = null;
+    stream_context_set_params($context_id, array(
+        "notification" => array($this, "onRequestNotification")
+    ));
+    
+    try {
+      $stream = fopen($request->getUrl(), "r", false, $context_id);
+    } catch (Exception $e) {
+      if (!isSet($this->http_status)) {
+        throw new OpenSocialException(
+            sprintf("Socket error: %s [%s]", $e->getMessage(), $e->getCode()),
+            OpenSocialException::HTTPLIB_ERROR
+        );
       }
-      // TODO: Determine whether this should be in a try/catch/finally block
-      fclose($socket);
     }
     
-    return $result;
+    if ($stream) {
+      $result = "";
+      while (!feof($stream)) {
+        $result .= fgets($stream, 4096);
+      }
+      
+      // TODO: This should check for a problem and throw an exception
+      $metadata = stream_get_meta_data($stream);
+      $http_wrapper_data = $metadata["wrapper_data"];
+      $http_status_line = $http_wrapper_data[0];
+      $http_status_parts = explode(" ", $http_status_line);
+      $this->http_status = $http_status_parts[1];
+      
+      // TODO: Determine whether this should be in a try/catch/finally block
+      fclose($stream);
+    } 
+    
+    return new OpenSocialHttpResponse($this->http_status, null, $result);
   }
 }
 
@@ -95,7 +139,7 @@ class CurlHttpLib implements OpenSocialHttpLib {
   /**
    * Queries the specified server and returns the response as text.
    * @param mixed $request An OpenSocialHttpRequest object.
-   * @return string The text returned by the server.
+   * @return OpenSocialHttpResponse A response object.
    */
   public function sendRequest($request) { 
     OSLOG("CurlHttpLib::sendRequest - request->getMethod()", $request->getMethod());
@@ -119,10 +163,25 @@ class CurlHttpLib implements OpenSocialHttpLib {
     
     // Send the curl request.
     $result = curl_exec($ch);
+    $info = curl_getinfo($ch);
+    $errno = curl_errno($ch);
+    $error = curl_error($ch);
     curl_close($ch);
     
-    OSLOG("CurlHttpLib::sendRequest - result", $result);
-    return $result;
+    if ($errno != CURLE_OK) {
+      throw new OpenSocialException(
+          "Curl error: " . $error,
+          OpenSocialException::HTTPLIB_ERROR
+      );
+    }
+
+    $response_obj = new OpenSocialHttpResponse(
+        $info["http_code"], 
+        null, 
+        $result
+    );
+    OSLOG("CurlHttpLib::sendRequest - response_obj", $response_obj);
+    return $response_obj;
   }
 }
 ?>

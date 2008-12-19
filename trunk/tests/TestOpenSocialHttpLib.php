@@ -58,7 +58,38 @@ abstract class AbstractHttpLibTest extends PHPUnit_Framework_TestCase {
         "http://osda.appspot.com/js/samplejson.js");
     $result = $this->httplib->sendRequest($request);
     $expected_result = '{ "Success" : true }';
-    $this->assertEquals($result, $expected_result);
+    $this->assertEquals($expected_result, $result->getText());
+  }
+  
+  /**
+   * Tests requesting a URL that is not valid.
+   */
+  public function testInvalidUrl() {
+    try {
+        $request = new OpenSocialHttpRequest(
+          "GET", 
+          "http://thisdomaindoesnotexist.dasfdasffdafdsfadafsdfd.com");
+      $result = $this->httplib->sendRequest($request);
+      $this->fail();
+    } catch (OpenSocialException $e) {
+      $this->assertEquals(OpenSocialException::HTTPLIB_ERROR, $e->getCode());
+    }
+  }
+  
+  /**
+   * Tests requesting a URL that returns a 404.
+   */
+  public function test404() {
+    try {
+      $request = new OpenSocialHttpRequest(
+          "GET", 
+          "http://example.com/404");
+      $response = $this->httplib->sendRequest($request);
+      $this->assertEquals("404", $response->getHttpStatus(), 
+          "404 responses should return that as the response status.");
+    } catch (Exception $e) {
+      $this->fail("404 responses should not throw exceptions.");
+    }
   }
 }
 

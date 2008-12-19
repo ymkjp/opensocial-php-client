@@ -46,6 +46,9 @@ class MockHttpLib implements OpenSocialHttpLib {
    */
   public function sendRequest($oauth_request) {
     $this->request = $oauth_request;
+    if (!isSet($this->response)) {
+      $this->response = new OpenSocialHttpResponse("", null, null);
+    }
     return $this->response;
   }
 }
