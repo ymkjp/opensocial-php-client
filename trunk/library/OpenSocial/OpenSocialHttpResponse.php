@@ -14,26 +14,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 class OpenSocialHttpResponse {
   private $http_status;
   private $headers;
   private $text;
-  
-  public function __construct($http_status, $headers=null, $text) {
+
+  public function __construct($http_status, $headers = null, $text) {
     $this->http_status = $http_status;
     $this->headers = $headers;
     $this->text = $text;
   }
-  
+
   public function getHttpStatus() {
     return $this->http_status;
   }
-  
+
   public function getHeaders() {
     return $this->headers;
   }
-  
+
   public function getText() {
     return $this->text;
   }

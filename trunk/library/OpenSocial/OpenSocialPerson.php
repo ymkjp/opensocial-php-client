@@ -14,27 +14,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 /**
  * OpenSocial Client Library for PHP
  * 
  * @package OpenSocial
  */
- 
+
 /**
  * Represents information about an OpenSocial Person account.
  * @package OpenSocial
  */
 class OpenSocialPerson {
   private $fields = null;
-  
+
   /**
    * Constructor
    */
   public function __construct($fields = array()) {
     $this->fields = $fields;
   }
-  
+
   /**
    * Returns the value of the requested field, if it exists on this Person.
    */
@@ -45,39 +45,45 @@ class OpenSocialPerson {
       return null;
     }
   }
-  
+
   /**
    * Returns the ID number of this Person.
    */
   public function getId() {
     return $this->getField("id");
   }
-  
+
   /**
    * Returns a human-readable name for this Person.
    */
   public function getDisplayName() {
     //TODO: Make names into their own class
-    $name = $this->getField("name");
-    $family_name = $name["familyName"];
-    $given_name = $name["givenName"];
-    return implode(" ", array($given_name, $family_name));
+    if (isset($this->fields['displayName'])) {
+      return $this->getField('displayName');
+    } elseif (isset($this->fields['name'])) {
+      $name = $this->getField("name");
+      $family_name = $name["familyName"];
+      $given_name = $name["givenName"];
+      return implode(" ", array($given_name, $family_name));
+    }
+    // no displayName or name entry set, returning null
+    return null;
   }
-    
+
   /**
    * Returns whether this person is the current viewer (xoauth_requestor_id).
    */
   public function isViewer() {
     return $this->getField("isViewer") == 1;
   }
-  
+
   /**
    * Returns a string representation of this person.
    */
   public function __toString() {
     return sprintf("%s [%s]", $this->getDisplayName(), $this->getId());
   }
-    
+
   /**
    * Converts a JSON response containing a single person's data into an
    * OpenSocialPerson object.
@@ -85,15 +91,17 @@ class OpenSocialPerson {
   public static function parseJson($data) {
     return new OpenSocialPerson($data);
   }
-  
+
   /**
    * Converts a JSON response containing people data into an 
    * OpenSocialCollection of OpenSocialPerson objects.
    */
   public static function parseJsonCollection($start, $total, $data) {
     $items = array();
-    foreach ($data as $persondata) {
-      $items[] = new OpenSocialPerson($persondata);
+    if (is_array($data)) {
+      foreach ($data as $persondata) {
+        $items[] = new OpenSocialPerson($persondata);
+      }
     }
     return new OpenSocialCollection($start, $total, $items);
   }

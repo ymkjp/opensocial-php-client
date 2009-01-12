@@ -20,12 +20,14 @@
  * 
  * @package OpenSocial
  */
- 
+
 /**
- * Library requires our modified OAuth library and the Zend JSON library.
+ * Library requires our modified OAuth library and the Zend JSON library if the native json module isn't available.
  */
-require_once("OAuth/OAuth.php");
-require_once("Zend/Json.php");
+require_once "OAuth/OAuth.php";
+if (! extension_loaded('json')) {
+  require_once "Zend/Json.php";
+}
 
 /**
  * Abstracts a request object to be sent to the OpenSocialHttpLib class.
@@ -37,7 +39,7 @@ class OpenSocialHttpRequest {
   private $is_signed;
   private $consumer;
   private $requestor;
-  
+
   /**
    * Creates a request to be sent to an OpenSocial server.   
    * @param string $method The HTTP method to use for this request.
@@ -50,22 +52,19 @@ class OpenSocialHttpRequest {
    * @param body $string The value of the request body.  This will not be 
    *     included when signing the request.
    */
-  public function __construct($method, $url, $signed_params=null, $body=null) {
+  public function __construct($method, $url, $signed_params = null, $body = null) {
     $is_signed = False;
     $this->body = $body;
-    if (!$signed_params) {
+    if (! $signed_params) {
       // So the client library won't initialize oauth_request if $method is not
       // GET or POST and $signed_params is empty - so let's insert some junk
       // data into the request to get around this for the time being :P
-      $signed_params = array("opensocial_method" => $method);
+      $signed_params = array(
+          "opensocial_method" => $method);
     }
-    $this->oauth_request = OAuthRequest::from_request(
-        $method,
-        $url,
-        $signed_params
-    );
+    $this->oauth_request = OAuthRequest::from_request($method, $url, $signed_params);
   }
-  
+
   /**
    * Sets the specified parameter for this request.  
    *
@@ -78,7 +77,7 @@ class OpenSocialHttpRequest {
     // TODO: Check is_signed and throw exception if the request is signed
     $this->oauth_request->set_parameter($name, $value);
   }
-  
+
   /**
    * Sets multiple parameters for this request.
    * @param array $parameters An array of key value string pairs to assign
@@ -89,7 +88,7 @@ class OpenSocialHttpRequest {
       $this->setParameter($name, $value);
     }
   }
-  
+
   /**
    * For the two-legged OAuth case, some requests need a viewer context.  This
    * method assigns the appropriate VIEWER id to the xoauth_requestor_id
@@ -99,7 +98,7 @@ class OpenSocialHttpRequest {
   public function setRequestor($id) {
     $this->requestor = $id;
   }
-  
+
   /**
    * Returns the value of the specified parameter.  Used for unit testing.
    * @param string $name The name of the parameter to retrieve.
@@ -108,7 +107,7 @@ class OpenSocialHttpRequest {
   public function getParameter($name) {
     return $this->oauth_request->get_parameter($name);
   }
-  
+
   /**
    * Signs the current request with the supplied credentials.
    * @param mixed $consumer The OAuthConsumer credential object.
@@ -121,12 +120,9 @@ class OpenSocialHttpRequest {
     $nonce = md5(microtime() . mt_rand());
     
     // TODO: See if there's a case for supporting oauth_token
-    $parameters = array(
-      "oauth_nonce" => $nonce,
-      "oauth_version" => OAuthRequest::$version,
-      "oauth_timestamp" => time(),
-      "oauth_consumer_key" => $consumer->key
-    );
+    $parameters = array("oauth_nonce" => $nonce, 
+        "oauth_version" => OAuthRequest::$version, "oauth_timestamp" => time(), 
+        "oauth_consumer_key" => $consumer->key);
     
     // Add requestor data if it exists.
     if (isSet($this->requestor)) {
@@ -149,7 +145,7 @@ class OpenSocialHttpRequest {
       unset($this->oauth_request->parameters[$body]);
     }
   }
-  
+
   /**
    * Allows signing a request with a security token instead of OAuth.
    * @param string $token The security token to use.
@@ -158,7 +154,7 @@ class OpenSocialHttpRequest {
     $this->setParameter("st", $token);
     $this->is_signed = True;
   }
-  
+
   /**
    * Returns a string indicating this request's HTTP method.
    * @return string One of "GET", "PUT", "POST", "DELETE", etc.
@@ -166,7 +162,7 @@ class OpenSocialHttpRequest {
   public function getMethod() {
     return $this->oauth_request->get_normalized_http_method();
   }
-  
+
   /** 
    * Returns the url of the current request.
    * @return string The request url.
@@ -176,7 +172,7 @@ class OpenSocialHttpRequest {
     // application/x-www-form-urlencoded POST bodies.
     return $this->oauth_request->to_url();
   }
-  
+
   /**
    * Returns a normalized URL without querystring parameters for the current 
    * request.  This is to be mostly used for unit testing - if you want to get
@@ -186,23 +182,27 @@ class OpenSocialHttpRequest {
   public function getNormalizedUrl() {
     return $this->oauth_request->get_normalized_http_url();
   }
-  
+
   /**
    * Returns the body of the current request or null if this is a GET.
    * @return string The request body or null.
    */
   public function getBody() {
     // Return the supplied body code (not signed).
-    if (!isSet($this->body)) {
+    if (! isSet($this->body)) {
       return null;
     } else if (is_string($this->body)) {
       return $this->body;
     } else {
       // TODO: This feels like it's in the wrong place.
-      return Zend_Json::encode($this->body);
+      if (extension_loaded('json')) {
+        return json_encode($this->body);
+      } else {
+        return Zend_Json::encode($this->body);
+      }
     }
   }
-  
+
   /**
    * Returns an array of headers for this request.
    * @return array An array of header strings, one header per string.

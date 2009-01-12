@@ -14,19 +14,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 /**
  * OpenSocial Client Library for PHP
  * 
  * @package OpenSocial
  */
- 
+
 /**
  * Represents a collection of OpenSocial objects.  Can be iterated over.
  * @package OpenSocial
  */
-class OpenSocialCollection implements 
-    IteratorAggregate, Countable, ArrayAccess {
+class OpenSocialCollection implements IteratorAggregate, Countable, ArrayAccess {
   public $startIndex = 0;
   public $totalResults = 0;
   private $items = null;
@@ -39,7 +38,7 @@ class OpenSocialCollection implements
     $this->totalResults = $total;
     $this->items = $items;
   }
-  
+
   /**
    * Implements IteratorAggregate.  Allows using foreach on this class.
    */
@@ -53,14 +52,14 @@ class OpenSocialCollection implements
   public function count() {
     return count($this->items);
   }
-  
+
   /**
    * Implements ArrayAccess.  Allows using [$index] access on this class.
    */
   public function offsetExists($offset) {
     return isSet($this->items[$offset]);
   }
-  
+
   /**
    * Implements ArrayAccess.  Allows using [$index] access on this class.
    */
@@ -71,18 +70,18 @@ class OpenSocialCollection implements
       return null;
     }
   }
-  
+
   /**
    * Implements ArrayAccess.  Allows using [$index] access on this class.
    */
   public function offsetSet($offset, $value) {
     $this->items[$offset] = $value;
   }
-  
+
   /**
    * Implements ArrayAccess.  Allows using [$index] access on this class.
    */
-  public  function offsetUnset($offset) {
+  public function offsetUnset($offset) {
     unset($this->items[$offset]);
   }
 }

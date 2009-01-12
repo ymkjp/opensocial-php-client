@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 /**
  * OpenSocial Client Library for PHP
  * 
@@ -35,20 +35,23 @@ define("OS_DEBUG", False);
  * @param boolean $override Set this to true to print this output even if 
  *     OS_DEBUG is set to False.
  */
-function OSLOG($label, $data, $override=False) {
+function OSLOG($label, $data, $override = False) {
   if (OS_DEBUG || $override) {
     $line = str_repeat("=", strlen($label) + 1);
     print(sprintf("\n%s:\n%s\n%s\n", $label, $line, print_r($data, True)));
   }
 }
 
-require_once("Zend/Json.php");
-require_once("OAuth/OAuth.php");
-require_once("OpenSocialHttpRequest.php");
-require_once('OpenSocialRequest.php');
-require_once("OpenSocialHttpLib.php");
-require_once("OpenSocialCollection.php");
-require_once("OpenSocialPerson.php");
+// Only load Zend's Json library if the native implementation isn't available
+if (! extension_loaded('json')) {
+  require_once "Zend/Json.php";
+}
+require_once "OAuth/OAuth.php";
+require_once "OpenSocialHttpRequest.php";
+require_once 'OpenSocialRequest.php';
+require_once "OpenSocialHttpLib.php";
+require_once "OpenSocialCollection.php";
+require_once "OpenSocialPerson.php";
 
 /**
  * Base exception class for OpenSocial client library errors.  Contains const
@@ -64,6 +67,13 @@ class OpenSocialException extends Exception {
 }
 
 /**
+ * Authentication exception occurs when the container requires you to login
+ * through OAuth first
+ *
+ */
+class AuthenticationException extends Exception {}
+
+/**
  * Client library helper for making OpenSocial requests.
  * @package OpenSocial
  */
@@ -77,56 +87,46 @@ class OpenSocial {
   /**
    * Initializes this client object with the supplied configuration.
    */
-  public function __construct($config, $httplib=null, $cache=null) {
-    if (isSet($httplib)) {
-      $this->httplib = $httplib;              // Allow overriding httplib.
-    } else if (function_exists('curl_init')) {
-      $this->httplib = new CurlHttpLib();     // Use curl on compatible systems.
+  public function __construct($config, $httplib = null, $cache = null) {
+    if (isset($httplib)) {
+      $this->httplib = $httplib; // Allow overriding httplib.
+    } elseif (function_exists('curl_init')) {
+      $this->httplib = new CurlHttpLib(); // Use curl on compatible systems.
     } else {
-      $this->httplib = new SocketHttpLib();   // Default to using raw sockets.
+      $this->httplib = new SocketHttpLib(); // Default to using raw sockets.
     }
-
-    $this->server_rest_base = $this->cleanUrl($config["server_rest_base"]);
-    $this->server_rpc_base = $this->cleanUrl($config["server_rpc_base"]);
     
-    if (!isSet($this->server_rpc_base) && !isSet($this->server_rest_base)) {
-      throw new OpenSocialException(
-          "Neither REST nor RPC endpoint was configured",
-          OpenSocialException::INVALID_CONFIG
-      );
+    $this->server_rest_base = ! empty($config["server_rest_base"]) ? $this->cleanUrl($config["server_rest_base"]) : null;
+    $this->server_rpc_base = ! empty($config["server_rpc_base"]) ? $this->cleanUrl($config["server_rpc_base"]) : null;
+    
+    if (! isset($this->server_rpc_base) && ! isset($this->server_rest_base)) {
+      throw new OpenSocialException("Neither REST nor RPC endpoint was configured", OpenSocialException::INVALID_CONFIG);
     }
     
     // TODO: Support more methods of signing requests.
     $this->signature_method = new OAuthSignatureMethod_HMAC_SHA1();
-
+    
     // Initialize consumer info. including consumer key and secret.
-    $this->oauth_consumer = new OAuthConsumer(
-        $config["oauth_consumer_key"], 
-        $config["oauth_consumer_secret"], 
-        null
-    );
+    $this->oauth_consumer = new OAuthConsumer($config["oauth_consumer_key"], $config["oauth_consumer_secret"], null);
   }
-  
+
   /**
    * Returns a string suitable for being a base URL for this library.  Cleans
    * " ", "/", and "?" from the end of the url.
    * @param string $url The url to clean.
    * @return string A cleaned url.
    */
-  private function cleanUrl($url=null) {
-    if (isSet($url)) {
+  private function cleanUrl($url = null) {
+    if (isset($url)) {
       if (substr($url, 0, 4) !== "http") {
-        throw new OpenSocialException(
-            "Endpoint URLs must be absolute",
-            OpenSocialException::INVALID_CONFIG
-        );
+        throw new OpenSocialException("Endpoint URLs must be absolute", OpenSocialException::INVALID_CONFIG);
       }
       return rtrim($url, "/ ?");
     } else {
       return null;
     }
   }
-  
+
   /**
    * Accepts a list of OpenSocialRequest objects and sends each to the 
    * configured container, attempting to use RPC by default, but falling back
@@ -139,18 +139,18 @@ class OpenSocial {
    *     from these requests.  Otherwise, if a single request was passed, the
    *     single response from the request.
    */
-  public function request($requests, $use_rest=False) {
-    if ($use_rest === False && isSet($this->server_rpc_base)) {
+  public function request($requests, $use_rest = False) {
+    if ($use_rest === False && isset($this->server_rpc_base)) {
       return $this->sendRpcRequests($requests);
     } else {
       if (is_array($requests)) {
-        return $this->sendRestRequests($requests); 
+        return $this->sendRestRequests($requests);
       } else {
         return $this->sendRestRequest($requests);
       }
     }
   }
-  
+
   /**
    * Sends a request or set of requests using the RPC protocol.  
    * @param mixed $requests A single OpenSocialRequest or an array of 
@@ -169,25 +169,20 @@ class OpenSocial {
         $body[] = $request->getRpcBody();
         $reqs[$request->getId()] = $request;
         $req_requestor = $request->getRequestor();
-        if (isSet($req_requestor)) {
+        if (isset($req_requestor)) {
           $requestor = $req_requestor;
         }
-      }      
+      }
     } else {
       $body[] = $requests->getRpcBody();
       $reqs[$requests->getId()] = $requests;
       $req_requestor = $requests->getRequestor();
-      if (isSet($req_requestor)) {
+      if (isset($req_requestor)) {
         $requestor = $req_requestor;
       }
     }
-    $http_request = new OpenSocialHttpRequest(
-        "POST", 
-        $this->server_rpc_base, 
-        null,   
-        $body
-    );
-    if (isSet($requestor)) {
+    $http_request = new OpenSocialHttpRequest("POST", $this->server_rpc_base, null, $body);
+    if (isset($requestor)) {
       $http_request->setRequestor($requestor);
     }
     $http_request->sign($this->oauth_consumer, $this->signature_method);
@@ -195,7 +190,11 @@ class OpenSocial {
     $text_result = $http_result->getText();
     
     $ret = array();
-    $json_result = Zend_Json::decode($text_result);
+    if (extension_loaded('json')) {
+      $json_result = json_decode($text_result, true);
+    } else {
+      $json_result = Zend_Json::decode($text_result);
+    }
     
     foreach ($json_result as $response) {
       $id = $response["id"];
@@ -208,7 +207,7 @@ class OpenSocial {
     }
     return $ret;
   }
-  
+
   /**
    * Sends an array of requests to the configured container.
    * @param array An array of OpenSocialRequest objects.
@@ -222,7 +221,7 @@ class OpenSocial {
     }
     return $results;
   }
-  
+
   /**
    * Sends a single REST request to the configured container and returns the
    * parsed response.  Before sending the request to the container, this method
@@ -237,12 +236,24 @@ class OpenSocial {
     $http_request = $request->getRestRequest($this->server_rest_base);
     $http_request->sign($this->oauth_consumer, $this->signature_method);
     $http_result = $this->httplib->sendRequest($http_request);
-    $text_result = $http_result->getText();
-    $json_result = Zend_Json::decode($text_result);
-    $result = $request->processJsonResponse($json_result, "REST");
-    return $result;
+    if ($http_result->getHttpStatus() == '200') {
+      $text_result = $http_result->getText();
+      if (extension_loaded('json')) {
+        $json_result = json_decode($text_result, true);
+      } else {
+        $json_result = Zend_Json::decode($text_result);
+      }
+      $result = $request->processJsonResponse($json_result, "REST");
+      return $result;
+    } elseif ($http_result->getHttpStatus() == '401') {
+      // 401 means 2 legged oauth failed, try 3 legged oauth next
+      throw new AuthenticationException("Authentication failed");
+    } else {
+      // unexpected error (404, etc), request just plain failed
+      throw new Exception("REST request failed with status code: ".$http_result->getHttpStatus());
+    }
   }
-  
+
   /**
    * Fetches a single person.
    */
@@ -250,7 +261,7 @@ class OpenSocial {
     $req = new FetchPersonRequest($guid);
     return $this->request($req);
   }
-  
+
   /**
    * Fetches the friends of the specified user.
    */
@@ -260,4 +271,3 @@ class OpenSocial {
   }
 }
 
-?>
