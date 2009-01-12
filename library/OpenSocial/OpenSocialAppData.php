@@ -14,27 +14,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 /**
  * OpenSocial Client Library for PHP
  * 
  * @package OpenSocial
  */
- 
+
 /**
  * Represents AppData stored on an OpenSocial container.
  * @package OpenSocial
  */
 class OpenSocialAppData implements IteratorAggregate, Countable, ArrayAccess {
   private $data;
-  
+
   /**
    * Constructor
    */
   public function __construct($data = array()) {
     $this->data = $data;
   }
-  
+
   /**
    * Converts a JSON structure to an OpenSocialAppData instance.
    * @param mixed $data Parsed JSON.
@@ -43,7 +43,7 @@ class OpenSocialAppData implements IteratorAggregate, Countable, ArrayAccess {
   public static function parseJson($data) {
     return new OpenSocialAppData($data);
   }
-  
+
   /**
    * Converts an OpenSocialAppData instance to a data structure suitable for
    * sending to a json_encode type of function.
@@ -52,7 +52,7 @@ class OpenSocialAppData implements IteratorAggregate, Countable, ArrayAccess {
   public function toJsonObject() {
     return $this->data;
   }
-    
+
   /**
    * Implements IteratorAggregate.  Allows using foreach on this class.
    */
@@ -66,14 +66,14 @@ class OpenSocialAppData implements IteratorAggregate, Countable, ArrayAccess {
   public function count() {
     return count($this->data);
   }
-  
+
   /**
    * Implements ArrayAccess.  Allows using [$index] access on this class.
    */
   public function offsetExists($offset) {
     return isSet($this->data[$offset]);
   }
-  
+
   /**
    * Implements ArrayAccess.  Allows using [$index] access on this class.
    */
@@ -84,19 +84,19 @@ class OpenSocialAppData implements IteratorAggregate, Countable, ArrayAccess {
       return null;
     }
   }
-  
+
   /**
    * Implements ArrayAccess.  Allows using [$index] access on this class.
    */
   public function offsetSet($offset, $value) {
     $this->items[$data] = $value;
   }
-  
+
   /**
    * Implements ArrayAccess.  Allows using [$index] access on this class.
    */
-  public  function offsetUnset($offset) {
+  public function offsetUnset($offset) {
     unset($this->items[$data]);
   }
-  
+
 }
