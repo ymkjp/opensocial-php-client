@@ -167,13 +167,19 @@ class FetchPeopleRequest extends OpenSocialRequest {
     if (! isSet($params)) {
       $params = array();
     }
+    $rest_params = $params; // PHP should value copy this array
+    if (isSet($rest_params['fields'])) {
+      $rest_params['fields'] = join(",", $rest_params['fields']);
+    }
+    
     // Set up the REST request.
     $this->setRequestor($user_id);
     $url = sprintf("/people/%s/%s", $user_id, $group_id);
-    $this->setRestParams("GET", $url, $params);
+    $this->setRestParams("GET", $url, $rest_params);
     // Set up the RPC request.
     $rpc_params = array_merge($params, array("userId" => $user_id, 
         "groupId" => $group_id));
+      
     $this->setRpcParams("people", "get", $rpc_params);
   }
 
