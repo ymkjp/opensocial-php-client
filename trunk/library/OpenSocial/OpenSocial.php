@@ -64,6 +64,7 @@ class OpenSocialException extends Exception {
    */
   const INVALID_CONFIG = 1;
   const HTTPLIB_ERROR = 2;
+  const INVALID_RESPONSE = 3;
 }
 
 /**
@@ -197,12 +198,16 @@ class OpenSocial {
     }
     
     foreach ($json_result as $response) {
-      $id = $response["id"];
-      $data = $reqs[$id]->processJsonResponse($response["data"], "RPC");
-      if (is_array($requests)) {
-        $ret[$id] = $data;
+      if (is_array($response)) {
+        $id = $response["id"];
+        $data = $reqs[$id]->processJsonResponse($response["data"], "RPC");
+        if (is_array($requests)) {
+          $ret[$id] = $data;
+        } else {
+          return $data;
+        }
       } else {
-        return $data;
+        throw new OpenSocialException($response, OpenSocialException::INVALID_RESPONSE);
       }
     }
     return $ret;
