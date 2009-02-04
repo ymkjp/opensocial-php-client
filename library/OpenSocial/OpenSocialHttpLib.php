@@ -135,11 +135,13 @@ class CurlHttpLib implements OpenSocialHttpLib {
     OSLOG("CurlHttpLib::sendRequest - request->getMethod()", $request->getMethod());
     OSLOG("CurlHttpLib::sendRequest - request->getUrl()", $request->getUrl());
     OSLOG("CurlHttpLib::sendRequest - request->getBody()", $request->getBody());
+    OSLOG("CurlHttpLib::sendRequest - request->getHeaders()", $request->getHeaders());
     OSLOG("CurlHttpLib::sendRequest - request", $request);
     
     // Configure the curl parameters.
     $url = $request->getUrl();
     $body = $request->getBody();
+    $headers = $request->getHeaders();
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
     if ($request->getMethod() != "GET") {
@@ -149,6 +151,9 @@ class CurlHttpLib implements OpenSocialHttpLib {
       curl_setopt($ch, CURLOPT_HTTPGET, 1);
     }
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    if (count($headers) > 0) {
+      curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    }
     curl_setopt($ch, CURLOPT_USERAGENT, self::USER_AGENT);
     
     // Send the curl request.
