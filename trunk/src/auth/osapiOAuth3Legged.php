@@ -20,9 +20,6 @@
  * See http://sites.google.com/site/oauthgoog/2leggedoauth/2opensocialrestapi
  * for more information on the difference between 2 or 3 leggged oauth.
  *
- * When your create this class it will create tokens and redirect the user
- * as required to go through the OAuth dance, keep this in mind while coding!
- *
  * @author Chris Chabot
  */
 class osapiOAuth3Legged extends osapiOAuth2Legged {
