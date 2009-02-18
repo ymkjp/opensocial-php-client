@@ -14,11 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-?>
- 
-<h1>Activities Example</h1>
-
-<?php
 
 require_once "_examples_common.php";
 
@@ -65,6 +60,8 @@ $batch->add($osapi->messages->create(array('userId' => $userId, 'groupId' => '@s
   // Send the batch request.
   $result = $batch->execute();
 ?>
+
+<h1>Activities Example</h1>
 
 <h2>Request:</h2>
 <p>This sample fetched the activities for the current user and their 

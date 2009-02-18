@@ -14,11 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-?>
- 
-<h1>List Friends Example</h1>
-
-<?php
 
 require_once "_examples_common.php";
 
@@ -64,6 +59,8 @@ if ($osapi) {
   $result = $batch->execute();
 
 ?>
+
+<h1>List Friends Example</h1>
 
 <h2>Request:</h2>
 <p>This sample fetched the current viewer and 
