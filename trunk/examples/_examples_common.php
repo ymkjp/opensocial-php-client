@@ -84,10 +84,11 @@ switch ($test) {
 
 $script_name = $_SERVER["SCRIPT_NAME"];
 $tests = Array(
-    "myspace" => "MySpace", 
-    "orkut"   => "orkut", 
-    "partuza" => "Partuza",
-    "plaxo"   => "Plaxo"
+    "myspace"   => "MySpace", 
+    "orkut"     => "orkut", 
+    "orkutRest" => "orkut (REST)",
+    "partuza"   => "Partuza",
+    "plaxo"     => "Plaxo"
 );
 
 $links = Array();
