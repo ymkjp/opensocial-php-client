@@ -14,11 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-?>
- 
-<h1>App Data Example</h1>
-
-<?php
 
 require_once "_examples_common.php";
 
@@ -120,6 +115,8 @@ if ($osapi) {
   // Send the batch request.
   $result = $batch->execute();
 ?>
+
+<h1>App Data Example</h1>
 
 <h2>Request:</h2>
 <p>This sample fetched all of the app data for the current user and their 
