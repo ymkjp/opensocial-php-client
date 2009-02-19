@@ -33,38 +33,36 @@ $strictMode = true;
 $userId = '@me';
 $appId = '@app';
 
+// Create an identifier for the local user's session
+session_start();
+$localUserId = session_id();
+
 // Select the appropriate test and initialize
 switch ($test) {
   case 'XRDS':
-    $localUserId = session_id();
     $storage = new osapiFileStorage('/tmp/osapi/');
     $provider = new osapiXrdsProvider('http://www.partuza.nl/', $storage);
     $auth = osapiOAuth3Legged::performOAuthLogin('ddf4f9f7-f8e7-c7d9-afe4-c6e6c8e6eec4', '6f0e1a11ac45caed32d699f9e92ae959', $storage, $provider, $localUserId);
     $osapi = new osapi($provider, $auth);
     break;
   case 'partuza':
-    $localUserId = session_id();
     $provider = new osapiPartuzaProvider();
     $osapi = new osapi($provider, osapiOAuth3Legged::performOAuthLogin('ddf4f9f7-f8e7-c7d9-afe4-c6e6c8e6eec4', '6f0e1a11ac45caed32d699f9e92ae959', new osapiFileStorage('/tmp/osapi/'), $provider, $localUserId));
     break;
   case 'partuzaRest':
-    $localUserId = session_id();
     $provider = new osapiPartuzaProvider();
     $provider->rpcEndpoint = null;
     $osapi = new osapi($provider, osapiOAuth3Legged::performOAuthLogin('ddf4f9f7-f8e7-c7d9-afe4-c6e6c8e6eec4', '6f0e1a11ac45caed32d699f9e92ae959', new osapiFileStorage('/tmp/osapi/'), $provider, $localUserId));
     break;
   case 'partuzaLocal':
-    $localUserId = session_id();
     $osapi = new osapi($provider = new osapiLocalPartuzaProvider(), osapiOAuth3Legged::performOAuthLogin('ddf4f9f7-f8e7-c7d9-afe4-c6e6c8e6eec4', '6f0e1a11ac45caed32d699f9e92ae959', new osapiFileStorage('/tmp/osapi/'), $provider, $localUserId));
     break;
   case 'partuzaLocalRest':
-    $localUserId = session_id();
     $provider = new osapiLocalPartuzaProvider();
     $provider->rpcEndpoint = null;
     $osapi = new osapi($provider, osapiOAuth3Legged::performOAuthLogin('ddf4f9f7-f8e7-c7d9-afe4-c6e6c8e6eec4', '6f0e1a11ac45caed32d699f9e92ae959', new osapiFileStorage('/tmp/osapi/'), $provider, $localUserId));
     break;
   case 'plaxo':
-    $localUserId = session_id();
     $osapi = new osapi($provider = new osapiPlaxoProvider(), osapiOAuth3Legged::performOAuthLogin('anonymous', '', new osapiFileStorage('/tmp/osapi/'), $provider, $localUserId));
     break;
   case 'orkut':
@@ -101,5 +99,4 @@ foreach ($tests as $value => $name) {
 }
 
 ?>
-
 <p>Run this sample using data from: <?= implode($links, ", ") ?> </p>

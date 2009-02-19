@@ -49,7 +49,7 @@ class osapiOAuth3Legged extends osapiOAuth2Legged {
     $this->consumerToken = new OAuthConsumer($consumerKey, $consumerSecret, NULL);
     $this->signatureMethod = new OAuthSignatureMethod_HMAC_SHA1();
     $this->storage = $storage;
-    $this->storageKey = 'OAuth:' . $consumerKey . ':' . $userId;
+    $this->storageKey = 'OAuth:' . $consumerKey . ':' . $userId . ':' . $localUserId; // Scope data to the local user as well, or else multiple local users will share the same OAuth credentials.
 
     if (($token = $storage->get($this->storageKey)) !== false) {
       $this->accessToken = $token;
