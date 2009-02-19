@@ -28,7 +28,7 @@ if ($osapi) {
   // Request the activities of the current user.
   $user_params = array(
       'userId' => $userId, 
-      'groupId' => '@friends', 
+      'groupId' => '@self', 
       'count' => 10
   );
   $batch->add($osapi->activities->get($user_params), 'userActivities');
