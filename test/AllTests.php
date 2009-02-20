@@ -30,7 +30,7 @@ ini_set('error_reporting', E_ALL | E_STRICT);
  
  // Include the base library
 set_include_path(get_include_path() . PATH_SEPARATOR . "src");
-require_once "osapi.php";
+require_once "osapi/osapi.php";
 
 // Use a default timezone or else strtotime will raise errors
 date_default_timezone_set('America/Los_Angeles');

@@ -19,7 +19,7 @@
 set_include_path(get_include_path() . PATH_SEPARATOR . '../src');
 
 // Require the osapi library
-require_once "osapi.php";
+require_once "osapi/osapi.php";
 
 // Allow users to select which test they would like to run from the querystring
 if (isSet($_REQUEST["test"])) {
