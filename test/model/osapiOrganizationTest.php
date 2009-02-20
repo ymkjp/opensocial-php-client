@@ -34,12 +34,11 @@ class osapiOrganizationTest extends PHPUnit_Framework_TestCase {
   protected function setUp() {
     parent::setUp();
     
-    $this->osapiOrganization = new osapiOrganization(/* parameters */);
+    $this->osapiOrganization = new osapiOrganization('NAME');
     $this->osapiOrganization->address = 'ADDRESS';
     $this->osapiOrganization->description = 'DESCRIPTION';
     $this->osapiOrganization->endDate = 'ENDDATE';
     $this->osapiOrganization->field = 'FIELD';
-    $this->osapiOrganization->name = 'NAME';
     $this->osapiOrganization->salary = 'SALARY';
     $this->osapiOrganization->startDate = 'STARTDATE';
     $this->osapiOrganization->subField = 'SUBFIELD';

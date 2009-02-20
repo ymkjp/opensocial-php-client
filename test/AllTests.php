@@ -39,7 +39,11 @@ function __autoload($className) {
   }
 }
 
-ini_set('error_reporting', E_COMPILE_ERROR | E_ERROR | E_CORE_ERROR);
+// Report everything
+ini_set('error_reporting', E_ALL | E_STRICT);
+
+// Use a default timezone or else strtotime will raise errors
+date_default_timezone_set('America/Los_Angeles');
 
 if (defined('PHPUnit_MAIN_METHOD') === false) {
   define('PHPUnit_MAIN_METHOD', 'AllTests::main');
