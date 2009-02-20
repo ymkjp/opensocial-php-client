@@ -24,26 +24,13 @@
  * # cd /path/to/client
  * # phpunit AllTests test/AllTests.php   
  */
-
-function __autoload($className) {
-  $basePath = realpath('.');
-  $locations = array('src', 'src/auth', 'src/external', 'src/external/XRDS',
-      'src/io', 'src/model', 'src/providers', 'src/service', 'src/storage');
-  // Check for the presense of this class in our all our directories.
-  $fileName = $className . '.php';
-  foreach ($locations as $path) {
-    if (file_exists("$basePath/{$path}/$fileName")) {
-      require "{$path}/$fileName";
-      break;
-    }
-  }
-}
-
-// Include the base library
-require_once realpath('.') . "/src/osapi.php";
-
+ 
 // Report everything
 ini_set('error_reporting', E_ALL | E_STRICT);
+ 
+ // Include the base library
+set_include_path(get_include_path() . PATH_SEPARATOR . "src");
+require_once "osapi.php";
 
 // Use a default timezone or else strtotime will raise errors
 date_default_timezone_set('America/Los_Angeles');
