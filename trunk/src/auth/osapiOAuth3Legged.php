@@ -15,6 +15,8 @@
  * limitations under the License.
  */
 
+require_once "osapiOAuth2Legged.php";
+
 /**
  * Authentication class that deals with 3-Legged OAuth
  * See http://sites.google.com/site/oauthgoog/2leggedoauth/2opensocialrestapi

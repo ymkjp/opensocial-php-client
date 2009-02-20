@@ -18,8 +18,6 @@
  * under the License.
  */
 
-require_once "src/osapi.php";
-
 /**
  * osapiPeople test case.
  */

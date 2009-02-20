@@ -18,10 +18,6 @@
  * under the License.
  */
 
-require_once "src/external/OAuth.php";
-require_once "src/auth/osapiAuth.php";
-require_once "src/providers/osapiProvider.php";
-
 /**
  * osapiOAuth3Legged test case.
  */

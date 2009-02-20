@@ -15,10 +15,6 @@
  * limitations under the License.
  */
 
-require_once "osapiSecurityToken.php";
-require_once "osapiOAuth2Legged.php";
-require_once "osapiOAuth3Legged.php";
-
 /**
  * Authentication class that deals with 3-Legged OAuth
  * See http://sites.google.com/site/oauthgoog/2leggedoauth/2opensocialrestapi

@@ -14,6 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+ 
+require_once "osapiAuth.php";
 
 /**
  * Authentication class that deals with 2-Legged OAuth

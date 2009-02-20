@@ -15,6 +15,8 @@
  * limitations under the License.
  */
 
+require_once "osapiAuth.php";
+
 /**
  * Authentication class that uses the security token to authenticate
  * requests. Singing in this case means simply adding ?st=<token> to
