@@ -116,7 +116,7 @@ class osapiXrdsProviderTest extends PHPUnit_Framework_TestCase {
     $responses = array($xrds, $headerResponse);
     
     $httpProvider = new osapiLocalHttpProvider($responses);
-    $storage = new osapiFileStorage("./tmp");
+    $storage = new osapiFileStorage("/tmp/osapi");
     $url = "http://www.partuza.nl";
     
     $requestTokenUrl = "http://www.partuza.nl/oauth/request_token";

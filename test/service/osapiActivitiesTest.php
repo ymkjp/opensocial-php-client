@@ -78,7 +78,7 @@ class osapiActivitiesTest extends PHPUnit_Framework_TestCase {
     $responses = array($response);
     $this->osapi->provider->httpProvider->setResponse($responses);
     
-    $storage = new osapiFileStorage('./test_store');
+    $storage = new osapiFileStorage('/tmp/osapi');
     $this->osapi->provider->httpProvider->setStorage($storage);
     
     $batch = $this->osapi->newBatch();

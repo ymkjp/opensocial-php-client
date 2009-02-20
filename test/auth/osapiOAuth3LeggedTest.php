@@ -45,7 +45,7 @@ class osapiOAuth3LeggedTest extends PHPUnit_Framework_TestCase {
     parent::setUp();
     $this->consumerKey = 'KEY';
     $this->consumerSecret = 'SECRET';
-    $this->storage = new osapiFileStorage('./tmp');
+    $this->storage = new osapiFileStorage('/tmp/osapi');
     $this->provider = new osapiLocalPartuzaProvider();
     //$this->consumerKey = 'ddf4f9f7-f8e7-c7d9-afe4-c6e6c8e6eec4';
     //$this->consumerSecret = '6f0e1a11ac45caed32d699f9e92ae959';
@@ -113,7 +113,7 @@ class osapiOAuth3LeggedTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals($key, $token->key);
     $this->assertEquals($secret, $token->secret);
     
-    $storageKey = 'OAuth:' . $this->consumerKey . ':' . $this->userId;
+    $storageKey = 'OAuth:' . $this->consumerKey . ':' . $this->userId . ':' . $this->localUserId;
     $storedToken = $this->storage->get($storageKey);
     $this->assertEquals($key, $storedToken->key);
     $this->assertEquals($secret, $storedToken->secret);
