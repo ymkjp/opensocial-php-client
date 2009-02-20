@@ -18,10 +18,6 @@
  * under the License.
  */
 
-require_once "src/external/XrdsSimpleParser.php";
-require_once "src/io/osapiHttpProvider.php";
-require_once "src/providers/osapiProvider.php";
-
 /**
  * osapiXrdsProvider test case.
  */

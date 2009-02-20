@@ -39,6 +39,9 @@ function __autoload($className) {
   }
 }
 
+// Include the base library
+require_once realpath('.') . "/src/osapi.php";
+
 // Report everything
 ini_set('error_reporting', E_ALL | E_STRICT);
 
