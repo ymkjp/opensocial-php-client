@@ -40,6 +40,7 @@ require_once "osapiMessage.php";
 require_once "osapiName.php";
 require_once "osapiOrganization.php";
 require_once "osapiPerson.php";
+require_once "osapiPhone.php";
 require_once "osapiPhoto.php";
 require_once "osapiUrl.php";
 require_once "osapiError.php";
