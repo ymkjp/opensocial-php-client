@@ -45,7 +45,7 @@ if ($osapi) {
   
   // Create some app data for the current user 
   $create_params = array(
-      'userId' => $userId, 
+      'userId' => '@me', 
       'groupId' => '@self', 
       'appId' => $appId,
       'data' => array(
@@ -58,7 +58,7 @@ if ($osapi) {
   
   // Update app data for the current user
   $update_params = array(
-      'userId' => $userId, 
+      'userId' => '@me', 
       'groupId' => '@self', 
       'appId' => $appId,
       'data' => array(
@@ -69,7 +69,7 @@ if ($osapi) {
   
   // Get the app data again to show the updated value
   $get_params = array(
-      'userId' => $userId, 
+      'userId' => '@me', 
       'groupId' => '@self', 
       'appId' => $appId,
       'fields' => array(
@@ -82,7 +82,7 @@ if ($osapi) {
   
   // Delete the keys we created in the previous examples
   $delete_params = array(
-      'userId' => $userId, 
+      'userId' => '@me', 
       'groupId' => '@self',
       'appId' => $appId, 
       'fields' => array(
