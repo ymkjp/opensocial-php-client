@@ -162,6 +162,7 @@ class osapiPerson {
   }
 
   public function setBirthday($birthday) {
+
     $birthday = date('Y-m-d', strtotime($birthday));
     $this->setFieldImpl('birthday', $birthday);
   }

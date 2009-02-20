@@ -29,6 +29,7 @@ class osapiError {
   public function __construct($errorCode, $errorMessage) {
     $this->errorCode = intval($errorCode);
     $this->errorMessage = $errorMessage;
+    $this->response = null;
   }
 
   public function getResult() {
