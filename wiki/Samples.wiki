@@ -5,9 +5,12 @@ To run the samples, simply unzip the client library distribution to a web access
 
 If you unzip the library to `http://www.example.com/` then you can find samples under `http://www.example.com/opensocial-php-client/samples`.  
 
-The following samples are available:
+View the source of each sample in the 
+[http://code.google.com/p/opensocial-php-client/source/browse/#svn/trunk/src/examples/ /src/examples] directory:
 
-  * Fetch a single user and display their details: /showperson/showperson.php ([http://code.google.com/p/opensocial-php-client/source/browse/trunk/samples/showperson/showperson.php view source])
-  * Fetch a list of the user's friends: /listfriends/listfriends.php ([http://code.google.com/p/opensocial-php-client/source/browse/trunk/samples/listfriends/listfriends.php view source])
+  * Fetch a user and their friends, displaying profile information: ([http://code.google.com/p/opensocial-php-client/source/browse/#svn/trunk/src/examples/listFriends.php listFriends.php])
+  * Read and write appData: ([http://code.google.com/p/opensocial-php-client/source/browse/#svn/trunk/src/examples/appData.php appData.php])
+  * Read and write activities: ([http://code.google.com/p/opensocial-php-client/source/browse/#svn/trunk/src/examples/activities.php activities.php])
+  * Send messages: ([http://code.google.com/p/opensocial-php-client/source/browse/#svn/trunk/src/examples/messages.php messages.php])
 
-Additionally, check out the unit tests in the [http://code.google.com/p/opensocial-php-client/source/browse/#svn/trunk/tests /tests] directory for more examples of how to use the library.
+Additionally, check out the unit tests in the [http://code.google.com/p/opensocial-php-client/source/browse/#svn/trunk/test /test] directory for more examples of how to use the library.
