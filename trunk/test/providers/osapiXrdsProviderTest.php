@@ -32,7 +32,7 @@ class osapiXrdsProviderTest extends PHPUnit_Framework_TestCase {
     $xrds = '<XRDS xmlns="xri://$xrds">
         <XRD xml:id="oauth" xmlns:simple="http://xrds-simple.net/core/1.0" xmlns="xri://$xrd*($v*2.0)" version="2.0">
           <Type>xri://$xrds*simple</Type>
-          <Expires>2009-03-08T23:17:12Z</Expires>
+          <Expires>2029-03-08T23:17:12Z</Expires>
           <Service priority="10">
             <Type>http://oauth.net/core/1.0/endpoint/request</Type>
             <Type>http://oauth.net/core/1.0/parameters/auth-header</Type>
