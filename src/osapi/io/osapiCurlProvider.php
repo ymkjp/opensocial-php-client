@@ -44,7 +44,7 @@ class osapiCurlProvider extends osapiHttpProvider {
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_USERAGENT, $ua);
     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-    if ($headers) {
+    if ($headers && is_array($headers)) {
       curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
     }
     $data = @curl_exec($ch);
