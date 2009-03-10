@@ -82,7 +82,7 @@ abstract class osapiIO {
 
   /**
    * This function sends the request batch, implemented in the sub-classes
-   * (RPC and REST IO classes), for some reason PHP doesn't allow 
+   * (RPC and REST IO classes), for some reason PHP doesn't allow
    * abstract public static functions, hence the empty declaration.
    *
    * @param array $requests
@@ -103,6 +103,8 @@ abstract class osapiIO {
    * @return array('http_code' => HTTP response code (200, 404, 401, etc), 'data' => the html document)
    */
   public static function send($url, $method, $httpProvider, $postBody = false) {
-    return $httpProvider->send($url, $method, $postBody);
+    // force the expected input- and output values to be json encoded
+    $headers = array("Content-Type: application/json");
+    return $httpProvider->send($url, $method, $postBody, $headers);
   }
 }
