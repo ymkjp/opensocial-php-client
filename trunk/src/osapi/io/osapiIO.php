@@ -104,9 +104,7 @@ abstract class osapiIO {
    */
   public static function send($url, $method, $httpProvider, $postBody = false) {
     // force the expected input- and output values to be json encoded
-    if ($postBody) {
-      $headers = array("Content-Type: application/json");
-    }
+    $headers = !empty($postBody) ? array("Content-Type: application/json") : false;
     return $httpProvider->send($url, $method, $postBody, $headers);
   }
 }
