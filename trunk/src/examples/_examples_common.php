@@ -1,4 +1,4 @@
-<?php 
+<?php
 /*
  * Copyright 2008 Google Inc.
  *
@@ -13,7 +13,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */ 
+ */
 
 // Add the osapi directory to the include path
 set_include_path(get_include_path() . PATH_SEPARATOR . '..');
@@ -22,10 +22,10 @@ set_include_path(get_include_path() . PATH_SEPARATOR . '..');
 require_once "osapi/osapi.php";
 
 // Allow users to select which test they would like to run from the querystring
-if (isSet($_REQUEST["test"])) {
+if (isset($_REQUEST["test"])) {
   $test = $_REQUEST["test"];
 } else {
-  $test = 'XRDS'; 
+  $test = 'XRDS';
 }
 
 $osapi = false;
@@ -82,8 +82,8 @@ switch ($test) {
 
 $script_name = $_SERVER["SCRIPT_NAME"];
 $tests = Array(
-    "myspace"   => "MySpace", 
-    "orkut"     => "orkut", 
+    "myspace"   => "MySpace",
+    "orkut"     => "orkut",
     "orkutRest" => "orkut (REST)",
     "partuza"   => "Partuza",
     "plaxo"     => "Plaxo"
