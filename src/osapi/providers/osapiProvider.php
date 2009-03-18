@@ -17,6 +17,7 @@
 
 // Include the pre-defined provider classes
 require_once "osapiGoogleProvider.php";
+require_once "osapiFriendConnectProvider.php";
 require_once "osapiMySpaceProvider.php";
 require_once "osapiPlaxoProvider.php";
 require_once "osapiOrkutProvider.php";
