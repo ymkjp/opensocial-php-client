@@ -39,4 +39,8 @@ class PartuzaRpcTests extends OnlineTestSuite {
     $auth = new osapiOAuth2Legged($this->CONSUMER_KEY, $this->CONSUMER_SECRET, $this->USER_A_ID);
     return new osapi($provider, $auth);
   }
+
+  public static function suite() {
+    return new PartuzaRpcTests();
+  }
 }
