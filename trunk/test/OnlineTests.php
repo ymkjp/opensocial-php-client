@@ -22,21 +22,21 @@
  * This file is meant to be run through a php command line, not called
  * directly through the web browser. To run these tests from the command line:
  * # cd /path/to/client
- * # phpunit test/AllTests.php   
+ * # phpunit test/OnlineTests.php
  */
 
 require_once '__init__.php';
-require_once 'OfflineTests.php';
-require_once 'OnlineTests.php';
+require_once 'OrkutSandboxRpcTests.php';
+require_once 'MySpaceTests.php';
+require_once 'PartuzaRpcTests.php';
 
-
-class AllTests {
+class OnlineTests {
   public static function suite() {
     $suite = new PHPUnit_Framework_TestSuite();
-    $suite->setName('AllTests');
-    $suite->addTestSuite(OfflineTests::suite());
-    $suite->addTestSuite(OnlineTests::suite());
+    $suite->setName('OnlineTests');
+    $suite->addTestSuite(new OrkutSandboxRpcTests());
+    $suite->addTestSuite(new MySpaceTests());
+    $suite->addTestSuite(new PartuzaRpcTests());
     return $suite;
   }
 }
-

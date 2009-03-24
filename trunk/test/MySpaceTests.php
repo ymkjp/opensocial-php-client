@@ -22,21 +22,21 @@
  * This file is meant to be run through a php command line, not called
  * directly through the web browser. To run these tests from the command line:
  * # cd /path/to/client
- * # phpunit test/AllTests.php   
+ * # phpunit test/MySpaceTests.php
  */
 
 require_once '__init__.php';
-require_once 'OfflineTests.php';
-require_once 'OnlineTests.php';
+require_once 'online/OnlineTestSuite.php';
 
+class MySpaceTests extends OnlineTestSuite {
+  public $CONSUMER_KEY = 'http://opensocial-resources.googlecode.com/svn/samples/rest_rpc/sample.xml';
+  public $CONSUMER_SECRET = '6a838d107daf4d09b7d446422f5e7a81';
+  public $USER_A_ID = 'myspace.com:425505213';
+  public $USER_A_DISPLAY_NAME = 'API';
 
-class AllTests {
-  public static function suite() {
-    $suite = new PHPUnit_Framework_TestSuite();
-    $suite->setName('AllTests');
-    $suite->addTestSuite(OfflineTests::suite());
-    $suite->addTestSuite(OnlineTests::suite());
-    return $suite;
+  protected function getOsapi() {
+    $provider = new osapiMySpaceProvider();
+    $auth = new osapiOAuth2Legged($this->CONSUMER_KEY, $this->CONSUMER_SECRET, $this->USER_A_ID);
+    return new osapi($provider, $auth);
   }
 }
-

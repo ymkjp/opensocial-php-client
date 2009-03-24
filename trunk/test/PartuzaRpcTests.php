@@ -22,21 +22,21 @@
  * This file is meant to be run through a php command line, not called
  * directly through the web browser. To run these tests from the command line:
  * # cd /path/to/client
- * # phpunit test/AllTests.php   
+ * # phpunit test/PartuzaRpcTests.php
  */
 
 require_once '__init__.php';
-require_once 'OfflineTests.php';
-require_once 'OnlineTests.php';
+require_once 'online/OnlineTestSuite.php';
 
+class PartuzaRpcTests extends OnlineTestSuite {
+  public $CONSUMER_KEY = 'e2c2d2dd-e6c4-c4df-b2c4-d6efd2dcffd1';
+  public $CONSUMER_SECRET = 'eb214eedcda39f3440c43b623806912f';
+  public $USER_A_ID = '1311';
+  public $USER_A_DISPLAY_NAME = 'Alice Testington';
 
-class AllTests {
-  public static function suite() {
-    $suite = new PHPUnit_Framework_TestSuite();
-    $suite->setName('AllTests');
-    $suite->addTestSuite(OfflineTests::suite());
-    $suite->addTestSuite(OnlineTests::suite());
-    return $suite;
+  protected function getOsapi() {
+    $provider = new osapiPartuzaProvider();
+    $auth = new osapiOAuth2Legged($this->CONSUMER_KEY, $this->CONSUMER_SECRET, $this->USER_A_ID);
+    return new osapi($provider, $auth);
   }
 }
-

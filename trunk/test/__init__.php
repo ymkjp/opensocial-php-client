@@ -18,25 +18,15 @@
  * under the License.
  */
 
-/*
- * This file is meant to be run through a php command line, not called
- * directly through the web browser. To run these tests from the command line:
- * # cd /path/to/client
- * # phpunit test/AllTests.php   
- */
+// Report everything
+ini_set('error_reporting', E_ALL | E_STRICT);
 
-require_once '__init__.php';
-require_once 'OfflineTests.php';
-require_once 'OnlineTests.php';
+// Use a default timezone or else strtotime will raise errors
+date_default_timezone_set('America/Los_Angeles');
 
-
-class AllTests {
-  public static function suite() {
-    $suite = new PHPUnit_Framework_TestSuite();
-    $suite->setName('AllTests');
-    $suite->addTestSuite(OfflineTests::suite());
-    $suite->addTestSuite(OnlineTests::suite());
-    return $suite;
-  }
-}
-
+ // Include paths to the library and test folder
+set_include_path(get_include_path()
+    . PATH_SEPARATOR . realpath(dirname(__FILE__))
+    . PATH_SEPARATOR . realpath(dirname(__FILE__) . '/../src'));
+  
+require_once 'osapi/osapi.php';
