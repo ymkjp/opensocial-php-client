@@ -208,7 +208,12 @@ class osapiPerson {
   }
 
   public function getDisplayName() {
-    return $this->displayName;
+    if (isSet($this->displayName)) {
+      return $this->displayName;
+    } else if (isSet($this->name)) {
+      //TODO: Abstract this out to an orkut-specific patch.
+      return $this->name["givenName"] . " " . $this->name["familyName"];
+    }
   }
 
   public function setDisplayName($displayName) {
