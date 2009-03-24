@@ -35,7 +35,7 @@ if ($osapi) {
 
   // Get the current user's friends' activities.
   $friend_params = array(
-      'userId' => $userId, 
+      'userId' => $userId,
       'groupId' => '@friends', 
       'count' => 10
   );
