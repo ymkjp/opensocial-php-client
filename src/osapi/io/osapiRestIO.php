@@ -94,12 +94,16 @@ class osapiRestIO extends osapiIO {
     }
     $method = self::$methodAliases[$operation];
     $postBody = false;
+    $headers = false;
+
     if ($method != 'GET') {
       if (isset(self::$postAliases[$service]) && isset($request->params[self::$postAliases[$service]])) {
         $postBody = json_encode($request->params[self::$postAliases[$service]]);
+        $headers = array("Content-Type: application/json");
         unset($request->params[self::$postAliases[$service]]);
       }
     }
+    
     $baseUrl = $provider->restEndpoint;
     if (substr($baseUrl, strlen($baseUrl) - 1, 1) == '/') {
       // Prevent double //'s in the url when concatinating
@@ -110,8 +114,16 @@ class osapiRestIO extends osapiIO {
       // PortableContacts end points don't require the /people bit added
       $url = str_replace('/people', '', $url);
     }
+
+    if (method_exists($provider, 'preRequestProcess')) {
+      $provider->preRequestProcess($request, $method, $url, $headers);
+    }
+
     $signedUrl = $signer->sign($method, $url, $request->params, $postBody);
-    $response = self::send($signedUrl, $method, $provider->httpProvider, $postBody);
+    $response = self::send($signedUrl, $method, $provider->httpProvider, $headers, $postBody);
+    if (method_exists($provider, 'postRequestProcess')) {
+      $provider->postRequestProcess($request, $response);
+    }
     $ret = array();
     if ($response['http_code'] == '200' && ! empty($response['data'])) {
       $ret['data'] = json_decode($response['data'], true);
@@ -121,6 +133,9 @@ class osapiRestIO extends osapiIO {
       }
     } else {
       $ret = new osapiError($response['http_code'], isset($response['data']) ? $response['data'] : '');
+    }
+    if (method_exists($provider, 'postParseResponseProcess')) {
+      $provider->postParseResponseProcess($request, $ret);
     }
     return $ret;
   }

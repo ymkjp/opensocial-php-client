@@ -34,9 +34,21 @@ class osapiRpcIO extends osapiIO {
    * @return array results
    */
   public static function sendBatch(Array $requests, osapiProvider $provider, osapiAuth $signer, $strictMode = false) {
+    $method = 'POST';
+    $url = $provider->rpcEndpoint;
+    $params = array();
+    $headers = array("Content-Type: application/json");
+    
+    if (method_exists($provider, 'preRequestProcess')) {
+      $provider->preRequestProcess($requests, $method, $url, $headers);
+    }
+    
     $request = json_encode($requests);
-    $signedUrl = $signer->sign('POST', $provider->rpcEndpoint, array(), $request);
-    $ret = self::send($signedUrl, 'POST', $provider->httpProvider, $request);
+    $signedUrl = $signer->sign($method, $url, $params, $request);
+    $ret = self::send($signedUrl, $method, $provider->httpProvider, $headers, $request);
+    if (method_exists($provider, 'postRequestProcess')) {
+      $provider->postRequestProcess($requests, $response);
+    }
     if ($ret['http_code'] == '200') {
       $result = json_decode($ret['data'], true);
       // the decode result and input string being the same indicates a decoding failure
@@ -94,8 +106,14 @@ class osapiRpcIO extends osapiIO {
             $ret[] = $entry;
           }
         }
+        if (method_exists($provider, 'postParseResponseProcess')) {
+          $provider->postParseResponseProcess($requests, $ret);
+        }
         return $ret;
       } else {
+        if (method_exists($provider, 'postParseResponseProcess')) {
+          $provider->postParseResponseProcess($request, $result);
+        }
         return $result;
       }
     } else {
