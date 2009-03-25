@@ -30,7 +30,7 @@ class osapiCurlProvider extends osapiHttpProvider {
    * @param string $postBody the optional POST body to send in the request
    * @param boolean $headers whether or not to return header information
    * @param string $ua the user agent to send in the request
-   * @return array the returned data and status code
+   * @return array the returned data, parsed headers, and status code
    */
   public function send($url, $method, $postBody = false, $headers = false, $ua = self::USER_AGENT) {
     $ch = curl_init();
@@ -45,6 +45,7 @@ class osapiCurlProvider extends osapiHttpProvider {
     curl_setopt($ch, CURLOPT_USERAGENT, $ua);
     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_HEADER, true);
     if ($headers && is_array($headers)) {
       curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
     }
@@ -56,6 +57,18 @@ class osapiCurlProvider extends osapiHttpProvider {
     if ($errno != CURLE_OK) {
       throw new osapiException("HTTP Error: " . $error);
     }
-    return array('http_code' => $http_code, 'data' => $data);
+
+    list($raw_response_headers, $response_body) = explode("\r\n\r\n", $data, 2);
+    $response_header_lines = explode("\r\n", $raw_response_headers);
+    array_shift($response_header_lines);
+    $response_headers = array();
+    foreach($response_header_lines as $header_line) {
+      list($header, $value) = explode(': ', $header_line, 2);
+      if (isset($response_header_array[$header])) {
+        $response_header_array[$header] .= "\n" . $value;
+      } else $response_header_array[$header] = $value;
+    }
+    
+    return array('http_code' => $http_code, 'data' => $response_body, 'headers' => $headers);
   }
 }

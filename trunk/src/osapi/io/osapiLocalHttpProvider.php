@@ -22,12 +22,12 @@
  * @author Dan Holevoet
  */
 class osapiLocalHttpProvider extends osapiHttpProvider {
-  protected $response;
-  protected $storage;
+  protected $responses;
+  protected $request;
   
-  public function __construct($response, $storage = null) {
-    $this->response = $response;
-    $this->storage = $storage;
+  public function __construct() {
+    $this->responses = array();
+    $this->request = null;
   }
   
   /**
@@ -38,31 +38,37 @@ class osapiLocalHttpProvider extends osapiHttpProvider {
    * @param string $postBody the optional POST body to send in the request
    * @param boolean $headers whether or not to return header information
    * @param string $ua the user agent to send in the request
-   * @return array the returned data and status code
+   * @return array the returned data, parsed response headers, and status code
    */
   public function send($url, $method, $postBody = false, $headers = false, $ua = self::USER_AGENT) {
-    if ($this->storage) {
-      $this->storage->set("body", $postBody);
-    }
-    $nextResponse = array_pop($this->response);
-    return array('http_code' => 200, 'data' => $nextResponse);
+    $this->request = array(
+      'url' => $url,
+      'method' => $method,
+      'body' => $postBody,
+      'headers' => $headers
+    );
+    return array_shift($this->responses);
   }
   
   /**
-   * Sets the array of fake responses.
-   *
-   * @param array $response the fake responses
+   * Adds a fake response to the queue of responses.
+   * @param string $data The data to return.
+   * @param int $status The http status code to return.
+   * @param array $headers optional The array of parsed headers to return.
    */
-  public function setResponse($response) {
-    $this->response = $response;
+  public function addResponse($data, $status = 200, $headers = array()) {
+    $this->responses[] = array(
+      'http_code' => $status,
+      'data' => $data,
+      'headers' => $headers
+    );
   }
-  
+
   /**
-   * Sets the local storage provider for logging outgoing requests.
-   *
-   * @param osapiStorage $storage the local storage
+   * Gets the last request which was executed through this object.
+   * @return array The last request made with this instance.
    */
-  public function setStorage($storage) {
-    $this->storage = $storage;
+  public function getLastRequest() {
+    return $this->request;
   }
 }

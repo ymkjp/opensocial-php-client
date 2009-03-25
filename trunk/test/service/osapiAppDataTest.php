@@ -34,8 +34,7 @@ class osapiAppDataTest extends PHPUnit_Framework_TestCase {
     parent::setUp();
     $this->userId = '03067092798963641994';
     $this->time = '1234567890';
-    $responses = array();
-    $httpProvider = new osapiLocalHttpProvider($responses);
+    $httpProvider = new osapiLocalHttpProvider();
     $provider = new osapiGoogleProvider($httpProvider);
     $this->osapi = new osapi($provider, new osapiOAuth2Legged("orkut.com:623061448914", "uynAeXiWTisflWX99KU1D2q5", $this->userId));
   }
@@ -53,8 +52,7 @@ class osapiAppDataTest extends PHPUnit_Framework_TestCase {
    */
   public function testGet() {
     $response = '[{"id":"appdataSelf","data":{"' . $this->userId . '":{"lastloaded":"' . $this->time . '"}}}]';
-    $responses = array($response);
-    $this->osapi->provider->httpProvider->setResponse($responses);
+    $this->osapi->provider->httpProvider->addResponse($response);
     
     $batch = $this->osapi->newBatch();
     $batch->add($this->osapi->appdata->get(array('userId' => $this->userId, 'groupId' => '@self', 'appId' => '3', 'fields' => array('*'))), 'appdataSelf');
@@ -122,19 +120,15 @@ class osapiAppDataTest extends PHPUnit_Framework_TestCase {
    */
   public function testCreate() {
     $response = '[{"id":"createAppData","data":{}}]';
-    $responses = array($response);
-    $this->osapi->provider->httpProvider->setResponse($responses);
-    
-    $storage = new osapiFileStorage('/tmp/osapi');
-    $this->osapi->provider->httpProvider->setStorage($storage);
+    $this->osapi->provider->httpProvider->addResponse($response);
     
     $batch = $this->osapi->newBatch();
     $batch->add($this->osapi->appdata->create(array('userId' => $this->userId, 'groupId' => '@self', 'appId' => '3', 'data' => array('osapiFoo1' => 'newBar1'))), 'createAppData');
     $result = $batch->execute();
 
     $canonicalBody = '[{"method":"appdata.create","params":{"userId":["' . $this->userId . '"],"groupId":"@self","appId":"3","data":{"osapiFoo1":"newBar1"}},"id":"createAppData"}]';
-    
-    $this->assertEquals($canonicalBody, $storage->get("body"));
+    $lastRequest = $this->osapi->provider->httpProvider->getLastRequest();
+    $this->assertEquals($canonicalBody, $lastRequest['body']);
   }
   
   /**
@@ -142,19 +136,17 @@ class osapiAppDataTest extends PHPUnit_Framework_TestCase {
    */
   public function testUpdate() {
     $response = '[{"id":"updateAppData","data":{}}]';
-    $responses = array($response);
-    $this->osapi->provider->httpProvider->setResponse($responses);
+    $this->osapi->provider->httpProvider->addResponse($response);
     
     $storage = new osapiFileStorage('/tmp/osapi');
-    $this->osapi->provider->httpProvider->setStorage($storage);
     
     $batch = $this->osapi->newBatch();
     $batch->add($this->osapi->appdata->update(array('userId' => $this->userId, 'groupId' => '@self', 'appId' => '3', 'data' => array('osapiFoo1' => 'newBar1'))), 'updateAppData');
     $result = $batch->execute();
 
     $canonicalBody = '[{"method":"appdata.update","params":{"userId":["' . $this->userId . '"],"groupId":"@self","appId":"3","data":{"osapiFoo1":"newBar1"}},"id":"updateAppData"}]';
-    
-    $this->assertEquals($canonicalBody, $storage->get("body"));
+    $lastRequest = $this->osapi->provider->httpProvider->getLastRequest();
+    $this->assertEquals($canonicalBody, $lastRequest['body']);
   }
   
   /**
@@ -162,18 +154,14 @@ class osapiAppDataTest extends PHPUnit_Framework_TestCase {
    */
   public function testDelete() {
     $response = '[{"id":"deleteAppData","data":{}}]';
-    $responses = array($response);
-    $this->osapi->provider->httpProvider->setResponse($responses);
-    
-    $storage = new osapiFileStorage('/tmp/osapi');
-    $this->osapi->provider->httpProvider->setStorage($storage);
+    $this->osapi->provider->httpProvider->addResponse($response);
     
     $batch = $this->osapi->newBatch();
     $batch->add($this->osapi->appdata->delete(array('userId' => $this->userId, 'groupId' => '@self', 'appId' => '3', 'fields' => array('*'))), 'deleteAppData');
     $result = $batch->execute();
 
     $canonicalBody = '[{"method":"appdata.delete","params":{"userId":["' . $this->userId . '"],"groupId":"@self","appId":"3","fields":["*"]},"id":"deleteAppData"}]';
-    
-    $this->assertEquals($canonicalBody, $storage->get("body"));
+    $lastRequest = $this->osapi->provider->httpProvider->getLastRequest();
+    $this->assertEquals($canonicalBody, $lastRequest['body']);
   }
 }

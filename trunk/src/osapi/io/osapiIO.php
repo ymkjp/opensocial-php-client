@@ -101,7 +101,7 @@ abstract class osapiIO {
    * @param osapiHttpProvider the HTTP provider to use (such as local or curl)
    * @param array $headers optional: Headers to include in the request
    * @param string $postBody optional: postBody to post
-   * @return array('http_code' => HTTP response code (200, 404, 401, etc), 'data' => the html document)
+   * @return array('http_code' => HTTP response code (200, 404, 401, etc), 'data' => the html document, 'headers' => parsed response headers)
    */
   public static function send($url, $method, $httpProvider, $headers = false, $postBody = false) {
     return $httpProvider->send($url, $method, $postBody, $headers);

@@ -34,8 +34,7 @@ class osapiActivitiesTest extends PHPUnit_Framework_TestCase {
     parent::setUp();
     $this->userId = '03067092798963641994';
     $this->body = 'This is an activity body';
-    $responses = array();
-    $httpProvider = new osapiLocalHttpProvider($responses);
+    $httpProvider = new osapiLocalHttpProvider();
     $provider = new osapiGoogleProvider($httpProvider);
     $this->osapi = new osapi($provider, new osapiOAuth2Legged("orkut.com:623061448914", "uynAeXiWTisflWX99KU1D2q5", $this->userId));
   }
@@ -53,8 +52,7 @@ class osapiActivitiesTest extends PHPUnit_Framework_TestCase {
    */
   public function testGet() {
     $response = '[{"id":"activities","data":{"startIndex":0,"totalResults":"1","itemsPerPage":10,"list":[{"body":"' . $this->body . '","id":"6302","mediaItems":[],"postedTime":"1234396234","streamTitle":"activities","title":"This is a sample activity","userId":"' . $this->userId . '"}]}}]';
-    $responses = array($response);
-    $this->osapi->provider->httpProvider->setResponse($responses);
+    $this->osapi->provider->httpProvider->addResponse($response);
     
     $batch = $this->osapi->newBatch();
     $batch->add($this->osapi->activities->get(array('userId' => $this->userId, 'groupId' => '@self', 'count' => 10)), 'activities');
@@ -73,11 +71,7 @@ class osapiActivitiesTest extends PHPUnit_Framework_TestCase {
    */
   public function testCreate() {
     $response = '[{"data":null}]';
-    $responses = array($response);
-    $this->osapi->provider->httpProvider->setResponse($responses);
-    
-    $storage = new osapiFileStorage('/tmp/osapi');
-    $this->osapi->provider->httpProvider->setStorage($storage);
+    $this->osapi->provider->httpProvider->addResponse($response);
     
     $batch = $this->osapi->newBatch();
     $activity = new osapiActivity(null, null);
@@ -89,8 +83,8 @@ class osapiActivitiesTest extends PHPUnit_Framework_TestCase {
     $result = $batch->execute();
 
     $canonicalBody = '[{"method":"activities.create","params":{"userId":["' . $this->userId . '"],"groupId":"@friends","activity":{"body":"' . $activityBody . '","title":"' . $activityTitle . '"}},"id":null}]';
-    
-    $this->assertEquals($canonicalBody, $storage->get("body"));
+    $lastRequest = $this->osapi->provider->httpProvider->getLastRequest();
+    $this->assertEquals($canonicalBody, $lastRequest['body']);
   }
   
   /**
