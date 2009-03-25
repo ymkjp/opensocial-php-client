@@ -80,7 +80,8 @@ class osapiOrkutProvider extends osapiProvider {
    * @param osapiRequest $request The request to adjust.
    */
   public function fixFields(osapiRequest &$request) {
-    if ($request->method == "appdata.create") {
+    if ($request->method == 'appdata.create' ||
+        $request->method == 'appdata.update') {
       $request->params['fields'] = array_keys($request->params['data']);
     }
   }
@@ -90,7 +91,8 @@ class osapiOrkutProvider extends osapiProvider {
    * @param osapiRequest $request The request to adjust.
    */
   public function fixViewer(osapiRequest &$request) {
-    if ($request->method == "appdata.create") {
+    if ($request->method == 'appdata.create' ||
+        $request->method == 'appdata.update') {
       foreach ($request->params['userId'] as $key => $value) {
         if ($value === "@me") {
           $request->params['userId'][$key] = "@viewer";
