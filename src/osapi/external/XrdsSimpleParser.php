@@ -47,8 +47,8 @@ class XrdsSimpleParser {
 
     // use GET Protocol (5.1.2); TODO: optionally try HEAD Protocol first?
     $url = preg_replace('/#[^?]*/', '', $url); // strip fragment (5.1)
-    $response = self::doFetch($httpProvider, $url, true);
-    $info = self::parseResponse($response);
+    $info = self::doFetch($httpProvider, $url);
+
     if (!$info) return false; // no response or unable to parse
 
     if (isset($info['headers']['X-XRDS-Location'])) {
@@ -62,7 +62,8 @@ class XrdsSimpleParser {
 
     // fetch RDD at newly discovered location, if needed
     if ($rddUrl != $url) {
-      $body = self::doFetch($httpProvider, $rddUrl, false);
+      $newResponse = self::doFetch($httpProvider, $rddUrl);
+      $body = $newResponse['body'];
     } else $body = $info['body'];
 
     // parse the RDD and return it
@@ -194,42 +195,13 @@ class XrdsSimpleParser {
     return self::getPriority($s1) - self::getPriority($s2);
   }
 
-  /** Fetches the content (and optionally the HTTP response headers) at the given URL. */
-  private static function doFetch($httpProvider, $url, $headers = false) {
-    $response = $httpProvider->send($url, 'GET', false, $headers);
-    return $response['data'];
-  }
-
-  /** 
-   * Parses Http response with headers into status code, response body, and array of headers.
-   * From http://us3.php.net/curl_setopt
-   * @param string $response The original response string
-   * @param bool $parseHeaders If true, parses the headers into a name=>value map.
-   */
-  private static function parseResponse($response, $parseHeaders = true) {
-    if (!$response) return false;
-    
-    // Split response into header and body sections
-    list($response_headers, $response_body) = explode("\r\n\r\n", $response, 2);
-    $response_header_lines = explode("\r\n", $response_headers);
-
-    // First line of headers is the HTTP response code
-    $http_response_line = array_shift($response_header_lines);
-    if(preg_match('@^HTTP/[0-9]\.[0-9] ([0-9]{3})@',$http_response_line, $matches)) { $response_code = $matches[1]; }
-
-    // put the rest of the headers in an array
-    $response_header_array = $response_header_lines;
-    
-    if ($parseHeaders) {
-      $response_header_array = array();
-      foreach($response_header_lines as $header_line) {
-        list($header,$value) = explode(': ', $header_line, 2);
-        if (isset($response_header_array[$header])) {
-          $response_header_array[$header] .= "\n".$value;
-        } else $response_header_array[$header] = $value;
-      }
-    }
-
-    return array("statusCode" => $response_code, "headers" => $response_header_array, "body" => $response_body);
+  /** Fetches the content at the given URL. */
+  private static function doFetch($httpProvider, $url) {
+    $response = $httpProvider->send($url, 'GET');
+    return array(
+      "statusCode" => $response["http_code"],
+      "headers" => $response["headers"],
+      "body" => $response["data"]
+    );
   }
 }

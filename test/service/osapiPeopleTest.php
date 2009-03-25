@@ -40,8 +40,7 @@ class osapiPeopleTest extends PHPUnit_Framework_TestCase {
     $this->isOwner = 'true';
     $this->isViewer = 'true';
     $this->url = 'http://localhost/profile/' . $this->userId;
-    $responses = array();
-    $httpProvider = new osapiLocalHttpProvider($responses);
+    $httpProvider = new osapiLocalHttpProvider();
     $provider = new osapiGoogleProvider($httpProvider);
     $this->osapi = new osapi($provider, new osapiOAuth2Legged("orkut.com:623061448914", "uynAeXiWTisflWX99KU1D2q5", $this->userId));
   }
@@ -59,8 +58,7 @@ class osapiPeopleTest extends PHPUnit_Framework_TestCase {
    */
   public function testGet() {
     $response = '[{"id":"self","data":{"isOwner":' . $this->isOwner . ',"isViewer":' . $this->isViewer . ',"displayName":"' . $this->userName . '","id":"' . $this->userId . '","profileUrl":"' . $this->url . '"}}]';
-    $responses = array($response);
-    $this->osapi->provider->httpProvider->setResponse($responses);
+    $this->osapi->provider->httpProvider->addResponse($response);
     
     $batch = $this->osapi->newBatch();
     $batch->add($this->osapi->people->get(array('userId' => $this->userId, 'groupId' => '@self')), 'self');
