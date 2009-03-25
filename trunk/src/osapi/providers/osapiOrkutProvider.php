@@ -24,7 +24,24 @@
  */
 class osapiOrkutProvider extends osapiProvider {
 
+  /**
+   * Specifies the appropriate data for an orkut request.
+   * @param osapiHttpProvider httpProvider The HTTP request provider to use.
+   */
   public function __construct(osapiHttpProvider $httpProvider = null) {
     parent::__construct(null, null, null, 'http://sandbox.orkut.com/social/rest/', 'http://sandbox.orkut.com/social/rpc', "Orkut", true, $httpProvider);
+  }
+
+  /**
+   * Adjusts a request prior to being sent in order to fix orkut-specific bugs.
+   * @param mixed $request The osapiRequest object being processed, or an array
+   *     of osapiRequest objects.
+   * @param string $method The HTTP method used for this request.
+   * @param string $url The url being fetched for this request.
+   * @param array $headers The headers being sent in this request.
+   */
+  public function preRequestProcess(&$request, &$method, &$url, &$headers) {
+    // Orkut does not currently support application/json with the body hack.
+    $headers = array("Content-Type: application/x-www-form-urlencoded");
   }
 }

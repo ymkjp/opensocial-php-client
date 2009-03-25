@@ -99,12 +99,11 @@ abstract class osapiIO {
    * @param string $url URL to request
    * @param string $method method to use (GET, POST, PUT, DELETE)
    * @param osapiHttpProvider the HTTP provider to use (such as local or curl)
+   * @param array $headers optional: Headers to include in the request
    * @param string $postBody optional: postBody to post
    * @return array('http_code' => HTTP response code (200, 404, 401, etc), 'data' => the html document)
    */
-  public static function send($url, $method, $httpProvider, $postBody = false) {
-    // force the expected input- and output values to be json encoded
-    $headers = !empty($postBody) ? array("Content-Type: application/json") : false;
+  public static function send($url, $method, $httpProvider, $headers = false, $postBody = false) {
     return $httpProvider->send($url, $method, $postBody, $headers);
   }
 }
