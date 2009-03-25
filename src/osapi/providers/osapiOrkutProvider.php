@@ -41,7 +41,61 @@ class osapiOrkutProvider extends osapiProvider {
    * @param array $headers The headers being sent in this request.
    */
   public function preRequestProcess(&$request, &$method, &$url, &$headers) {
-    // Orkut does not currently support application/json with the body hack.
-    $headers = array("Content-Type: application/x-www-form-urlencoded");
+    $this->fixContentType($headers);
+    
+    if (is_array($request)) {
+      foreach ($request as $req) {
+        $this->fixRequest($req);
+      }
+    } else {
+      $this->fixRequest($request);
+    }
+  }
+
+  /**
+   * Attempts to correct an atomic orkut request.
+   * @param osapiRequest $request The request to fix.
+   */
+  private function fixRequest(osapiRequest &$request) {
+    $this->fixViewer($request);
+    $this->fixFields($request);
+  }
+
+  /**
+   * Fixes the "invalid signature" error when using application/json.
+   * @param array $headers The headers for the given request.
+   */
+  private function fixContentType(&$headers) {
+    if ($headers && is_array($headers)) {
+      $key = array_search("Content-Type: application/json", $headers);
+      if ($key !== false) {
+        unset($headers[$key]);
+        $headers[] = "Content-Type: application/x-www-form-urlencoded";
+      }
+    }
+  }
+
+  /**
+   * Fixes the "non partial app updates are not implemented yet error.
+   * @param osapiRequest $request The request to adjust.
+   */
+  public function fixFields(osapiRequest &$request) {
+    if ($request->method == "appdata.create") {
+      $request->params['fields'] = array_keys($request->params['data']);
+    }
+  }
+
+  /**
+   * Fixes the "forbidden: Only app data for the viewer can be modified" error.
+   * @param osapiRequest $request The request to adjust.
+   */
+  public function fixViewer(osapiRequest &$request) {
+    if ($request->method == "appdata.create") {
+      foreach ($request->params['userId'] as $key => $value) {
+        if ($value === "@me") {
+          $request->params['userId'][$key] = "@viewer";
+        }
+      }
+    }
   }
 }
