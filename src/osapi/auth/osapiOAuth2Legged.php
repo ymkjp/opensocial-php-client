@@ -28,12 +28,22 @@ class osapiOAuth2Legged extends osapiAuth {
   protected $consumerToken;
   protected $accessToken;
   protected $userId;
+  protected $useBodyHash;
 
   public function __construct($consumerKey, $consumerSecret, $userId = null) {
     $this->userId = $userId;
     $this->signatureMethod = new OAuthSignatureMethod_HMAC_SHA1();
     $this->consumerToken = new OAuthConsumer($consumerKey, $consumerSecret, null);
     $this->accessToken = null;
+    $this->useBodyHash = false;
+  }
+
+  /**
+   * Set whether to use the body hash mechanism.
+   * @param bool $value True if body hash signing should be used.
+   */
+  public function setUseBodyHash($value) {
+    $this->useBodyHash = $value;
   }
 
   /**
@@ -61,13 +71,18 @@ class osapiOAuth2Legged extends osapiAuth {
       $oauthRequest->set_parameter($key, $val);
     }
     if ($postBody && strlen($postBody)) {
-      $bodyHash = sha1($postBody);
-      $oauthRequest->set_parameter("oauth_body_hash", $bodyHash);
-      $oauthRequest->set_parameter($postBody, '');
+      if ($this->useBodyHash) {
+        $bodyHash = sha1($postBody);
+        $oauthRequest->set_parameter("oauth_body_hash", $bodyHash);
+      } else {
+        $oauthRequest->set_parameter($postBody, '');
+      }
     }
     $oauthRequest->sign_request($this->signatureMethod, $this->consumerToken, $this->accessToken);
     if ($postBody) {
-      unset($oauthRequest->parameters[$postBody]);
+      if (!$this->useBodyHash) {
+        unset($oauthRequest->parameters[$postBody]);
+      }
     }
     $signedUrl = $oauthRequest->to_url();
     return $signedUrl;

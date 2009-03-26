@@ -40,7 +40,7 @@ class osapiRpcIO extends osapiIO {
     $headers = array("Content-Type: application/json");
     
     if (method_exists($provider, 'preRequestProcess')) {
-      $provider->preRequestProcess($requests, $method, $url, $headers);
+      $provider->preRequestProcess($requests, $method, $url, $headers, $signer);
     }
     
     $request = json_encode($requests);
