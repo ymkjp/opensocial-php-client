@@ -82,7 +82,26 @@ class osapiOAuth2LeggedTest extends PHPUnit_Framework_TestCase {
     $this->assertRegExp("/oauth_version=" . OAuthRequest::$version . "/", $signed);
     $this->assertRegExp("/oauth_consumer_key=KEY/", $signed);
     $this->assertRegExp("/oauth_signature_method=HMAC-SHA1/", $signed);
-    $this->assertRegExp("/oauth_signature=h3bdZ5kbYLIQ0zJIwXEcnojufKw%3D/", $signed);
+    $this->assertRegExp("/oauth_signature=pFL%2BvMAhn2KVzjFHZoO6noqvN1Q%3D/", $signed);
+  }
+
+  /**
+   * Tests body hashed post requests
+   */
+  public function testHashedPost() {
+    $params = array('oauth_nonce' => md5(0), 'oauth_timestamp' => 0);
+    $post = '{"test" : 1}';
+
+    $this->osapiOAuth2Legged->setUseBodyHash(true);
+    $signed = $this->osapiOAuth2Legged->sign('POST', 'http://opensocial.org', $params, $post);
+    
+    $this->assertRegExp("/xoauth_requestor_id=USER/", $signed);
+    $this->assertRegExp("/oauth_nonce=cfcd208495d565ef66e7dff9f98764da/", $signed);
+    $this->assertRegExp("/oauth_version=" . OAuthRequest::$version . "/", $signed);
+    $this->assertRegExp("/oauth_consumer_key=KEY/", $signed);
+    $this->assertRegExp("/oauth_signature_method=HMAC-SHA1/", $signed);
+    $this->assertRegExp("/oauth_signature=E6G4mcbF2X9jLdChTGzVlSofR4U%3D/", $signed);
+    $this->assertRegExp("/oauth_body_hash=" . urlencode(sha1($post)) . "/", $signed);
   }
   
   /**

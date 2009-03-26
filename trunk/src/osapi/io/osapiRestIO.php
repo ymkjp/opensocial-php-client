@@ -116,7 +116,7 @@ class osapiRestIO extends osapiIO {
     }
 
     if (method_exists($provider, 'preRequestProcess')) {
-      $provider->preRequestProcess($request, $method, $url, $headers);
+      $provider->preRequestProcess($request, $method, $url, $headers, $signer);
     }
 
     $signedUrl = $signer->sign($method, $url, $request->params, $postBody);

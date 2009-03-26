@@ -39,39 +39,42 @@ class osapiOrkutProvider extends osapiProvider {
    * @param string $method The HTTP method used for this request.
    * @param string $url The url being fetched for this request.
    * @param array $headers The headers being sent in this request.
+   * @param osapiAuth $signer The signing mechanism used for this request.
    */
-  public function preRequestProcess(&$request, &$method, &$url, &$headers) {
-    $this->fixContentType($headers);
+  public function preRequestProcess(&$request, &$method, &$url, &$headers, osapiAuth &$signer) {
+    $this->useBodyHash($signer);
     
     if (is_array($request)) {
       foreach ($request as $req) {
-        $this->fixRequest($req);
+        $this->fixRequest($req, $method, $url, $headers, $signer);
       }
     } else {
-      $this->fixRequest($request);
+      $this->fixRequest($request, $method, $url, $headers, $signer);
     }
   }
 
   /**
    * Attempts to correct an atomic orkut request.
    * @param osapiRequest $request The request to fix.
+   * @param string $method The HTTP method used for this request.
+   * @param string $url The url being fetched for this request.
+   * @param array $headers The headers being sent in this request.
+   * @param osapiAuth $signer The signing mechanism used for this request.
    */
-  private function fixRequest(osapiRequest &$request) {
+  private function fixRequest(osapiRequest &$request, &$method, &$url, &$headers, osapiAuth &$signer) {
     $this->fixViewer($request);
     $this->fixFields($request);
   }
 
   /**
-   * Fixes the "invalid signature" error when using application/json.
+   * Opts to use the body hash signing mechanism instead of adding the entire
+   * post body to the signed parameters list.
+   * TODO: Eventually this should become default for all containers.
    * @param array $headers The headers for the given request.
    */
-  private function fixContentType(&$headers) {
-    if ($headers && is_array($headers)) {
-      $key = array_search("Content-Type: application/json", $headers);
-      if ($key !== false) {
-        unset($headers[$key]);
-        $headers[] = "Content-Type: application/x-www-form-urlencoded";
-      }
+  private function useBodyHash(&$signer) {
+    if (method_exists($signer, 'setUseBodyHash')) {
+      $signer->setUseBodyHash(true);
     }
   }
 
