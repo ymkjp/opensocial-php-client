@@ -61,6 +61,8 @@ class osapiOAuth2Legged extends osapiAuth {
       $oauthRequest->set_parameter($key, $val);
     }
     if ($postBody && strlen($postBody)) {
+      $bodyHash = sha1($postBody);
+      $oauthRequest->set_parameter("oauth_body_hash", $bodyHash);
       $oauthRequest->set_parameter($postBody, '');
     }
     $oauthRequest->sign_request($this->signatureMethod, $this->consumerToken, $this->accessToken);

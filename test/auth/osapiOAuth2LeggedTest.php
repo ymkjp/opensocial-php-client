@@ -82,7 +82,7 @@ class osapiOAuth2LeggedTest extends PHPUnit_Framework_TestCase {
     $this->assertRegExp("/oauth_version=" . OAuthRequest::$version . "/", $signed);
     $this->assertRegExp("/oauth_consumer_key=KEY/", $signed);
     $this->assertRegExp("/oauth_signature_method=HMAC-SHA1/", $signed);
-    $this->assertRegExp("/oauth_signature=pFL%2BvMAhn2KVzjFHZoO6noqvN1Q%3D/", $signed);
+    $this->assertRegExp("/oauth_signature=h3bdZ5kbYLIQ0zJIwXEcnojufKw%3D/", $signed);
   }
   
   /**
