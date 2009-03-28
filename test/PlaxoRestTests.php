@@ -22,23 +22,25 @@
  * This file is meant to be run through a php command line, not called
  * directly through the web browser. To run these tests from the command line:
  * # cd /path/to/client
- * # phpunit test/OnlineTests.php
+ * # phpunit test/PartuzaRpcTests.php
  */
 
 require_once '__init__.php';
-require_once 'OrkutSandboxRpcTests.php';
-require_once 'MySpaceTests.php';
-require_once 'PartuzaRpcTests.php';
-require_once 'PlaxoRestTests.php';
+require_once 'online/OnlineTestSuite.php';
 
-class OnlineTests {
+class PlaxoRestTests extends OnlineTestSuite {
+  public $CONSUMER_KEY = 'alice.testington@gmail.com';
+  public $CONSUMER_SECRET = 'notasecret';
+  public $USER_A_ID = '154619987444';
+  public $USER_A_DISPLAY_NAME = 'Alice Testington';
+
+  protected function getOsapi() {
+    $provider = new osapiPlaxoProvider();
+    $auth = new osapiHttpBasic($this->CONSUMER_KEY, $this->CONSUMER_SECRET);
+    return new osapi($provider, $auth);
+  }
+
   public static function suite() {
-    $suite = new PHPUnit_Framework_TestSuite();
-    $suite->setName('OnlineTests');
-    $suite->addTestSuite(new OrkutSandboxRpcTests());
-    $suite->addTestSuite(new MySpaceTests());
-    $suite->addTestSuite(new PartuzaRpcTests());
-    $suite->addTestSuite(new PlaxoRestTests());
-    return $suite;
+    return new PlaxoRestTests();
   }
 }

@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 
+require_once "osapiHttpBasic.php";
 require_once "osapiOAuth2Legged.php";
 require_once "osapiOAuth3Legged.php";
 require_once "osapiSecurityToken.php";
@@ -27,5 +28,5 @@ require_once "osapiSecurityToken.php";
  * @author Chris Chabot
  */
 abstract class osapiAuth {
-  abstract public function sign($method, $url, $params = array(), $postBody = false);
+  abstract public function sign($method, $url, $params = array(), $postBody = false, &$headers = array());
 }

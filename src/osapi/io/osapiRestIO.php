@@ -68,6 +68,11 @@ class osapiRestIO extends osapiIO {
         $ret[] = $entry;
       }
     }
+
+    if (method_exists($provider, 'postParseResponseProcess')) {
+      $provider->postParseResponseProcess($request, $ret);
+    }
+    
     return $ret;
   }
 
@@ -119,7 +124,7 @@ class osapiRestIO extends osapiIO {
       $provider->preRequestProcess($request, $method, $url, $headers, $signer);
     }
 
-    $signedUrl = $signer->sign($method, $url, $request->params, $postBody);
+    $signedUrl = $signer->sign($method, $url, $request->params, $postBody, $headers);
     $response = self::send($signedUrl, $method, $provider->httpProvider, $headers, $postBody);
     if (method_exists($provider, 'postRequestProcess')) {
       $provider->postRequestProcess($request, $response);
@@ -134,9 +139,7 @@ class osapiRestIO extends osapiIO {
     } else {
       $ret = new osapiError($response['http_code'], isset($response['data']) ? $response['data'] : '');
     }
-    if (method_exists($provider, 'postParseResponseProcess')) {
-      $provider->postParseResponseProcess($request, $ret);
-    }
+
     return $ret;
   }
 
