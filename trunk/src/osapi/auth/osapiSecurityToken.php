@@ -44,7 +44,7 @@ class osapiSecurityToken extends osapiAuth {
    * @param string $postBody the optional POST body to supply in the request
    * @return string the signed request url
    */
-  public function sign($method, $url, $params = array(), $postBody = false) {
+  public function sign($method, $url, $params = array(), $postBody = false, &$headers = array()) {
     $seperator = strpos($url, '?') === false ? '?' : '&';
     return $url . $seperator . 'st=' . $this->securityToken . implode('&', $params);
   }

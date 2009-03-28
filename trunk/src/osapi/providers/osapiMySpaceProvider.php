@@ -23,4 +23,52 @@ class osapiMySpaceProvider extends osapiProvider {
   public function __construct(osapiHttpProvider $httpProvider = null) {
     parent::__construct("http://api.myspace.com/request_token", "http://api.myspace.com/authorize", "http://api.myspace.com/access_token", "http://api.myspace.com/v2", null, "MySpace", true, $httpProvider);
   }
+
+  /**
+   * Adjusts a request prior to being sent in order to fix container-specific
+   * bugs.
+   * @param mixed $request The osapiRequest object being processed, or an array
+   *     of osapiRequest objects.
+   * @param string $method The HTTP method used for this request.
+   * @param string $url The url being fetched for this request.
+   * @param array $headers The headers being sent in this request.
+   * @param osapiAuth $signer The signing mechanism used for this request.
+   */
+   public function preRequestProcess(&$request, &$method, &$url, &$headers, osapiAuth &$signer) {
+    if (is_array($request)) {
+      foreach ($request as $req) {
+        $this->fixRequest($req, $method, $url, $headers, $signer);
+      }
+    } else {
+      $this->fixRequest($request, $method, $url, $headers, $signer);
+    }
+  }
+
+  /**
+   * Attempts to correct an atomic request.
+   * @param osapiRequest $request The request to fix.
+   * @param string $method The HTTP method used for this request.
+   * @param string $url The url being fetched for this request.
+   * @param array $headers The headers being sent in this request.
+   * @param osapiAuth $signer The signing mechanism used for this request.
+   */
+  private function fixRequest(osapiRequest &$request, &$method, &$url, &$headers, osapiAuth &$signer) {
+    $this->fixAtMe($request, $url, $signer);
+  }
+
+
+  /**
+   * MySpace returns "oauth_problem=permission_denied" if you request @me/@self.
+   * @param osapiRequest $request
+   * @param string $url
+   * @param osapiAuth $signer
+   */
+  private function fixAtMe(osapiRequest &$request, &$url, osapiAuth &$signer) {
+    if (method_exists($signer, 'getUserId')) {
+      $userId = $signer->getUserId();
+      if ($userId) {
+        $url = preg_replace("/@me/", $userId, $url);
+      }
+    }
+  }
 }

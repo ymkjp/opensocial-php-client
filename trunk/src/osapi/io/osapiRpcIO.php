@@ -44,7 +44,7 @@ class osapiRpcIO extends osapiIO {
     }
     
     $request = json_encode($requests);
-    $signedUrl = $signer->sign($method, $url, $params, $request);
+    $signedUrl = $signer->sign($method, $url, $params, $request, $headers);
     $ret = self::send($signedUrl, $method, $provider->httpProvider, $headers, $request);
     if (method_exists($provider, 'postRequestProcess')) {
       $provider->postRequestProcess($requests, $response);
