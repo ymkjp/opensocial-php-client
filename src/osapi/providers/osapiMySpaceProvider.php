@@ -71,4 +71,26 @@ class osapiMySpaceProvider extends osapiProvider {
       }
     }
   }
+
+  /**
+   * Attempts to correct a response to address per-container bugs.
+   * @param osapiRequest $request
+   * @param array $response
+   */
+  public function postRequestProcess(osapiRequest &$request, &$response) {
+    $this->fixNastyResponses($response);
+  }
+
+  /**
+   * Parses MySpace's gross HTML-ified error response.
+   * @param array $response
+   */
+  private function fixNastyResponses(&$response) {
+    if ($response['http_code'] == 403) {
+      $matches = array();
+      if (preg_match("/<h2>(.*?)<\/h2>/s", $response['data'], $matches )) {
+        $response['data'] = $matches[1];
+      }
+    }
+  }
 }

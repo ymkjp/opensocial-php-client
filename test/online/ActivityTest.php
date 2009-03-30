@@ -20,35 +20,31 @@
 
 require_once 'OnlineTestCase.php';
 
-class AppDataTest extends OnlineTestCase {
+class ActivityTest extends OnlineTestCase {
   public function testCreate() {
     $datenow = date('Y-m-d h:m:s');
 
     $batch = $this->suite->osapi->newBatch();
+
+    $activity = new osapiActivity(null, null);
+    $activity->setTitle('osapi test activity at ' . $datenow);
+    $activity->setBody('osapi test activity body');
+
     $createParams = array(
       'userId' => '@me',
       'groupId' => '@self',
       'appId' => '@app',
-      'data' => array('lastRun' => $datenow)
+      'activity' => $activity
     );
-    $getParams = array(
-        'userId' => '@me',
-        'groupId' => '@self',
-        'appId' => '@app',
-        'fields' => array('lastRun')
-    );
-    $batch->add($this->suite->osapi->appdata->create($createParams), 'createAppData');
-    $batch->add($this->suite->osapi->appdata->get($getParams), 'getAppData');
+
+    $batch->add($this->suite->osapi->activities->create($createParams), 'createActivity');
     $result = $batch->execute();
 
-    if ($result['createAppData'] instanceof osapiError) {
+    if ($result['createActivity'] instanceof osapiError) {
       $name = $this->suite->getName();
-      $code = $result['createAppData']->getErrorCode();
-      $message = $result['createAppData']->getErrorMessage();
-      $this->fail(sprintf("%s failed to create app data: %s (%s)", $name, $message, $code));
+      $code = $result['createActivity']->getErrorCode();
+      $message = $result['createActivity']->getErrorMessage();
+      $this->fail(sprintf("%s failed to create an activity: %s (%s)", $name, $message, $code));
     }
-
-    $appData = current($result['getAppData']);
-    $this->assertEquals($datenow, $appData['lastRun']);
   }
 }
