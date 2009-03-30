@@ -95,7 +95,8 @@ class osapiOrkutProvider extends osapiProvider {
    */
   public function fixViewer(osapiRequest &$request) {
     if ($request->method == 'appdata.create' ||
-        $request->method == 'appdata.update') {
+        $request->method == 'appdata.update' ||
+        $request->method == 'activities.create') {
       foreach ($request->params['userId'] as $key => $value) {
         if ($value === "@me") {
           $request->params['userId'][$key] = "@viewer";
