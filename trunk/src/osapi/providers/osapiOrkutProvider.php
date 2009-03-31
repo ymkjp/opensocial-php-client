@@ -97,9 +97,11 @@ class osapiOrkutProvider extends osapiProvider {
     if ($request->method == 'appdata.create' ||
         $request->method == 'appdata.update' ||
         $request->method == 'activities.create') {
-      foreach ($request->params['userId'] as $key => $value) {
-        if ($value === "@me") {
-          $request->params['userId'][$key] = "@viewer";
+      if (array_key_exists('userId', $request->params)) {
+        foreach ($request->params['userId'] as $key => $value) {
+          if ($value === "@me") {
+            $request->params['userId'][$key] = "@viewer";
+          }
         }
       }
     }
