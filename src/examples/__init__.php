@@ -15,6 +15,12 @@
  * limitations under the License.
  */
 
+// Set the default timezone since many servers won't have this configured
+date_default_timezone_set('America/Los_Angeles');
+
+// Report everything, better to have stuff break here than in production
+ini_set('error_reporting', E_ALL | E_STRICT);
+
 // Add the osapi directory to the include path
 set_include_path(get_include_path() . PATH_SEPARATOR . '..');
 
@@ -25,7 +31,7 @@ require_once "osapi/osapi.php";
 if (isset($_REQUEST["test"])) {
   $test = $_REQUEST["test"];
 } else {
-  $test = 'XRDS';
+  $test = 'orkut';
 }
 
 $osapi = false;
@@ -40,30 +46,30 @@ $localUserId = session_id();
 // Select the appropriate test and initialize
 switch ($test) {
   case 'XRDS':
-    $storage = new osapiFileStorage('/tmp/osapi/');
+    $storage = new osapiFileStorage('/tmp/osapi');
     $provider = new osapiXrdsProvider('http://www.partuza.nl/', $storage);
     $auth = osapiOAuth3Legged::performOAuthLogin('ddf4f9f7-f8e7-c7d9-afe4-c6e6c8e6eec4', '6f0e1a11ac45caed32d699f9e92ae959', $storage, $provider, $localUserId);
     $osapi = new osapi($provider, $auth);
     break;
   case 'partuza':
     $provider = new osapiPartuzaProvider();
-    $osapi = new osapi($provider, osapiOAuth3Legged::performOAuthLogin('ddf4f9f7-f8e7-c7d9-afe4-c6e6c8e6eec4', '6f0e1a11ac45caed32d699f9e92ae959', new osapiFileStorage('/tmp/osapi/'), $provider, $localUserId));
+    $osapi = new osapi($provider, osapiOAuth3Legged::performOAuthLogin('ddf4f9f7-f8e7-c7d9-afe4-c6e6c8e6eec4', '6f0e1a11ac45caed32d699f9e92ae959', new osapiFileStorage('/tmp/osapi'), $provider, $localUserId));
     break;
   case 'partuzaRest':
     $provider = new osapiPartuzaProvider();
     $provider->rpcEndpoint = null;
-    $osapi = new osapi($provider, osapiOAuth3Legged::performOAuthLogin('ddf4f9f7-f8e7-c7d9-afe4-c6e6c8e6eec4', '6f0e1a11ac45caed32d699f9e92ae959', new osapiFileStorage('/tmp/osapi/'), $provider, $localUserId));
+    $osapi = new osapi($provider, osapiOAuth3Legged::performOAuthLogin('ddf4f9f7-f8e7-c7d9-afe4-c6e6c8e6eec4', '6f0e1a11ac45caed32d699f9e92ae959', new osapiFileStorage('/tmp/osapi'), $provider, $localUserId));
     break;
   case 'partuzaLocal':
-    $osapi = new osapi($provider = new osapiLocalPartuzaProvider(), osapiOAuth3Legged::performOAuthLogin('ddf4f9f7-f8e7-c7d9-afe4-c6e6c8e6eec4', '6f0e1a11ac45caed32d699f9e92ae959', new osapiFileStorage('/tmp/osapi/'), $provider, $localUserId));
+    $osapi = new osapi($provider = new osapiLocalPartuzaProvider(), osapiOAuth3Legged::performOAuthLogin('ddf4f9f7-f8e7-c7d9-afe4-c6e6c8e6eec4', '6f0e1a11ac45caed32d699f9e92ae959', new osapiFileStorage('/tmp/osapi'), $provider, $localUserId));
     break;
   case 'partuzaLocalRest':
     $provider = new osapiLocalPartuzaProvider();
     $provider->rpcEndpoint = null;
-    $osapi = new osapi($provider, osapiOAuth3Legged::performOAuthLogin('ddf4f9f7-f8e7-c7d9-afe4-c6e6c8e6eec4', '6f0e1a11ac45caed32d699f9e92ae959', new osapiFileStorage('/tmp/osapi/'), $provider, $localUserId));
+    $osapi = new osapi($provider, osapiOAuth3Legged::performOAuthLogin('ddf4f9f7-f8e7-c7d9-afe4-c6e6c8e6eec4', '6f0e1a11ac45caed32d699f9e92ae959', new osapiFileStorage('/tmp/osapi'), $provider, $localUserId));
     break;
   case 'plaxo':
-    $osapi = new osapi($provider = new osapiPlaxoProvider(), osapiOAuth3Legged::performOAuthLogin('anonymous', '', new osapiFileStorage('/tmp/osapi/'), $provider, $localUserId));
+    $osapi = new osapi($provider = new osapiPlaxoProvider(), osapiOAuth3Legged::performOAuthLogin('anonymous', '', new osapiFileStorage('/tmp/osapi'), $provider, $localUserId));
     break;
   case 'orkut':
     $userId = '03067092798963641994';
@@ -99,4 +105,4 @@ foreach ($tests as $value => $name) {
 }
 
 ?>
-<p>Run this sample using data from: <?= implode($links, ", ") ?> </p>
+<p><a href="index.php">Back to the index</a>. Run this sample using data from: <?= implode($links, ", ") ?> </p>

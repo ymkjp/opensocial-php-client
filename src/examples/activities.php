@@ -15,7 +15,7 @@
  * limitations under the License.
  */ 
 
-require_once "_examples_common.php";
+require_once "__init__.php";
 
 if ($osapi) {
   if ($strictMode) {
@@ -46,7 +46,7 @@ if ($osapi) {
   $activity->setTitle('osapi test activity at ' . time());
   $activity->setBody('osapi test activity body');
   $create_params = array(
-      'userId' => $userId, 
+      'userId' => '@me',
       'groupId' => '@self', 
       'activity' => $activity,
       'appId' => $appId

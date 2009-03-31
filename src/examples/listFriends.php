@@ -15,7 +15,7 @@
  * limitations under the License.
  */ 
 
-require_once "_examples_common.php";
+require_once "__init__.php";
 
 if ($osapi) {
   if ($strictMode) {
