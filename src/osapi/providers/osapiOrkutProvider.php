@@ -62,7 +62,7 @@ class osapiOrkutProvider extends osapiProvider {
    * @param osapiAuth $signer The signing mechanism used for this request.
    */
   private function fixRequest(osapiRequest &$request, &$method, &$url, &$headers, osapiAuth &$signer) {
-    $this->fixViewer($request);
+    $this->fixViewer($request, $url);
     $this->fixFields($request);
   }
 
@@ -85,7 +85,9 @@ class osapiOrkutProvider extends osapiProvider {
   public function fixFields(osapiRequest &$request) {
     if ($request->method == 'appdata.create' ||
         $request->method == 'appdata.update') {
-      $request->params['fields'] = array_keys($request->params['data']);
+      if (array_key_exists('data', $request->params)) {
+        $request->params['fields'] = array_keys($request->params['data']);
+      }
     }
   }
 
@@ -93,7 +95,7 @@ class osapiOrkutProvider extends osapiProvider {
    * Fixes the "forbidden: Only app data for the viewer can be modified" error.
    * @param osapiRequest $request The request to adjust.
    */
-  public function fixViewer(osapiRequest &$request) {
+  public function fixViewer(osapiRequest &$request, &$url) {
     if ($request->method == 'appdata.create' ||
         $request->method == 'appdata.update' ||
         $request->method == 'activities.create') {

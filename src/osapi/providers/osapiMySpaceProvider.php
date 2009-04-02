@@ -67,7 +67,17 @@ class osapiMySpaceProvider extends osapiProvider {
     if (method_exists($signer, 'getUserId')) {
       $userId = $signer->getUserId();
       if ($userId) {
-        $url = preg_replace("/@me/", $userId, $url);
+        if (array_key_exists('userId', $request->params)) {
+          if (is_array($request->params['userId'])) {
+            foreach($request->params['userId'] as $key => $value) {
+              if ($value == '@me') {
+                $request->params['userId'][$key] = $userId;
+              }
+            }
+          } else if ($request->params['userId'] == '@me') {
+            $request->params['userId'] = $userId;
+          }
+        }
       }
     }
   }

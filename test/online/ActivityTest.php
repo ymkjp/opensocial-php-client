@@ -22,7 +22,7 @@ require_once 'OnlineTestCase.php';
 
 class ActivityTest extends OnlineTestCase {
   public function testCreate() {
-    $datenow = date('Y-m-d h:m:s');
+    $datenow = date('Y-m-d h:i:s');
 
     $batch = $this->suite->osapi->newBatch();
 

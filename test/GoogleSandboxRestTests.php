@@ -22,29 +22,26 @@
  * This file is meant to be run through a php command line, not called
  * directly through the web browser. To run these tests from the command line:
  * # cd /path/to/client
- * # phpunit test/OnlineTests.php
+ * # phpunit test/OrkutSandboxRpcTests.php
  */
 
 require_once '__init__.php';
-require_once 'OrkutSandboxRpcTests.php';
-require_once 'OrkutSandboxRestTests.php';
-require_once 'GoogleSandboxRpcTests.php';
-require_once 'GoogleSandboxRestTests.php';
-require_once 'MySpaceTests.php';
-require_once 'PartuzaRpcTests.php';
-require_once 'PlaxoRestTests.php';
+require_once 'online/OnlineTestSuite.php';
 
-class OnlineTests {
+class GoogleSandboxRestTests extends OnlineTestSuite {
+  public $CONSUMER_KEY = 'google.com:623061448914';
+  public $CONSUMER_SECRET = 'uynAeXiWTisflWX99KU1D2q5';
+  public $USER_A_ID = '116872018614015227492';
+  public $USER_A_DISPLAY_NAME = 'Dan Holevoet';
+
+  protected function getOsapi() {
+    $provider = new osapiGoogleProvider();
+    $provider->rpcEndpoint = null;
+    $auth = new osapiOAuth2Legged($this->CONSUMER_KEY, $this->CONSUMER_SECRET, $this->USER_A_ID);
+    return new osapi($provider, $auth);
+  }
+
   public static function suite() {
-    $suite = new PHPUnit_Framework_TestSuite();
-    $suite->setName('OnlineTests');
-    $suite->addTestSuite(new OrkutSandboxRpcTests());
-    $suite->addTestSuite(new OrkutSandboxRestTests());
-    $suite->addTestSuite(new GoogleSandboxRpcTests());
-    $suite->addTestSuite(new GoogleSandboxRestTests());
-    $suite->addTestSuite(new MySpaceTests());
-    $suite->addTestSuite(new PartuzaRpcTests());
-    $suite->addTestSuite(new PlaxoRestTests());
-    return $suite;
+    return new GoogleSandboxRestTests();
   }
 }
