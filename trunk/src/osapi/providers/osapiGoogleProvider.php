@@ -16,13 +16,16 @@
  */
 
 /**
- * Pre-defined provider class for Google (www.google.com)
- * @author Chris Chabot
+ * Pre-defined provider class for Google
+ * @author Arne Roomann-Kurrik
  */
 class osapiGoogleProvider extends osapiProvider {
-  public $requestTokenParams = array('scope' => 'http://sandbox.gmodules.com/api/people');
 
+  /**
+   * Specifies the appropriate data for an orkut request.
+   * @param osapiHttpProvider httpProvider The HTTP request provider to use.
+   */
   public function __construct(osapiHttpProvider $httpProvider = null) {
-    parent::__construct("https://www.google.com/accounts/OAuthGetRequestToken", "https://www.google.com/accounts/OAuthAuthorizeToken", "https://www.google.com/accounts/OAuthGetAccessToken", "http://sandbox.gmodules.com/api", "http://sandbox.gmodules.com/api/rpc", "Google", true, $httpProvider);
+    parent::__construct(null, null, null, 'http://www-opensocial-sandbox.googleusercontent.com/api/', 'http://www-opensocial-sandbox.googleusercontent.com/api/rpc', "Google", true, $httpProvider);
   }
 }

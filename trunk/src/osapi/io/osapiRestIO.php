@@ -103,9 +103,7 @@ class osapiRestIO extends osapiIO {
 
     if ($method != 'GET') {
       if (isset(self::$postAliases[$service]) && isset($request->params[self::$postAliases[$service]])) {
-        $postBody = json_encode($request->params[self::$postAliases[$service]]);
         $headers = array("Content-Type: application/json");
-        unset($request->params[self::$postAliases[$service]]);
       }
     }
     
@@ -114,14 +112,22 @@ class osapiRestIO extends osapiIO {
       // Prevent double //'s in the url when concatinating
       $baseUrl = substr($baseUrl, 0, strlen($baseUrl) - 1);
     }
+
+    if (method_exists($provider, 'preRequestProcess')) {
+      $provider->preRequestProcess($request, $method, $url, $headers, $signer);
+    }
+
+    if ($method != 'GET') {
+      if (isset(self::$postAliases[$service]) && isset($request->params[self::$postAliases[$service]])) {
+        $postBody = json_encode($request->params[self::$postAliases[$service]]);
+        unset($request->params[self::$postAliases[$service]]);
+      }
+    }
+    
     $url = $baseUrl . self::constructUrl($urlTemplate, $request->params);
     if (! $provider->isOpenSocial) {
       // PortableContacts end points don't require the /people bit added
       $url = str_replace('/people', '', $url);
-    }
-
-    if (method_exists($provider, 'preRequestProcess')) {
-      $provider->preRequestProcess($request, $method, $url, $headers, $signer);
     }
 
     $signedUrl = $signer->sign($method, $url, $request->params, $postBody, $headers);
