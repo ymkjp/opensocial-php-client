@@ -80,7 +80,7 @@ class osapiOAuth2Legged extends osapiAuth {
     }
     if ($postBody && strlen($postBody)) {
       if ($this->useBodyHash) {
-        $bodyHash = sha1($postBody);
+        $bodyHash = base64_encode(sha1($postBody, true));
         $oauthRequest->set_parameter("oauth_body_hash", $bodyHash);
       } else {
         $oauthRequest->set_parameter($postBody, '');
