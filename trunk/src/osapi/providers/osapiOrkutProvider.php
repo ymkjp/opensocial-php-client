@@ -43,7 +43,7 @@ class osapiOrkutProvider extends osapiProvider {
    */
   public function preRequestProcess(&$request, &$method, &$url, &$headers, osapiAuth &$signer) {
     $this->useBodyHash($signer);
-    
+
     if (is_array($request)) {
       foreach ($request as $req) {
         $this->fixRequest($req, $method, $url, $headers, $signer);
@@ -70,7 +70,7 @@ class osapiOrkutProvider extends osapiProvider {
    * Opts to use the body hash signing mechanism instead of adding the entire
    * post body to the signed parameters list.
    * TODO: Eventually this should become default for all containers.
-   * @param array $headers The headers for the given request.
+   * @param array $signer The (2 or 3 legged) OAuth or security token signer.
    */
   private function useBodyHash(&$signer) {
     if (method_exists($signer, 'setUseBodyHash')) {
