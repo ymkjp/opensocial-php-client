@@ -88,7 +88,9 @@ class osapiPerson {
   public $urls;
   // myspace specific field
   public $hasAppInstalled;
-  
+  // hi5 specific field
+  public $updated;
+
   // Note: Not in the opensocial js person object directly
   public $isOwner = false;
   public $isViewer = false;
@@ -97,7 +99,7 @@ class osapiPerson {
     $this->id = $id;
     $this->name = $name;
   }
-    
+
   private function setFieldImpl($fieldName, $value) {
     // treat empty singular/plural fields as null so they don't pollute the output
     if ($value == '' || (is_array($value) && ! count($value))) {
@@ -106,7 +108,7 @@ class osapiPerson {
     $this->$fieldName = $value;
   }
 
-  /** 
+  /**
    * Returns the field value for the given fieldName, if present.
    * @param $fieldName name of the contact field, e.g. "displayName"
    */
