@@ -90,6 +90,11 @@ class osapiPerson {
   public $hasAppInstalled;
   // hi5 specific field
   public $updated;
+  // plaxo specific fields
+  public $published;
+  public $connected;
+  public $relationships;
+  public $friend;
 
   // Note: Not in the opensocial js person object directly
   public $isOwner = false;

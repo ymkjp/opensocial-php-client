@@ -1,4 +1,4 @@
-<?php 
+<?php
 /*
  * Copyright 2008 Google Inc.
  *
@@ -13,7 +13,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */ 
+ */
 
 require_once "__init__.php";
 
@@ -21,14 +21,14 @@ if ($osapi) {
   if ($strictMode) {
     $osapi->setStrictMode($strictMode);
   }
-  
+
   // Start a batch so that many requests may be made at once.
   $batch = $osapi->newBatch();
 
   // Request the activities of the current user.
   $user_params = array(
-      'userId' => $userId, 
-      'groupId' => '@self', 
+      'userId' => $userId,
+      'groupId' => '@self',
       'count' => 10
   );
   $batch->add($osapi->activities->get($user_params), 'userActivities');
@@ -36,7 +36,7 @@ if ($osapi) {
   // Get the current user's friends' activities.
   $friend_params = array(
       'userId' => $userId,
-      'groupId' => '@friends', 
+      'groupId' => '@friends',
       'count' => 10
   );
   $batch->add($osapi->activities->get($friend_params), 'friendActivities');
@@ -46,12 +46,13 @@ if ($osapi) {
   $activity->setTitle('osapi test activity at ' . time());
   $activity->setBody('osapi test activity body');
   $create_params = array(
-      'userId' => '@me',
-      'groupId' => '@self', 
+      'userId' => $userId,
+      'groupId' => '@self',
       'activity' => $activity,
-      'appId' => $appId
+      //'appId' => $appId
   );
   $batch->add($osapi->activities->create($create_params), 'createActivity');
+
 
 /* EXAMPLE: create a message
 $batch->add($osapi->messages->create(array('userId' => $userId, 'groupId' => '@self', 'message' => new osapiMessage(array(1), 'test message by osapi', 'send at '.strftime('%X')))), 'createMessage');
@@ -64,14 +65,14 @@ $batch->add($osapi->messages->create(array('userId' => $userId, 'groupId' => '@s
 <h1>Activities Example</h1>
 
 <h2>Request:</h2>
-<p>This sample fetched the activities for the current user and their 
+<p>This sample fetched the activities for the current user and their
   friends.  Then the sample attempts to create a message.</p>
 
 <?php
 
   // Demonstrate iterating over a response set, checking for an error,
   // and working with the result data.
-  
+
   foreach ($result as $key => $result_item) {
     if ($result_item instanceof osapiError) {
       $code = $result_item->getErrorCode();

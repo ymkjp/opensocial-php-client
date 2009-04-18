@@ -35,7 +35,7 @@ if (isset($_REQUEST["test"])) {
 }
 
 $osapi = false;
-$strictMode = true;
+$strictMode = false;
 $userId = '@me';
 $appId = '@app';
 
@@ -45,27 +45,29 @@ $localUserId = session_id();
 
 // Select the appropriate test and initialize
 switch ($test) {
-  case 'XRDS':
+  case 'xrds':
+    $userId = '45024593';
     $storage = new osapiFileStorage('/tmp/osapi');
-    $provider = new osapiXrdsProvider('http://www.partuza.nl/', $storage);
-    $auth = osapiOAuth3Legged::performOAuthLogin('ddf4f9f7-f8e7-c7d9-afe4-c6e6c8e6eec4', '6f0e1a11ac45caed32d699f9e92ae959', $storage, $provider, $localUserId);
+    $provider = new osapiXrdsProvider('http://en.netlog.com/', $storage);
+    $auth = osapiOAuth3Legged::performOAuthLogin('605776b05bad192d854121de477238a7', 'b63bf18647211c8fd7155331c0daedd3e', $storage, $provider, $localUserId);
+    $osapi = new osapi($provider, $auth);
+    break;
+  case 'netlog':
+    $userId = '45024593';
+    $storage = new osapiFileStorage('/tmp/osapi');
+    $provider = new osapiNetlogProvider();
+    $auth = osapiOAuth3Legged::performOAuthLogin('605776b05bad192d854121de477238a7', 'b63bf18647211c8fd7155331c0daedd3e', $storage, $provider, $localUserId);
+    $osapi = new osapi($provider, $auth);
+    break;
+  case 'hi5':
+    $userId = '167259949';
+    $storage = new osapiFileStorage('/tmp/osapi');
+    $provider = new osapiHi5Provider();
+    $auth = osapiOAuth3Legged::performOAuthLogin('http://test.chabotc.com/proxied.xml', 'a38336_e76c2b4365eba31c6bf9f', $storage, $provider, $localUserId);
     $osapi = new osapi($provider, $auth);
     break;
   case 'partuza':
     $provider = new osapiPartuzaProvider();
-    $osapi = new osapi($provider, osapiOAuth3Legged::performOAuthLogin('ddf4f9f7-f8e7-c7d9-afe4-c6e6c8e6eec4', '6f0e1a11ac45caed32d699f9e92ae959', new osapiFileStorage('/tmp/osapi'), $provider, $localUserId));
-    break;
-  case 'partuzaRest':
-    $provider = new osapiPartuzaProvider();
-    $provider->rpcEndpoint = null;
-    $osapi = new osapi($provider, osapiOAuth3Legged::performOAuthLogin('ddf4f9f7-f8e7-c7d9-afe4-c6e6c8e6eec4', '6f0e1a11ac45caed32d699f9e92ae959', new osapiFileStorage('/tmp/osapi'), $provider, $localUserId));
-    break;
-  case 'partuzaLocal':
-    $osapi = new osapi($provider = new osapiLocalPartuzaProvider(), osapiOAuth3Legged::performOAuthLogin('ddf4f9f7-f8e7-c7d9-afe4-c6e6c8e6eec4', '6f0e1a11ac45caed32d699f9e92ae959', new osapiFileStorage('/tmp/osapi'), $provider, $localUserId));
-    break;
-  case 'partuzaLocalRest':
-    $provider = new osapiLocalPartuzaProvider();
-    $provider->rpcEndpoint = null;
     $osapi = new osapi($provider, osapiOAuth3Legged::performOAuthLogin('ddf4f9f7-f8e7-c7d9-afe4-c6e6c8e6eec4', '6f0e1a11ac45caed32d699f9e92ae959', new osapiFileStorage('/tmp/osapi'), $provider, $localUserId));
     break;
   case 'plaxo':
@@ -76,6 +78,7 @@ switch ($test) {
     $osapi = new osapi(new osapiOrkutProvider(), new osapiOAuth2Legged("orkut.com:623061448914", "uynAeXiWTisflWX99KU1D2q5", '03067092798963641994'));
     break;
   case 'orkutRest':
+    // special case for testing orkut's REST end-point, instead of it's default RPC end point.. we accomplish this by using Orkut's provider, but unsetting it's rpc configuration
     $userId = '03067092798963641994';
     $provider = new osapiOrkutProvider();
     $provider->rpcEndpoint = null;
@@ -87,13 +90,7 @@ switch ($test) {
 }
 
 $script_name = $_SERVER["SCRIPT_NAME"];
-$tests = Array(
-    "myspace"   => "MySpace",
-    "orkut"     => "orkut",
-    "orkutRest" => "orkut (REST)",
-    "partuza"   => "Partuza",
-    "plaxo"     => "Plaxo"
-);
+$tests = Array("myspace" => "MySpace", "orkut" => "orkut", "orkutRest" => "orkut (REST)", "partuza" => "Partuza", "plaxo" => "Plaxo", "netlog" => 'Netlog', 'hi5' => 'Hi5');
 
 $links = Array();
 foreach ($tests as $value => $name) {
@@ -105,4 +102,4 @@ foreach ($tests as $value => $name) {
 }
 
 ?>
-<p><a href="index.php">Back to the index</a>. Run this sample using data from: <?= implode($links, ", ") ?> </p>
+<p><a href="index.php">Back to the index</a>. Run this sample using data from: <?=implode($links, ", ")?> </p>
