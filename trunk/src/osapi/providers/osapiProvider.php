@@ -22,6 +22,8 @@ require_once "osapiMySpaceProvider.php";
 require_once "osapiPlaxoProvider.php";
 require_once "osapiOrkutProvider.php";
 require_once "osapiPartuzaProvider.php";
+require_once "osapiNetlogProvider.php";
+require_once "osapiHi5Provider.php";
 require_once "osapiXrdsProvider.php";
 
 /**

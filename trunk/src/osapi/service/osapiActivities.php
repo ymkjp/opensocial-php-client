@@ -22,7 +22,7 @@
  * @author Chris Chabot
  */
 class osapiActivities extends osapiService {
-  
+
   /**
    * Gets a list of activities.
    *
@@ -93,7 +93,7 @@ class osapiActivities extends osapiService {
     $id = isset($array['id']) ? $array['id'] : null;
     $userId = isset($array['userId']) ? $array['userId'] : null;
     if ($strictMode && $userId == null) {
-      throw new osapiException("Missing user id in activity");
+      //throw new osapiException("Missing user id in activity");
     }
     $activity = new osapiActivity($id, $userId);
     self::convertMediaItems($activity, $array, $strictMode);
