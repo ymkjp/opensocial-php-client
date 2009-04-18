@@ -52,7 +52,6 @@ class osapiOAuth3Legged extends osapiOAuth2Legged {
     $this->signatureMethod = new OAuthSignatureMethod_HMAC_SHA1();
     $this->storage = $storage;
     $this->storageKey = 'OAuth:' . $consumerKey . ':' . $userId . ':' . $localUserId; // Scope data to the local user as well, or else multiple local users will share the same OAuth credentials.
-
     if (($token = $storage->get($this->storageKey)) !== false) {
       $this->accessToken = $token;
     }
@@ -75,7 +74,6 @@ class osapiOAuth3Legged extends osapiOAuth2Legged {
    */
   public static function performOAuthLogin($consumerKey, $consumerSecret, osapiStorage $storage, osapiProvider $provider, $localUserId = null, $userId = null) {
     $auth = new osapiOAuth3Legged($consumerKey, $consumerSecret, $storage, $provider, $localUserId, $userId);
-
     if (($token = $storage->get($auth->storageKey)) !== false) {
       $auth->accessToken = $token;
     } else {
@@ -103,15 +101,14 @@ class osapiOAuth3Legged extends osapiOAuth2Legged {
    */
   public function upgradeRequestToken($requestToken, $requestTokenSecret) {
     $ret = $this->requestAccessToken($requestToken, $requestTokenSecret);
-
     if ($ret['http_code'] == '200') {
       $matches = array();
-      preg_match('/oauth_token=(.*)&oauth_token_secret=(.*)/', $ret['data'], $matches);
-      if (!is_array($matches) || count($matches) != 3) {
-        throw new osapiException("Error authorizing access key ({$ret['data']})");
+      @parse_str($ret['data'], $matches);
+      if (!isset($matches['oauth_token']) || !isset($matches['oauth_token_secret'])) {
+        throw new osapiException("Error authorizing access key (result was: {$ret['data']})");
       }
       // The token was upgraded to an access token, we can now continue to use it.
-      $this->accessToken = new OAuthConsumer(urldecode($matches[1]), urldecode($matches[2]));
+      $this->accessToken = new OAuthConsumer(urldecode($matches['oauth_token']), urldecode($matches['oauth_token_secret']));
       $this->storage->set($this->storageKey, $this->accessToken);
       return $this->accessToken;
     } else {
@@ -131,7 +128,6 @@ class osapiOAuth3Legged extends osapiOAuth2Legged {
     $accessToken = new OAuthConsumer($requestToken, $requestTokenSecret);
     $accessRequest = OAuthRequest::from_consumer_and_token($this->consumerToken, $accessToken, "GET", $this->provider->accessTokenUrl, array());
     $accessRequest->sign_request($this->signatureMethod, $this->consumerToken, $accessToken);
-
     return osapiIO::send($accessRequest, 'GET', $this->provider->httpProvider);
   }
 
@@ -158,9 +154,7 @@ class osapiOAuth3Legged extends osapiOAuth2Legged {
    */
   public function obtainRequestToken($callbackUrl) {
     $this->storage->set($this->storageKey.":originalUrl", $callbackUrl);
-
     $ret = $this->requestRequestToken();
-
     if ($ret['http_code'] == '200') {
       $matches = array();
       preg_match('/oauth_token=(.*)&oauth_token_secret=(.*)/', $ret['data'], $matches);
@@ -186,9 +180,7 @@ class osapiOAuth3Legged extends osapiOAuth2Legged {
         $requestTokenRequest->set_parameter($key, $value);
       }
     }
-
     $requestTokenRequest->sign_request($this->signatureMethod, $this->consumerToken, NULL);
-
     return osapiIO::send($requestTokenRequest, 'GET', $this->provider->httpProvider);
   }
 
