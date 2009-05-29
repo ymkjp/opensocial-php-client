@@ -41,11 +41,38 @@ class osapiPartuzaProvider extends osapiProvider {
 }
 
 /**
- * Class for local debugging and development, inherits the osapiPartuzaProvider's preRequestProcess but overwrites the
- * constructor to one with a local name: "http://partuza"
+ * Class for local debugging and development, inherits the osapiPartuzaProvider's 
+ * preRequestProcess but overwrites the shindig and partuza URLs.  
+ * @param string $httpProvider The HTTP provider to use.
+ * @param string $partuzaUrl The base location of a Partuza instance.  Defaults
+ *     to "http://partuza".
+ * @param string $shindigUrl The base location of a Shindig instance.  Defaults
+ *     to "http://shindig".
  */
 class osapiLocalPartuzaProvider extends osapiPartuzaProvider {
-  public function __construct(osapiHttpProvider $httpProvider = null) {
-    parent::__construct("http://partuza/oauth/request_token", "http://partuza/oauth/authorize", "http://partuza/oauth/access_token", "http://shindig/social/rest", "http://shindig/social/rpc", "LocalPartuza", true, $httpProvider);
+  public function __construct(osapiHttpProvider $httpProvider = null, $partuzaUrl = "http://partuza", $shindigUrl = "http://shindig") {
+    parent::__construct($httpProvider);
+    
+    $partuzaUrl = $this->trimSlash($partuzaUrl);
+    $shindigUrl = $this->trimSlash($shindigUrl);
+    
+    $this->requestTokenUrl = $partuzaUrl . "/oauth/request_token";
+    $this->authorizeUrl = $partuzaUrl . "/oauth/authorize";
+    $this->accessTokenUrl = $partuzaUrl . "/oauth/access_token";
+    $this->restEndpoint = $shindigUrl . "/social/rest";
+    $this->rpcEndpoint = $shindigUrl . "/social/rpc";
+    $this->providerName = "LocalPartuza";
+    $this->isOpenSocial = true;
+  }
+  
+  /**
+   * Given an url, this function returns the same url with a trailing slash 
+   * removed, if it exists.
+   */
+  private function trimSlash($url) {
+    if (substr($url, -1) == "/") {
+      return substr($url, 0, -1);
+    }
+    return $url;
   }
 }
