@@ -1,0 +1,11 @@
+#summary Downloading and installing the PHP client library.
+#sidebar TableOfContents
+= Getting Started =
+
+The !OpenSocial PHP client library helps you work with social network data from your web server.  This document will help explain where you can obtain the files for the client library, and how to use them in your own projects.
+
+== Obtaining the client library ==
+
+== What to do with the files ==
+
+== Including the PHP client library in your projects ==
