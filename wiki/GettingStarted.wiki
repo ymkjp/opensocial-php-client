@@ -3,7 +3,7 @@
 
 This client library helps you work with social network data from your web server.  This document will help explain where you can obtain the files for the client library, and how to use them in your own projects.
 
-<wiki:toc max_depth="1" />
+<wiki:toc />
 
 == Obtaining the client library ==
 
