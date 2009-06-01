@@ -1,7 +1,7 @@
 #summary Connecting to OpenSocial containers
 #sidebar TableOfContents
 
-To use the client library, you must first configure it to connect to an OpenSocial-compatible container.  To do this, you need to create two objects:
+To use the client library, you must first configure it to connect to an !OpenSocial-compatible container.  To do this, you need to create two objects:
 
   * An `osapiAuth` instance, which determines how the client library will identify your application to the container.
   * An `osapiProvider` instance, which contains the configuration for a specific container.
