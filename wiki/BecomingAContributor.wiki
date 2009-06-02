@@ -1,5 +1,7 @@
 #summary How to become a contributor and submit patches
 #labels Featured
+#sidebar TableOfContents
+
 =How to become a contributor and submit patches=
 
 ==Contributor License Agreements==
