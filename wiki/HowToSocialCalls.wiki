@@ -3,6 +3,8 @@
 
 Once you have [HowToConnecting connected the library to a container] and obtained an `osapi` instance, you can start making calls against the !OpenSocial APIs.
 
+<wiki:toc />
+
 = Requests =
 Calls to the container are treated as individual request objects by the client library.  For example, here's code that creates a simple request for the current viewer:
 
