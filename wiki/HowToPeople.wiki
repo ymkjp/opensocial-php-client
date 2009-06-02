@@ -21,9 +21,9 @@ The `$params` parameter is an associative array of values you can use to customi
 || `userId` || `string` || ID of the user to operate on.  You may set this to *"@me"* to fetch the current user ||
 || `groupId` || `string` || The name of the group of people to fetch.  You may set this to *"@self"* to only fetch the user corresponding to `userId`, or *"@friends"* to fetch the user's friends. ||
 || `fields` || `array` || An array of [http://www.opensocial.org/Technical-Resources/opensocial-spec-v09/REST-API.html#personFields profile fields] to fetch.  You may set this to *"@all"* to fetch all available fields. || 
-
+|| `count` || `number` || The maximum number of results to return. ||
+|| `startIndex` || `number` || The starting index of the results to return (for paging). ||
 
 == Response ==
 
 The response for a successful request is an [http://code.google.com/p/opensocial-php-client/source/browse/trunk/src/osapi/model/osapiCollection.php osapiCollection] of [http://code.google.com/p/opensocial-php-client/source/browse/trunk/src/osapi/model/osapiPerson.php osapiPerson] objects.
-
