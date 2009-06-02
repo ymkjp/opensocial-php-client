@@ -8,3 +8,4 @@
     * [HowToMessages Messages]
   * [Samples Included samples]
   * [ProjectRoadmap Project roadmap]
+    * [BecomingAContributor Contributing]
