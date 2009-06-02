@@ -1,4 +1,5 @@
 #summary Downloading and installing the PHP client library.
+#labels Featured
 #sidebar TableOfContents
 
 This client library helps you work with social network data from your web server.  This document will help explain where you can obtain the files for the client library, and how to use them in your own projects.
