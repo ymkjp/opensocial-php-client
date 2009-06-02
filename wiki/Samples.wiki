@@ -1,5 +1,6 @@
 #summary Where to find client library samples
 #labels Featured
+#sidebar TableOfContents
 
 To run the samples, simply unzip the client library distribution to a web accessible directory on a server that supports PHP.  
 
