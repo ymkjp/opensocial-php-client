@@ -1,0 +1,42 @@
+#summary How to request and update AppData
+#sidebar TableOfContents
+
+This page will demonstrate how to work with App Data stored on an !OpenSocial container.
+
+<wiki:toc />
+
+= Fetching =
+
+== Creating the request ==
+
+The request for obtaining app data is:
+
+{{{
+$request = $osapi->appdata->get($params);
+}}}
+
+The `$params` parameter is an associative array of values you can use to customize the request.  
+
+|| *Key* || *Type* || *Description* ||
+|| `userId` || `string` || ID of the user to operate on.  You may set this to *"@me"* to fetch data for the current user ||
+|| `groupId` || `string` || The name of the group of people to fetch App Data for.  You may set this to *"@self"* to only fetch data for the user corresponding to `userId`, or *"@friends"* to fetch data for the user's friends. ||
+|| `appId` || `string` || The ID of the application to fetch App Data for. You may use *"@app"* to fetch data for the current application. ||
+|| `fields` || `array` || An array of App Data keys to fetch.  You may set this to *array("`*`")* to fetch all available keys. || 
+
+Additional parameters you can use are listed in the [http://www.opensocial.org/Technical-Resources/opensocial-spec-v09/REST-API.html#standardQueryParameters OpenSocial specification].
+
+== Response ==
+
+The response for a successful request is an associative array where the keys are IDs corresponding to !OpenSocial user IDs, and the values are associative arrays of App Data key/value pairs:
+
+{{{
+Array
+(
+    [<user id>] => Array
+        (
+            [<key 1>] => <value 1>
+            [<key 2>] => <value 2>
+        )
+
+)
+}}}
