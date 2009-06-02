@@ -28,4 +28,62 @@ Additional parameters you can use are listed in the [http://www.opensocial.org/T
 
 == Response ==
 
-The response for a successful request is an [http://code.google.com/p/opensocial-php-client/source/browse/trunk/src/osapi/model/osapiCollection.php osapiCollection] of [http://code.google.com/p/opensocial-php-client/source/browse/trunk/src/osapi/model/osapiPerson.php osapiPerson] objects.
+The response for a successful *@self* request is an [http://code.google.com/p/opensocial-php-client/source/browse/trunk/src/osapi/model/osapiPerson.php osapiPerson] object:
+
+{{{
+osapiPerson Object
+(
+    [displayName] => Sample Testington
+    [id] => 12345
+    [lookingFor] => Array
+        (
+            [displayValue] => Friends
+            [key] => FRIENDS
+        )
+
+    [name] => Sample Testington
+    [profileUrl] => http://example.com/profile/12345
+    [thumbnailUrl] => http://example.com/images/people/12345.jpg
+    [isOwner] => 1
+    [isViewer] => 1
+)
+}}}
+
+
+The response for a successful request for multiple people is an [http://code.google.com/p/opensocial-php-client/source/browse/trunk/src/osapi/model/osapiCollection.php osapiCollection] of [http://code.google.com/p/opensocial-php-client/source/browse/trunk/src/osapi/model/osapiPerson.php osapiPerson] objects.
+
+{{{
+osapiCollection Object
+(
+    [list] => Array
+        (
+            [0] => osapiPerson Object
+                (
+                    [displayName] => Sample Testington
+                    [id] => 12345
+                    [profileUrl] => http://example.com/profile/12345
+                    [thumbnailUrl] => http://example.com/images/people/12345.jpg
+                    [isOwner] => 
+                    [isViewer] => 
+                )
+
+            [1] => osapiPerson Object
+                (
+                    [displayName] => Alice Testington
+                    [id] => 23456
+                    [profileUrl] => http://example.com/profile/23456
+                    [thumbnailUrl] => http://example.com/images/people/23456.jpg
+                    [isOwner] => 
+                    [isViewer] => 
+                )
+
+        )
+
+    [startIndex] => 0
+    [totalResults] => 5
+    [itemsPerPage] => 2
+    [filtered] => 
+    [sorted] => 
+    [updatedSince] => 
+)
+}}}
