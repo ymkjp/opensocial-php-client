@@ -5,7 +5,6 @@
     * [HowToPeople People]
     * [HowToAppData AppData]
     * [HowToActivities Activities]
-    * [HowToMessages Messages]
   * [Samples Included samples]
   * [ProjectRoadmap Project roadmap]
     * [BecomingAContributor Contributing]
