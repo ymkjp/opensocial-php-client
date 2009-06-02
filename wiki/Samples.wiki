@@ -13,3 +13,5 @@ View the source of each sample in the
   * Send messages: ([http://code.google.com/p/opensocial-php-client/source/browse/trunk/src/examples/messages.php messages.php])
 
 Additionally, check out the unit tests in the [http://code.google.com/p/opensocial-php-client/source/browse/#svn/trunk/test /test] directory for more examples of how to use the library.
+
+*If you have any problems running these samples, please [http://code.google.com/p/opensocial-php-client/issues/list file a bug] and report them to our [http://groups.google.com/group/opensocial-client-libraries client libraries discussion group].  Thanks!*
