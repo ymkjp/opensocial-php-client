@@ -40,3 +40,46 @@ Array
 
 )
 }}}
+
+= Creating / Updating =
+
+== Creating the requests ==
+
+The request for creating app data is:
+
+{{{
+$request = $osapi->appdata->create($params);
+}}}
+
+The request for updating app data is:
+
+{{{
+$request = $osapi->appdata->update($params);
+}}}
+
+The `$params` parameter is an associative array of values you can use to customize either of these requests.  
+
+|| *Key* || *Type* || *Description* ||
+|| `userId` || `string` || ID of the user to operate on.  You may set this to *"@me"* to set data for the current user ||
+|| `groupId` || `string` ||  You may set this to *"@self"* to update data for the user corresponding to `userId`.  Most containers will not support setting App Data for anything other than @self. ||
+|| `appId` || `string` || The ID of the application to set App Data for. You may use *"@app"* to set data for the current application. ||
+|| `data` || `array` || An array of App Data key/value pairs to set.  || 
+
+For example, to set values for `key1`, `key2`, and `key3` for the current user, you would set `$params` to:
+
+{{{
+  $params = array(
+      'userId' => '@me', 
+      'groupId' => '@self', 
+      'appId' => '@app',
+      'data' => array(
+          'key1' => 'value 1', 
+          'key2' => 'value 2', 
+          'key3' => 'value 3'
+      )
+  );
+}}}
+
+== Response ==
+
+Creating or updating App Data has succeeded if the response is not an instance of `osapiError`.
