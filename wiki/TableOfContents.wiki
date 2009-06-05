@@ -1,4 +1,5 @@
 #summary Documentation Table of Contents
+== Documentation ==
   * [GettingStarted Getting Started]
   * [HowToConnecting Connecting to a container]
   * [HowToSocialCalls Making social calls]
