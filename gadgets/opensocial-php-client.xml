@@ -24,6 +24,13 @@
 <Content type="html">
   <![CDATA[
     <!-- ALm6fM15ZElTNQE3gVfLdvTiqkPC0KgiunjLNl6Ud6XtbqdLFSvmqoVQaj4X8R3rzAeYER6SGshPNqKR507bxP4vvy9ETBbLKR6IY0ExRGn0Mv4TSo27-Z6d0mSyxOhfMjwW_8XoX9sO2-_VvBP-gqk4OlzBZIf1w_yfPwlVajqoL6i8EfKSQXrgSp5MuVIs2rMSOvPdg7of -->
+    <!--
+      OAuth Consumer Key:  249475676706
+      OAuth Consumer Secret:  fWPcoVP6DOLVqZOF2HH+ihU2
+      Note: The Consumer Key used by different containers will be of the form 
+      <container domain>:<consumer key>
+      E.g. orkut.com:249475676706, igoogle.com:249475676706
+      -->
     <h1>Please uninstall this application</h1>
     <p>This application is a placeholder for testing the <a href="http://opensocial-php-client.googlecode.com">OpenSocial PHP Client Library</a>.  If you have installed this application, your social network profile information can be viewed by anyone on the internet.</p>
     <script type="text/javascript">
