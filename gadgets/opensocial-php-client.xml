@@ -1,0 +1,30 @@
+<Module>
+  <!--
+   Copyright 2008 Google Inc.
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+       http://www.apache.org/licenses/LICENSE-2.0
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+  -->
+  <ModulePrefs
+    title_url="http://opensocial-php-client.appspot.com"
+    title="PHP Client Library Test App (Do not install!)"
+    screenshot="http://opensocial-php-client.googlecode.com/svn/gadget/gadget-screenshot.png"
+    thumbnail="http://opensocial-php-client.googlecode.com/svn/gadget/gadget-thumbnail.png"
+    description="Do not install!  This application is a placeholder for testing the OpenSocial PHP client library.  By installing this application, your information will be viewable by anyone on the internet.  For more information, please see http://opensocial-php-client.googlecode.com"
+    author_email="alice.testington@gmail.com">
+    <Require feature="opensocial-0.8" />
+    <Optional feature="dynamic-height" />
+  </ModulePrefs>
+<Content type="html">
+  <![CDATA[
+    <h1>Please uninstall this application</h1>
+    <p>This application is a placeholder for testing the <a href="http://opensocial-php-client.googlecode.com">OpenSocial PHP Client Library</a>.  If you have installed this application, your social network profile information can be viewed by anyone on the internet.</p>
+  ]]>
+</Content>
+</Module>
