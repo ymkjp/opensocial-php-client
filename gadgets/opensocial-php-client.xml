@@ -25,6 +25,9 @@
   <![CDATA[
     <h1>Please uninstall this application</h1>
     <p>This application is a placeholder for testing the <a href="http://opensocial-php-client.googlecode.com">OpenSocial PHP Client Library</a>.  If you have installed this application, your social network profile information can be viewed by anyone on the internet.</p>
+    <script type="text/javascript">
+      gadgets.window.adjustHeight();
+    </script>
   ]]>
 </Content>
 </Module>
