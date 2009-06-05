@@ -15,19 +15,23 @@
  * limitations under the License.
  */
 
-require_once "osapiHttpBasic.php";
-require_once "osapiOAuth2Legged.php";
-require_once "osapiOAuth3Legged.php";
-require_once "osapiSecurityToken.php";
-require_once "osapiFCAuth.php";
+require_once "osapiAuth.php";
 
 /**
- * Authentication class that deals with 3-Legged OAuth
- * See http://sites.google.com/site/oauthgoog/2leggedoauth/2opensocialrestapi
- * for more information on the difference between 2 or 3 leggged oauth
+ * Authentication class that uses the fcauth token to authenticate
+ * requests. Singing in this case means simply adding ?fcauth=<token> to
+ * the url
  *
- * @author Chris Chabot
+ * @author Arne Roomann-Kurrik
  */
-abstract class osapiAuth {
-  abstract public function sign($method, $url, $params = array(), $postBody = false, &$headers = array());
+class osapiFCAuth extends osapiSecurityToken {
+  /**
+   * Constructs an osapiFCAuth for simple authentication.
+   *
+   * @param string $securityToken the supplied fcauth token
+   */
+  public function __construct($securityToken) {
+    parent::__construct($securityToken);
+    $this->tokenParameter = "fcauth";
+  }
 }

@@ -26,6 +26,7 @@ require_once "osapiAuth.php";
  */
 class osapiSecurityToken extends osapiAuth {
   private $securityToken;
+  protected $tokenParameter;
 
   /**
    * Constructs an osapiSecurityToken for simple authentication.
@@ -33,6 +34,7 @@ class osapiSecurityToken extends osapiAuth {
    * @param string $securityToken the supplied security token
    */
   public function __construct($securityToken) {
+    $this->tokenParameter = "st";
     $this->securityToken = $securityToken;
   }
 
@@ -46,6 +48,6 @@ class osapiSecurityToken extends osapiAuth {
    */
   public function sign($method, $url, $params = array(), $postBody = false, &$headers = array()) {
     $seperator = strpos($url, '?') === false ? '?' : '&';
-    return $url . $seperator . 'st=' . $this->securityToken . implode('&', $params);
+    return $url . $seperator . $this->tokenParameter . '=' . $this->securityToken . implode('&', $params);
   }
 }
