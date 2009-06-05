@@ -117,6 +117,21 @@ If you are making REST calls for a gadget running inside of a social network, yo
 $auth = new osapiSecurityToken("<security token>");
 }}}
 
+== FCAuth Token ==
+Google Friend Connect supports using [http://code.google.com/apis/friendconnect/opensocial_rest_rpc.html#site-cookie a site authentication cookie] to authorize your client library requests.  This works in the same way as the security token, but needs to be passed to the RPC or REST endpoint as a parameter named `fcauth`.  Configure your client in the following manner to use this parameter:
+
+{{{
+$auth = new osapiFCAuth("<fcauth token>");
+}}}
+
+The FCAuth token value is sent as a cookie to your server when a user is logged in.  You should be able to access the value of this token by checking for a cookie named `fcauth<site ID number>`:
+
+{{{
+$site_id = "<your friend connect site ID goes here>";
+$fcauth_token = $_COOKIE["fcauth" . $site_id];
+}}}
+
+
 = Creating an `osapi` instance =
 When you have obtained an auth and provider instance, pass them to the `osapi` constructor to get an object you can use to make social requests:
 
