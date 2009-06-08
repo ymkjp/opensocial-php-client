@@ -15,7 +15,6 @@
  * limitations under the License.
  */
 
-require_once("osapiLoggerException.php");
 include_once("osapiDummyAppender.php");
 include_once("osapiConsoleAppender.php");
 include_once("osapiFileAppender.php");

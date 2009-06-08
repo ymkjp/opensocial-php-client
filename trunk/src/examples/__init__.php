@@ -28,7 +28,7 @@ set_include_path(get_include_path() . PATH_SEPARATOR . '..');
 require_once "osapi/osapi.php";
 
 // Enable logger.
-osapiLogger::setLevel(osapiLogger::$INFO);
+osapiLogger::setLevel(osapiLogger::INFO);
 osapiLogger::setAppender(new osapiFileAppender("/tmp/logs/osapi.log"));
 
 // Allow users to select which test they would like to run from the querystring

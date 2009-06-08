@@ -38,6 +38,7 @@ require_once "logger/osapiLogger.php";
 class osapiException extends Exception {}
 class osapiAuthError extends Exception {}
 class osapiStorageException extends Exception {}
+class osapiLoggerException extends Exception {}
 
 /**
  * The osapi (OpenSocial API) class can be used to work with social
