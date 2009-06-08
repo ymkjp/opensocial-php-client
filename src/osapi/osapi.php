@@ -32,6 +32,7 @@ require_once "io/osapiHttpProvider.php";
 require_once "service/osapiService.php";
 require_once "auth/osapiAuth.php";
 require_once "model/osapiModel.php";
+require_once "logger/osapiLogger.php";
 
 /* Basic exception classes */
 class osapiException extends Exception {}

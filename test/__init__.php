@@ -30,3 +30,7 @@ set_include_path(get_include_path()
     . PATH_SEPARATOR . realpath(dirname(__FILE__) . '/../src'));
   
 require_once 'osapi/osapi.php';
+
+// Enable logger.
+osapiLogger::setLevel(osapiLogger::INFO);
+osapiLogger::setAppender(new osapiFileAppender("/tmp/logs/osapi.log"));
