@@ -47,6 +47,11 @@ class osapiActivities extends osapiService {
     if (!$params['activity'] instanceof osapiActivity) throw new osapiException("Activity param should be a osapiActivity in osapiActivities->create");
     // strip out the null values before we post the activity
     $params['activity'] = self::trimResponse($params['activity']);
+    // add appId => @app if it is missing.
+    if (!isset($params['appId'])) {
+      $params['appId'] = '@app';
+    }
+    
     return osapiRequest::createRequest('activities.create', $params);
   }
 

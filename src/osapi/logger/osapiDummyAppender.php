@@ -16,7 +16,6 @@
  */
 
 require_once "osapiAppender.php";
-require_once "osapiLoggerException.php";
 
 /**
  * The osapiConsoleAppender writes logs to console.

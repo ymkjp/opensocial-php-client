@@ -16,7 +16,6 @@
  */
 
 require_once("osapiAppender.php");
-require_once("osapiLoggerException.php");
 
 /**
  * The osapiLogger class provides a logger for osapi library. You can
