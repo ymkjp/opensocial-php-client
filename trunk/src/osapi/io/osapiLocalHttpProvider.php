@@ -49,7 +49,7 @@ class osapiLocalHttpProvider extends osapiHttpProvider {
     );
     
     osapiLogger::info("HTTP Request");
-    osapiLogger::info($request);
+    osapiLogger::info($this->request);
     
     $response = array_shift($this->responses);
     
