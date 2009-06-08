@@ -27,6 +27,10 @@ set_include_path(get_include_path() . PATH_SEPARATOR . '..');
 // Require the osapi library
 require_once "osapi/osapi.php";
 
+// Enable logger.
+osapiLogger::setLevel(osapiLogger::$INFO);
+osapiLogger::setAppender(new osapiFileAppender("/tmp/logs/osapi.log"));
+
 // Allow users to select which test they would like to run from the querystring
 if (isset($_REQUEST["test"])) {
   $test = $_REQUEST["test"];
@@ -68,7 +72,9 @@ switch ($test) {
     break;
   case 'partuza':
     $provider = new osapiPartuzaProvider();
-    $osapi = new osapi($provider, osapiOAuth3Legged::performOAuthLogin('ddf4f9f7-f8e7-c7d9-afe4-c6e6c8e6eec4', '6f0e1a11ac45caed32d699f9e92ae959', new osapiFileStorage('/tmp/osapi'), $provider, $localUserId));
+    $storage = new osapiFileStorage('/tmp/osapi');
+    $auth = osapiOAuth3Legged::performOAuthLogin('ddf4f9f7-f8e7-c7d9-afe4-c6e6c8e6eec4', '6f0e1a11ac45caed32d699f9e92ae959', $storage, $provider, $localUserId);
+    $osapi = new osapi($provider, $auth);
     break;
   case 'plaxo':
     $osapi = new osapi($provider = new osapiPlaxoProvider(), osapiOAuth3Legged::performOAuthLogin('anonymous', '', new osapiFileStorage('/tmp/osapi'), $provider, $localUserId));

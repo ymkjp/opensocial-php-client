@@ -34,6 +34,17 @@ class osapiCurlProvider extends osapiHttpProvider {
    */
   public function send($url, $method, $postBody = false, $headers = false, $ua = self::USER_AGENT) {
     $ch = curl_init();
+    
+    $request = array(
+      'url' => $url,
+      'method' => $method,
+      'body' => $postBody,
+      'headers' => $headers
+    );
+
+    osapiLogger::info("HTTP Request");
+    osapiLogger::info($request);
+
     curl_setopt($ch, CURLOPT_URL, $url);
     if ($postBody) {
       curl_setopt($ch, CURLOPT_POSTFIELDS, $postBody);
@@ -69,6 +80,11 @@ class osapiCurlProvider extends osapiHttpProvider {
       } else $response_header_array[$header] = $value;
     }
     
-    return array('http_code' => $http_code, 'data' => $response_body, 'headers' => $headers);
+    $response = array('http_code' => $http_code, 'data' => $response_body, 'headers' => $headers);
+    
+    osapiLogger::info("HTTP Response");
+    osapiLogger::info($response);
+    
+    return $response;
   }
 }

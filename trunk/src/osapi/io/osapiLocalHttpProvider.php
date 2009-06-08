@@ -47,7 +47,16 @@ class osapiLocalHttpProvider extends osapiHttpProvider {
       'body' => $postBody,
       'headers' => $headers
     );
-    return array_shift($this->responses);
+    
+    osapiLogger::info("HTTP Request");
+    osapiLogger::info($request);
+    
+    $response = array_shift($this->responses);
+    
+    osapiLogger::info("HTTP Response");
+    osapiLogger::info($response);
+
+    return $response;
   }
   
   /**

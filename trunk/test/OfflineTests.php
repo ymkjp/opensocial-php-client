@@ -30,7 +30,7 @@ require_once '__init__.php';
 class OfflineTests {
   public static function suite() {
     $types = array('common', 'auth', 'io', 'model', 'providers', 'service',
-                   'storage');
+                   'storage', 'logger');
     $suite = new PHPUnit_Framework_TestSuite();
     $suite->setName('OfflineTests');
     $path = realpath(dirname(__FILE__));
