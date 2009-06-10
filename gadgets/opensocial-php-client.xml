@@ -14,7 +14,7 @@
   -->
   <ModulePrefs
     title_url="http://opensocial-php-client.appspot.com"
-    title="PHP Client Library Test App (Do not install!)"
+    title="PHP Client Library Test App - Do not install!"
     screenshot="http://opensocial-php-client.googlecode.com/svn/gadgets/gadget-screenshot.png"
     thumbnail="http://opensocial-php-client.googlecode.com/svn/gadgets/gadget-thumbnail.png"
     description="Do not install!  This application is a placeholder for testing the OpenSocial PHP client library.  By installing this application, your information will be viewable by anyone on the internet.  For more information, please see http://opensocial-php-client.googlecode.com"
