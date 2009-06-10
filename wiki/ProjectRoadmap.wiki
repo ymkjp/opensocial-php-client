@@ -50,6 +50,7 @@ Our current roadmap for releases is:
     * Full 0.9 support
       * Invalidation
       * App Data as a Person field
+      * Updated messaging structure
   * Supported Containers
     * Hi5
     * Netlog
