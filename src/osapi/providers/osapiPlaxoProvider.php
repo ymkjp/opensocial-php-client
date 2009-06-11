@@ -77,7 +77,8 @@ class osapiPlaxoProvider extends osapiProvider {
    * @param array $response
    */
   private function fixNastyResponses(&$response) {
-    if ($response['http_code'] == 400) {
+    if ($response['http_code'] == 400 ||
+        $response['http_code'] == 401) {
       $matches = array();
       if (preg_match("/<p class=\"error\" style=\"font-family: monospace\">(.*?)<\/p>/", $response['data'], $matches )) {
         $response['data'] = $matches[1];
