@@ -29,8 +29,8 @@ require_once '__init__.php';
 require_once 'online/OnlineTestSuite.php';
 
 class PartuzaRpcTests extends OnlineTestSuite {
-  public $CONSUMER_KEY = 'e2c2d2dd-e6c4-c4df-b2c4-d6efd2dcffd1';
-  public $CONSUMER_SECRET = 'eb214eedcda39f3440c43b623806912f';
+  public $CONSUMER_KEY = 'dff1f9e1-d6cf-c9e8-abd1-d4eccfeacbdf';
+  public $CONSUMER_SECRET = '3fa4c036a48fae03e11a5ae2b073996e';
   public $USER_A_ID = '1311';
   public $USER_A_DISPLAY_NAME = 'Alice Testington';
 

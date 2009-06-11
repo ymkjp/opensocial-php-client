@@ -29,10 +29,10 @@ require_once '__init__.php';
 require_once 'online/OnlineTestSuite.php';
 
 class MySpaceTests extends OnlineTestSuite {
-  public $CONSUMER_KEY = 'http://opensocial-resources.googlecode.com/svn/samples/rest_rpc/sample.xml';
-  public $CONSUMER_SECRET = '6a838d107daf4d09b7d446422f5e7a81';
-  public $USER_A_ID = 'myspace.com:425505213';
-  public $USER_A_DISPLAY_NAME = 'API';
+  public $CONSUMER_KEY = 'http://opensocial-php-client.googlecode.com/svn/gadgets/opensocial-php-client.xml';
+  public $CONSUMER_SECRET = 'f07208f6993c4db9bac9c23729c558dd';
+  public $USER_A_ID = 'myspace.com:480224342';
+  public $USER_A_DISPLAY_NAME = 'Barry';
 
   protected function getOsapi() {
     $provider = new osapiMySpaceProvider();

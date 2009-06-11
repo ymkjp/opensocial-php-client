@@ -29,10 +29,10 @@ require_once '__init__.php';
 require_once 'online/OnlineTestSuite.php';
 
 class GoogleSandboxRestTests extends OnlineTestSuite {
-  public $CONSUMER_KEY = 'google.com:623061448914';
-  public $CONSUMER_SECRET = 'uynAeXiWTisflWX99KU1D2q5';
-  public $USER_A_ID = '116872018614015227492';
-  public $USER_A_DISPLAY_NAME = 'Dan Holevoet';
+  public $CONSUMER_KEY = 'google.com:249475676706';
+  public $CONSUMER_SECRET = 'fWPcoVP6DOLVqZOF2HH+ihU2';
+  public $USER_A_ID = '101911127807751034357';
+  public $USER_A_DISPLAY_NAME = 'Alice Testington';
 
   protected function getOsapi() {
     $provider = new osapiGoogleProvider();
