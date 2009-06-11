@@ -30,8 +30,10 @@ require_once 'OrkutSandboxRpcTests.php';
 require_once 'OrkutSandboxRestTests.php';
 require_once 'GoogleSandboxRpcTests.php';
 require_once 'GoogleSandboxRestTests.php';
+require_once 'FriendConnectRestTests.php';
 require_once 'MySpaceTests.php';
 require_once 'PartuzaRpcTests.php';
+require_once 'PartuzaRestTests.php';
 require_once 'PlaxoRestTests.php';
 
 class OnlineTests {
@@ -42,8 +44,10 @@ class OnlineTests {
     $suite->addTestSuite(new OrkutSandboxRestTests());
     $suite->addTestSuite(new GoogleSandboxRpcTests());
     $suite->addTestSuite(new GoogleSandboxRestTests());
-    $suite->addTestSuite(new MySpaceTests());
     $suite->addTestSuite(new PartuzaRpcTests());
+    $suite->addTestSuite(new PartuzaRestTests());
+    $suite->addTestSuite(new FriendConnectRestTests());
+    $suite->addTestSuite(new MySpaceTests());
     $suite->addTestSuite(new PlaxoRestTests());
     return $suite;
   }

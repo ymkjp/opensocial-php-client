@@ -22,25 +22,25 @@
  * This file is meant to be run through a php command line, not called
  * directly through the web browser. To run these tests from the command line:
  * # cd /path/to/client
- * # phpunit test/OrkutSandboxRpcTests.php
+ * # phpunit test/PartuzaRpcTests.php
  */
 
 require_once '__init__.php';
 require_once 'online/OnlineTestSuite.php';
 
-class OrkutSandboxRpcTests extends OnlineTestSuite {
-  public $CONSUMER_KEY = 'orkut.com:249475676706';
-  public $CONSUMER_SECRET = 'fWPcoVP6DOLVqZOF2HH+ihU2';
-  public $USER_A_ID = '01912035848546370285';
+class PartuzaRestTests extends OnlineTestSuite {
+  public $CONSUMER_KEY = 'dff1f9e1-d6cf-c9e8-abd1-d4eccfeacbdf';
+  public $CONSUMER_SECRET = '3fa4c036a48fae03e11a5ae2b073996e';
+  public $USER_A_ID = '1311';
   public $USER_A_DISPLAY_NAME = 'Alice Testington';
 
   protected function getOsapi() {
-    $provider = new osapiOrkutProvider();
+    $provider = new osapiPartuzaProvider();
     $auth = new osapiOAuth2Legged($this->CONSUMER_KEY, $this->CONSUMER_SECRET, $this->USER_A_ID);
     return new osapi($provider, $auth);
   }
 
   public static function suite() {
-    return new OrkutSandboxRpcTests();
+    return new PartuzaRpcTests();
   }
 }
