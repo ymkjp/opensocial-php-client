@@ -82,7 +82,7 @@ class osapiActivitiesTest extends PHPUnit_Framework_TestCase {
     $batch->add($this->osapi->activities->create(array('userId' => $this->userId, 'groupId' => '@friends', 'activity' => $activity)));
     $result = $batch->execute();
 
-    $canonicalBody = '[{"method":"activities.create","params":{"userId":["' . $this->userId . '"],"groupId":"@friends","activity":{"body":"' . $activityBody . '","title":"' . $activityTitle . '"}},"id":null}]';
+    $canonicalBody = '[{"method":"activities.create","params":{"userId":["' . $this->userId . '"],"groupId":"@friends","activity":{"body":"' . $activityBody . '","title":"' . $activityTitle . '"},"appId":"@app"},"id":null}]';
     $lastRequest = $this->osapi->provider->httpProvider->getLastRequest();
     $this->assertEquals($canonicalBody, $lastRequest['body']);
   }
