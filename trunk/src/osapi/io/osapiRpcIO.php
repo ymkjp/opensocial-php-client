@@ -38,11 +38,11 @@ class osapiRpcIO extends osapiIO {
     $url = $provider->rpcEndpoint;
     $params = array();
     $headers = array("Content-Type: application/json");
-    
+
     if (method_exists($provider, 'preRequestProcess')) {
       $provider->preRequestProcess($requests, $method, $url, $headers, $signer);
     }
-    
+
     $request = json_encode($requests);
     $signedUrl = $signer->sign($method, $url, $params, $request, $headers);
     $ret = self::send($signedUrl, $method, $provider->httpProvider, $headers, $request);

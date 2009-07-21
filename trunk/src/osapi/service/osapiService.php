@@ -19,6 +19,7 @@ require_once "osapiActivities.php";
 require_once "osapiAppData.php";
 require_once "osapiMessages.php";
 require_once "osapiPeople.php";
+require_once "osapiSystem.php";
 
 /**
  * Abstract base class for the service definitions
@@ -30,7 +31,7 @@ abstract class osapiService {
 
   /**
    * Set strict mode for this service. If set to true
-   * osapi will raise an exception on anything that is not 
+   * osapi will raise an exception on anything that is not
    * spec compliant.
    *
    * @param boolean $strictMode
@@ -47,7 +48,7 @@ abstract class osapiService {
   public function getStrictMode() {
     return $this->strictCode;
   }
-  
+
   /**
    * Trims all the un-used fields from an object or array recursively
    * Every type definition contains all possible OpenSocial fields

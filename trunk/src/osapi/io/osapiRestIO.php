@@ -72,7 +72,7 @@ class osapiRestIO extends osapiIO {
     if (method_exists($provider, 'postParseResponseProcess')) {
       $provider->postParseResponseProcess($request, $ret);
     }
-    
+
     return $ret;
   }
 
@@ -106,11 +106,17 @@ class osapiRestIO extends osapiIO {
         $headers = array("Content-Type: application/json");
       }
     }
-    
+
     $baseUrl = $provider->restEndpoint;
     if (substr($baseUrl, strlen($baseUrl) - 1, 1) == '/') {
       // Prevent double //'s in the url when concatinating
       $baseUrl = substr($baseUrl, 0, strlen($baseUrl) - 1);
+    }
+
+    $url = $baseUrl . self::constructUrl($urlTemplate, $request->params);
+    if (! $provider->isOpenSocial) {
+      // PortableContacts end points don't require the /people bit added
+      $url = str_replace('/people', '', $url);
     }
 
     if (method_exists($provider, 'preRequestProcess')) {
@@ -122,12 +128,6 @@ class osapiRestIO extends osapiIO {
         $postBody = json_encode($request->params[self::$postAliases[$service]]);
         unset($request->params[self::$postAliases[$service]]);
       }
-    }
-    
-    $url = $baseUrl . self::constructUrl($urlTemplate, $request->params);
-    if (! $provider->isOpenSocial) {
-      // PortableContacts end points don't require the /people bit added
-      $url = str_replace('/people', '', $url);
     }
 
     $signedUrl = $signer->sign($method, $url, $request->params, $postBody, $headers);

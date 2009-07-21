@@ -21,7 +21,7 @@
  *
  * @author Chris Chabot
  */
-class osapiRequest {  
+class osapiRequest {
   public $method;
   public $params;
   public $id;
@@ -30,7 +30,7 @@ class osapiRequest {
     $this->method = $method;
     $this->params = $params;
   }
-  
+
   /**
    * Creates a request to the specified service after performing some
    * simple error checking.
@@ -40,23 +40,27 @@ class osapiRequest {
    * @return osapiRequest the generated request
    */
   public static function createRequest($method, $params) {
-    // Verify the service name  
-    if (! in_array(self::getService($method), array('people', 'activities', 'appdata', 'messages'))) {
+    // Verify the service name
+    if (! in_array(self::getService($method), array('people', 'activities', 'appdata', 'messages', 'system', 'cache'))) {
       throw new osapiException("Invalid service: ".self::getService($method));
     }
     // Verify the method
-    if (! in_array(self::getOperation($method), array('get', 'update', 'create', 'delete'))) {
+    if ((self::getService($method) == 'cache' && self::getOperation($method) != 'invalidate') ||
+        (self::getService($method) == 'system' && self::getOperation($method) != 'listMethods') ||
+        (self::getService($method) != 'cache' && self::getService($method) != 'system' && ! in_array(self::getOperation($method), array('get', 'update', 'create', 'delete')))) {
       throw new osapiException("Invalid method: ".self::getOperation($method));
     }
-    // Verify base params
-    if (! isset($params['userId'])) {
-      throw new osapiException("Invalid or missing userId");
-    }
-    if (! is_array($params['userId'])) {
-      $params['userId'] = array($params['userId']);
-    }
-    if (isset($params['groupId']) && ! in_array($params['groupId'], array('@self', '@all', '@friends'))) {
-      throw new osapiException("Invalid groupId, allowed types are: @self, @all and @friends");
+    if (self::getService($method) != 'cache' && self::getService($method) != 'system') {
+	    // Verify base params
+	    if (! isset($params['userId'])) {
+	      throw new osapiException("Invalid or missing userId");
+	    }
+	    if (! is_array($params['userId'])) {
+	      $params['userId'] = array($params['userId']);
+	    }
+	    if (isset($params['groupId']) && ! in_array($params['groupId'], array('@self', '@all', '@friends'))) {
+	      throw new osapiException("Invalid groupId, allowed types are: @self, @all and @friends");
+	    }
     }
     // Everything checks out, create the request object & return it
     return new osapiRequest($method, $params);

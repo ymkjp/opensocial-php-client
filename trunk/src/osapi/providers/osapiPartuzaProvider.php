@@ -41,8 +41,8 @@ class osapiPartuzaProvider extends osapiProvider {
 }
 
 /**
- * Class for local debugging and development, inherits the osapiPartuzaProvider's 
- * preRequestProcess but overwrites the shindig and partuza URLs.  
+ * Class for local debugging and development, inherits the osapiPartuzaProvider's
+ * preRequestProcess but overwrites the shindig and partuza URLs.
  * @param string $httpProvider The HTTP provider to use.
  * @param string $partuzaUrl The base location of a Partuza instance.  Defaults
  *     to "http://partuza".
@@ -52,10 +52,8 @@ class osapiPartuzaProvider extends osapiProvider {
 class osapiLocalPartuzaProvider extends osapiPartuzaProvider {
   public function __construct(osapiHttpProvider $httpProvider = null, $partuzaUrl = "http://partuza", $shindigUrl = "http://shindig") {
     parent::__construct($httpProvider);
-    
     $partuzaUrl = $this->trimSlash($partuzaUrl);
     $shindigUrl = $this->trimSlash($shindigUrl);
-    
     $this->requestTokenUrl = $partuzaUrl . "/oauth/request_token";
     $this->authorizeUrl = $partuzaUrl . "/oauth/authorize";
     $this->accessTokenUrl = $partuzaUrl . "/oauth/access_token";
@@ -64,9 +62,9 @@ class osapiLocalPartuzaProvider extends osapiPartuzaProvider {
     $this->providerName = "LocalPartuza";
     $this->isOpenSocial = true;
   }
-  
+
   /**
-   * Given an url, this function returns the same url with a trailing slash 
+   * Given an url, this function returns the same url with a trailing slash
    * removed, if it exists.
    */
   private function trimSlash($url) {
