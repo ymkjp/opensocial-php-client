@@ -76,6 +76,19 @@ switch ($test) {
     $auth = osapiOAuth3Legged::performOAuthLogin('ddf4f9f7-f8e7-c7d9-afe4-c6e6c8e6eec4', '6f0e1a11ac45caed32d699f9e92ae959', $storage, $provider, $localUserId);
     $osapi = new osapi($provider, $auth);
     break;
+  case 'partuzaLocal':
+    $provider = new osapiLocalPartuzaProvider();
+    $storage = new osapiFileStorage('/tmp/osapi');
+    $auth = osapiOAuth3Legged::performOAuthLogin('ddf4f9f7-f8e7-c7d9-afe4-c6e6c8e6eec4', '6f0e1a11ac45caed32d699f9e92ae959', $storage, $provider, $localUserId);
+    $osapi = new osapi($provider, $auth);
+    break;
+  case 'partuzaLocalRest':
+    $provider = new osapiLocalPartuzaProvider();
+    $provider->rpcEndpoint = null;
+    $storage = new osapiFileStorage('/tmp/osapi');
+    $auth = osapiOAuth3Legged::performOAuthLogin('ddf4f9f7-f8e7-c7d9-afe4-c6e6c8e6eec4', '6f0e1a11ac45caed32d699f9e92ae959', $storage, $provider, $localUserId);
+    $osapi = new osapi($provider, $auth);
+    break;
   case 'plaxo':
     $osapi = new osapi($provider = new osapiPlaxoProvider(), osapiOAuth3Legged::performOAuthLogin('anonymous', '', new osapiFileStorage('/tmp/osapi'), $provider, $localUserId));
     break;
@@ -96,7 +109,7 @@ switch ($test) {
 }
 
 $script_name = $_SERVER["SCRIPT_NAME"];
-$tests = Array("myspace" => "MySpace", "orkut" => "orkut", "orkutRest" => "orkut (REST)", "partuza" => "Partuza", "plaxo" => "Plaxo", "netlog" => 'Netlog', 'hi5' => 'Hi5');
+$tests = Array("myspace" => "MySpace", "orkut" => "orkut", "orkutRest" => "orkut (REST)", "partuza" => "Partuza", "partuzaLocal" => "partuzaLocal", "partuzaLocalRest" => "partuzaLocalRest", "plaxo" => "Plaxo", "netlog" => 'Netlog', 'hi5' => 'Hi5');
 
 $links = Array();
 foreach ($tests as $value => $name) {

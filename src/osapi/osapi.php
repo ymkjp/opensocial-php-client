@@ -18,7 +18,7 @@
 /**
  * An OpenSocial RESTful client who's API is roughly inspired by the new lightweight JS API:
  * http://wiki.opensocial.org/index.php?title=Lightweight_JS_APIs
- * 
+ *
  * This library supports both the RPC and REST API of OpenSocial, and supports
  * both 2 legged and 3 legged OAuth.
  */
@@ -44,9 +44,9 @@ class osapiLoggerException extends Exception {}
  * The osapi (OpenSocial API) class can be used to work with social
  * information on a remote server that supports the OpenSocial (or
  * PortableContacts) RESTful API and OAuth.
- * 
+ *
  * See the the samples in the examples directory for example usage
- * 
+ *
  * @author Chris Chabot
  */
 class osapi {
@@ -56,6 +56,7 @@ class osapi {
   public $activities;
   public $appdata;
   public $messages;
+  public $system;
   private $strictMode = false;
 
   /**
@@ -74,8 +75,9 @@ class osapi {
     $this->activities = new osapiActivities();
     $this->appdata = new osapiAppData();
     $this->messages = new osapiMessages();
+    $this->system = new osapiSystem();
   }
-  
+
   /**
    * If set to true, osapi will raise exceptions on anything
    * that isn't quite spec compliant. Mostly useful for testing
@@ -90,7 +92,7 @@ class osapi {
     $this->appdata->setStrictMode($strictMode);
     $this->messages->setStrictMode($strictMode);
   }
-  
+
   /**
    * Returns true if osapi is set for strict spec checking
    *
@@ -99,7 +101,7 @@ class osapi {
   public function getStrictMode() {
     return $this->strictMode;
   }
-  
+
   /**
    * Creates a new batch request for this provider
    *
@@ -108,7 +110,7 @@ class osapi {
   public function newBatch() {
     return new osapiBatch($this->provider, $this->signer, $this->strictMode);
   }
-  
+
   /**
    * People might thing this class is identical to the JavaScript counterpart
    * and that they could do osapi->makeRequest(). This friendly function
@@ -117,11 +119,11 @@ class osapi {
   public function makeRequest() {
     throw new osapiException("makeRequest is not supported");
   }
-  
+
   /**
    * Misc function that returns TRUE if the endpoint is an OpenSocial
    * container, and FALSE if it's a PortableContacts endpoint.
-   * 
+   *
    * PortableContacts endpoints only support the people service, while
    * OpenSocial endpoints can also support activities, appdata and messages
    * (but it depends on the container which of those services they support)
