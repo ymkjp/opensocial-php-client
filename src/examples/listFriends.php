@@ -29,6 +29,7 @@ if ($osapi) {
   } else {
     $profile_fields = array(
         'aboutMe',
+        'displayName',
         'bodyType',
         'currentLocation',
         'drinker',

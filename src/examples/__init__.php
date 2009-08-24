@@ -106,10 +106,17 @@ switch ($test) {
   case 'myspace':
     $userId = '439607992';
     $osapi = new osapi(new osapiMySpaceProvider(), new osapiOAuth2Legged("http://dev.gain.resource.com", "7ebda6dee096455889bdab23ddacdfae", '439607992'));
+    break;
+  case 'google':
+    $provider = new osapiGoogleProvider();
+    $storage = new osapiFileStorage('/tmp/osapi');
+    $auth = osapiOAuth3Legged::performOAuthLogin('anonymous', 'anonymous', $storage, $provider, $localUserId);
+    $osapi = new osapi($provider, $auth);
+    break;
 }
 
 $script_name = $_SERVER["SCRIPT_NAME"];
-$tests = Array("myspace" => "MySpace", "orkut" => "orkut", "orkutRest" => "orkut (REST)", "partuza" => "Partuza", "partuzaLocal" => "partuzaLocal", "partuzaLocalRest" => "partuzaLocalRest", "plaxo" => "Plaxo", "netlog" => 'Netlog', 'hi5' => 'Hi5');
+$tests = Array("google" => "Google", "myspace" => "MySpace", "orkut" => "orkut", "orkutRest" => "orkut (REST)", "partuza" => "Partuza", "partuzaLocal" => "partuzaLocal", "partuzaLocalRest" => "partuzaLocalRest", "plaxo" => "Plaxo", "netlog" => 'Netlog', 'hi5' => 'Hi5');
 
 $links = Array();
 foreach ($tests as $value => $name) {
