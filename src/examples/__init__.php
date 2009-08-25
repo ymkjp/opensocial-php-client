@@ -108,6 +108,7 @@ switch ($test) {
     $osapi = new osapi(new osapiMySpaceProvider(), new osapiOAuth2Legged("http://dev.gain.resource.com", "7ebda6dee096455889bdab23ddacdfae", '439607992'));
     break;
   case 'google':
+    // See http://code.google.com/apis/accounts/docs/OAuthForInstalledApps.html for information about the key/secret
     $provider = new osapiGoogleProvider();
     $storage = new osapiFileStorage('/tmp/osapi');
     $auth = osapiOAuth3Legged::performOAuthLogin('anonymous', 'anonymous', $storage, $provider, $localUserId);
