@@ -144,10 +144,12 @@ class osapiProviderTest extends PHPUnit_Framework_TestCase {
    */
   public function changeActivityParameter(&$request, &$method, &$url, &$headers, osapiAuth &$signer) {
     if (is_array($request)) {
-      $request[0]->params['activity']->setTitle(self::TARGET_TITLE_VALUE);
+      $req = $request[0];
     } else {
-      $request->params['activity']->setTitle(self::TARGET_TITLE_VALUE);
+      $req = $request;
     }
+    $this->assertArrayHasKey('activity', $req->params);
+    $req->params['activity']->setTitle(self::TARGET_TITLE_VALUE);
   }
 
   /**
