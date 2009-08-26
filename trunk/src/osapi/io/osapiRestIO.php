@@ -100,9 +100,11 @@ class osapiRestIO extends osapiIO {
     $method = self::$methodAliases[$operation];
     $postBody = false;
     $headers = false;
+    $hasPostBody = false;
 
     if ($method != 'GET') {
       if (isset(self::$postAliases[$service]) && isset($request->params[self::$postAliases[$service]])) {
+        $hasPostBody = true;        
         $headers = array("Content-Type: application/json");
       }
     }
@@ -113,21 +115,24 @@ class osapiRestIO extends osapiIO {
       $baseUrl = substr($baseUrl, 0, strlen($baseUrl) - 1);
     }
 
+    if (method_exists($provider, 'preRequestProcess')) {
+      // Note that we're passing baseUrl, not the complete service URL.
+      // It should be easier to change service parameters by changing
+      // the params array than modifying a string url.
+      $provider->preRequestProcess($request, $method, $baseUrl, $headers, $signer);
+    }
+
+    if ($hasPostBody) {
+      // Pull out the (possibly) modified post body parameter and
+      // unset it from the request, so that it doesn't get signed.
+      $postBody = json_encode($request->params[self::$postAliases[$service]]);
+      unset($request->params[self::$postAliases[$service]]);
+    }
+
     $url = $baseUrl . self::constructUrl($urlTemplate, $request->params);
     if (! $provider->isOpenSocial) {
       // PortableContacts end points don't require the /people bit added
       $url = str_replace('/people', '', $url);
-    }
-
-    if (method_exists($provider, 'preRequestProcess')) {
-      $provider->preRequestProcess($request, $method, $url, $headers, $signer);
-    }
-
-    if ($method != 'GET') {
-      if (isset(self::$postAliases[$service]) && isset($request->params[self::$postAliases[$service]])) {
-        $postBody = json_encode($request->params[self::$postAliases[$service]]);
-        unset($request->params[self::$postAliases[$service]]);
-      }
     }
 
     $signedUrl = $signer->sign($method, $url, $request->params, $postBody, $headers);
