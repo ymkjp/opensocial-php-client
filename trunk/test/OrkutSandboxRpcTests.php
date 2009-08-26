@@ -34,6 +34,8 @@ class OrkutSandboxRpcTests extends OnlineTestSuite {
   public $USER_A_ID = '01912035848546370285';
   public $USER_A_DISPLAY_NAME = 'Alice Testington';
 
+  public $UNSUPPORTED_METHODS = array('activities.create');
+  
   protected function getOsapi() {
     $provider = new osapiOrkutProvider();
     $auth = new osapiOAuth2Legged($this->CONSUMER_KEY, $this->CONSUMER_SECRET, $this->USER_A_ID);

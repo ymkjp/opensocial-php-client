@@ -25,6 +25,12 @@ class OnlineTestCase extends PHPUnit_Framework_TestCase {
     }
   }
 
+  protected function assertSupportedMethod($method) {
+    if (is_array($this->suite->UNSUPPORTED_METHODS) && in_array($method, $this->suite->UNSUPPORTED_METHODS)) {
+      $this->markTestSkipped('The ' . $method . ' method is not supported by ' . $this->suite->getName());
+    }
+  }
+
   public function getName($withDataSet = TRUE) {
     return $this->suite->getName() . ' - ' . parent::getName($withDataSet);
   } 

@@ -22,6 +22,8 @@ require_once 'OnlineTestCase.php';
 
 class AppDataTest extends OnlineTestCase {
   public function testCreate() {
+    $this->assertSupportedMethod('appdata.create');
+
     $datenow = date('Y-m-d h:i:s');
     
     $batch = $this->suite->osapi->newBatch();
