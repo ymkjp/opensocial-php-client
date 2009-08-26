@@ -34,6 +34,8 @@ class OrkutSandboxRestTests extends OnlineTestSuite {
   public $USER_A_ID = '01912035848546370285';
   public $USER_A_DISPLAY_NAME = 'Alice Testington';
 
+  public $UNSUPPORTED_METHODS = array('activities.create');
+  
   protected function getOsapi() {
     $provider = new osapiOrkutProvider();
     $provider->rpcEndpoint = null;

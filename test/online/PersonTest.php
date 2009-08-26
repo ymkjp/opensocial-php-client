@@ -8,6 +8,8 @@ require_once 'OnlineTestCase.php';
 
 class PersonTest extends OnlineTestCase {
   public function testGetSelf() {
+    $this->assertSupportedMethod('people.get');
+
     $batch = $this->suite->osapi->newBatch();
     $batch->add($this->suite->osapi->people->get(array('userId' => '@me', 'groupId' => '@self')), 'self');
     $result = $batch->execute();
@@ -23,6 +25,9 @@ class PersonTest extends OnlineTestCase {
   }
 
   public function testGetSelfById() {
+    $this->assertSupportedMethod('people.get');
+    $this->assertSupportedMethod('people.get_by_id');
+
     $batch = $this->suite->osapi->newBatch();
     $batch->add($this->suite->osapi->people->get(array('userId' => $this->suite->USER_A_ID, 'groupId' => '@self')), 'self');
     $result = $batch->execute();
