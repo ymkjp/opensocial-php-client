@@ -41,13 +41,14 @@ class osapiRequest {
    */
   public static function createRequest($method, $params) {
     // Verify the service name
-    if (! in_array(self::getService($method), array('people', 'activities', 'appdata', 'messages', 'system', 'cache'))) {
+    if (! in_array(self::getService($method), array('people', 'activities', 'appdata', 'messages', 'system', 'cache', 'albums', 'mediaItems'))) {
       throw new osapiException("Invalid service: ".self::getService($method));
     }
     // Verify the method
     if ((self::getService($method) == 'cache' && self::getOperation($method) != 'invalidate') ||
         (self::getService($method) == 'system' && self::getOperation($method) != 'listMethods') ||
-        (self::getService($method) != 'cache' && self::getService($method) != 'system' && ! in_array(self::getOperation($method), array('get', 'update', 'create', 'delete')))) {
+        (self::getService($method) != 'cache' && self::getService($method) != 'system' && 
+            !in_array(self::getOperation($method), array('get', 'update', 'create', 'delete', 'upload', 'getSupportedFields')))) {
       throw new osapiException("Invalid method: ".self::getOperation($method));
     }
     if (self::getService($method) != 'cache' && self::getService($method) != 'system') {

@@ -29,19 +29,17 @@ if ($osapi) {
   $app_data_self_params = array(
       'userId' => $userId, 
       'groupId' => '@self', 
-      'appId' => $appId,
-      'fields' => array('*')
+      'appId' => $appId
   );
-  $batch->add($osapi->appdata->get($app_data_self_params), 'appdataSelf');
+  $batch->add($osapi->appData->get($app_data_self_params), 'appdataSelf');
 
   // Get the app data for the user's friends
   $app_data_friends_params = array(
       'userId' => $userId, 
       'groupId' => '@friends', 
-      'appId' => $appId,
-      'fields' => array('*')
+      'appId' => $appId
   );
-  $batch->add($osapi->appdata->get($app_data_friends_params), 'appdataFriends');
+  $batch->add($osapi->appData->get($app_data_friends_params), 'appdataFriends');
   
   // Create some app data for the current user 
   $create_params = array(
@@ -54,7 +52,7 @@ if ($osapi) {
           'osapiFoo3' => 'bar3'
       )
   );
-  $batch->add($osapi->appdata->create($create_params), 'createAppData');
+  $batch->add($osapi->appData->create($create_params), 'createAppData');
   
   // Update app data for the current user
   $update_params = array(
@@ -65,7 +63,7 @@ if ($osapi) {
           'osapiFoo1' => 'newBar1'
       )
   );
-  $batch->add($osapi->appdata->update($update_params), 'updateAppData');
+  $batch->add($osapi->appData->update($update_params), 'updateAppData');
   
   // Get the app data again to show the updated value
   $get_params = array(
@@ -78,7 +76,7 @@ if ($osapi) {
           'osapiFoo3'
       )
   );
-  $batch->add($osapi->appdata->get($get_params), 'getAppData');
+  $batch->add($osapi->appData->get($get_params), 'getAppData');
   
   // Delete the keys we created in the previous examples
   $delete_params = array(
@@ -91,7 +89,7 @@ if ($osapi) {
           'osapiFoo3'
       )
   );
-  $batch->add($osapi->appdata->delete($delete_params), 'deleteAppData');
+  $batch->add($osapi->appData->delete($delete_params), 'deleteAppData');
 
   
   /*

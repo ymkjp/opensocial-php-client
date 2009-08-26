@@ -31,6 +31,7 @@ class osapiSystem extends osapiService {
    *
    * @return osapiRequest
    */
+    
   public function listMethods() {
     return osapiRequest::createRequest('system.listMethods', array());
   }
@@ -53,4 +54,5 @@ class osapiSystem extends osapiService {
   {
     throw new osapiException("osapiCache only supports the invalidate method");
   }
+  
 }
