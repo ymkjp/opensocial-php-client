@@ -25,37 +25,38 @@ class osapiRestIO extends osapiIO {
   
 	// URL templates used to construct the REST requests
 	private static $urlTemplates = array(
-		'people' => 'people/{userId}/{groupId}/{personId}', 
-	  	'activities' => 'activities/{userId}/{groupId}/{appId}/{activityId}', 
-	  	'appdata' => 'appdata/{userId}/{groupId}/{appId}',
-	  	'messages' => 'messages/{userId}/outbox/{msgId}', 
-	  	'albums'=>'albums/{userId}/{groupId}/{albumId}',
-	  	'mediaItems'=>'mediaItems/{userId}/{groupId}/{albumId}/{mediaItemId}',
-		'groups'=>'groups/{userId}',
-	    // MySpace Specific
-	    'statusmood'=>'statusmood/{userId}/{groupId}',
-	    'notifications'=>'notifications/{userId}/{groupId}'
+	  'people' => 'people/{userId}/{groupId}/{personId}',
+	  'activities' => 'activities/{userId}/{groupId}/{appId}/{activityId}',
+	  'appdata' => 'appdata/{userId}/{groupId}/{appId}',
+	  'messages' => 'messages/{userId}/outbox/{msgId}', 
+	  'albums'=>'albums/{userId}/{groupId}/{albumId}',
+	  'mediaItems'=>'mediaItems/{userId}/{groupId}/{albumId}/{mediaItemId}',
+	  'groups'=>'groups/{userId}',
+	  // MySpace Specific
+	  'statusmood'=>'statusmood/{userId}/{groupId}',
+	  'notifications'=>'notifications/{userId}/{groupId}'
 	);
   
 	// Array used to resolve the method to the correct HTTP operation
-	private static $methodAliases = array('get' => 'GET', 
-		'create' => 'POST', 
-		'delete' => 'DELETE', 
-		'update' => 'PUT', 
-		'upload'=>'POST', 
-		'getSupportedFields'=>'GET'
+	private static $methodAliases = array(
+          'get' => 'GET',
+	  'create' => 'POST',
+	  'delete' => 'DELETE',
+	  'update' => 'PUT',
+	  'upload'=>'POST',
+	  'getSupportedFields'=>'GET'
 	);
 	
 	// Array used to define which field in the params array is supposed to be the post body
 	private static $postAliases = array(
 	  'people' => 'person',
 	  'activities' => 'activity', 
-	  'appdata' => 'appData', 
+	  'appdata' => 'data',
 	  'messages' => 'message', 
 	  'albums'=>'album',
 	  'mediaItems'=>'mediaItem',
 	  'statusmood'=>'statusMood',
-      'notifications'=>'notification'
+          'notifications'=>'notification'
 	);
 
   /**
@@ -137,28 +138,12 @@ class osapiRestIO extends osapiIO {
       	$headers = array("Content-Type: application/json");
       	
       	if($request->method == 'mediaItems.upload'){
-      		$postBody = $request->params[self::$postAliases[$service]];
-      		$headers = array("Content-Type: ".$request->params['contentType'], 'Expect:');
-      		unset($request->params['contentType']);
+          $postBody = $request->params[self::$postAliases[$service]];
+          $headers = array("Content-Type: " . $request->params['contentType'], 'Expect:');
+          unset($request->params['contentType']);
       	}
       }
     }
-    /*
-    $baseUrl = $provider->restEndpoint;
-    if (substr($baseUrl, strlen($baseUrl) - 1, 1) == '/') {
-      // Prevent double //'s in the url when concatinating
-      $baseUrl = substr($baseUrl, 0, strlen($baseUrl) - 1);
-    }
-    $url = $baseUrl . self::constructUrl($urlTemplate, $request);
-    if (! $provider->isOpenSocial) {
-      // PortableContacts end points don't require the /people bit added
-      $url = str_replace('/people', '', $url);
-    }
-
-    if (method_exists($provider, 'preRequestProcess')) {
-      $provider->preRequestProcess($request, $method, $url, $headers, $signer);
-    }
-    */
     
     $baseUrl = $provider->restEndpoint;
     if (substr($baseUrl, strlen($baseUrl) - 1, 1) == '/') {

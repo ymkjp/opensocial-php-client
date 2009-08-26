@@ -28,7 +28,7 @@
 require_once '__init__.php';
 require_once 'online/OnlineTestSuite.php';
 
-class FriendConnectRestTests extends OnlineTestSuite {
+class FriendConnectRpcTests extends OnlineTestSuite {
   public $CONSUMER_KEY = '*:17977379277592385609';
   public $CONSUMER_SECRET = '4oB93vo3EvQ=';
   public $USER_A_ID = '10314750576668418529';
@@ -36,12 +36,11 @@ class FriendConnectRestTests extends OnlineTestSuite {
 
   protected function getOsapi() {
     $provider = new osapiFriendConnectProvider();
-    $provider->rpcEndpoint = null;
     $auth = new osapiOAuth2Legged($this->CONSUMER_KEY, $this->CONSUMER_SECRET, $this->USER_A_ID);
     return new osapi($provider, $auth);
   }
 
   public static function suite() {
-    return new FriendConnectRestTests();
+    return new FriendConnectRpcTests();
   }
 }

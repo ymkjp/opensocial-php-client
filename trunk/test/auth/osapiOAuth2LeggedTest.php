@@ -67,14 +67,32 @@ class osapiOAuth2LeggedTest extends PHPUnit_Framework_TestCase {
     $this->assertRegExp("/oauth_signature_method=HMAC-SHA1/", $signed);
     $this->assertRegExp("/oauth_signature=cP%2FVzZj%2B0OUHKbsOKZqRJCXXZs0%3D/", $signed);
   }
-  
+
   /**
    * Tests osapiOAuth2Legged->sign()
    */
   public function testSignedPost() {
     $params = array('oauth_nonce' => md5(0), 'oauth_timestamp' => 0);
     $post = '{"test" : 1}';
-    
+
+    $signed = $this->osapiOAuth2Legged->sign('POST', 'http://opensocial.org', $params, $post);
+
+    $this->assertRegExp("/xoauth_requestor_id=USER/", $signed);
+    $this->assertRegExp("/oauth_nonce=cfcd208495d565ef66e7dff9f98764da/", $signed);
+    $this->assertRegExp("/oauth_version=" . OAuthRequest::$version . "/", $signed);
+    $this->assertRegExp("/oauth_consumer_key=KEY/", $signed);
+    $this->assertRegExp("/oauth_signature_method=HMAC-SHA1/", $signed);
+    $this->assertRegExp("/oauth_signature=82GsCV%2F9na6inV1Sc5DgNUCogEk%3D/", $signed);
+  }
+  
+  /**
+   * Tests osapiOAuth2Legged->sign() using the body hack method.
+   */
+  public function testSignedPostWithBodyHack() {
+    $params = array('oauth_nonce' => md5(0), 'oauth_timestamp' => 0);
+    $post = '{"test" : 1}';
+
+    $this->osapiOAuth2Legged->setUseBodyHack(true);
     $signed = $this->osapiOAuth2Legged->sign('POST', 'http://opensocial.org', $params, $post);
     
     $this->assertRegExp("/xoauth_requestor_id=USER/", $signed);

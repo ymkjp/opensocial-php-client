@@ -34,10 +34,10 @@ class AppDataTest extends OnlineTestCase {
       'data' => array('lastRun' => $datenow)
     );
     $getParams = array(
-        'userId' => '@me',
-        'groupId' => '@self',
-        'appId' => '@app',
-        'fields' => array('lastRun')
+      'userId' => '@me',
+      'groupId' => '@self',
+      'appId' => '@app',
+      'fields' => array('lastRun')
     );
     $batch->add($this->suite->osapi->appdata->create($createParams), 'createAppData');
     $batch->add($this->suite->osapi->appdata->get($getParams), 'getAppData');
