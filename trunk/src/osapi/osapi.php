@@ -52,12 +52,16 @@ class osapiLoggerException extends Exception {}
 class osapi {
   private $userId;
   private $config;
-  public $people;
-  public $activities;
-  public $appdata;
-  public $messages;
-  public $system;
   private $strictMode = false;
+  private $availableServices = array(
+    'people' => 'osapiPeople',
+    'activities' => 'osapiActivities',
+    'appdata' => 'osapiAppData',
+    'messages' => 'osapiMessages',
+    'albums' => 'osapiAlbums',
+    'mediaitems' => 'osapiMediaItems',
+    'system' => 'osapiSystem'
+  );
 
   /**
    * Constructs the osapi class based on the provided provider and signer
@@ -71,13 +75,18 @@ class osapi {
   public function __construct(osapiProvider $provider, osapiAuth $signer) {
     $this->provider = $provider;
     $this->signer = $signer;
-    $this->people = new osapiPeople();
-    $this->activities = new osapiActivities();
-    $this->appdata = new osapiAppData();
-    $this->messages = new osapiMessages();
-    $this->system = new osapiSystem();
   }
 
+  public function __get($var) {
+    $service = strtolower($var);
+    if (array_key_exists($service, $this->availableServices)) {
+      $class = $this->availableServices[$service];
+      $this->$service = new $class;
+      $this->{$service}->setStrictMode($this->strictMode);
+      return $this->$service;
+    }
+  }
+  
   /**
    * If set to true, osapi will raise exceptions on anything
    * that isn't quite spec compliant. Mostly useful for testing
@@ -87,10 +96,6 @@ class osapi {
    */
   public function setStrictMode($strictMode) {
     $this->strictMode = $strictMode;
-    $this->people->setStrictMode($strictMode);
-    $this->activities->setStrictMode($strictMode);
-    $this->appdata->setStrictMode($strictMode);
-    $this->messages->setStrictMode($strictMode);
   }
 
   /**

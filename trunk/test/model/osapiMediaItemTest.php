@@ -33,7 +33,10 @@ class osapiMediaItemTest extends PHPUnit_Framework_TestCase {
    */
   protected function setUp() {
     parent::setUp();
-    $this->osapiMediaItem = new osapiMediaItem('MIMETYPE', 'AUDIO', 'URL');
+    $this->osapiMediaItem = new osapiMediaItem();
+    $this->osapiMediaItem->setField("mimetype", "AUDIO");
+    $this->osapiMediaItem->setField("type", "AUDIO");
+    $this->osapiMediaItem->setField("url", "URL");
   }
 
   /**
@@ -48,44 +51,44 @@ class osapiMediaItemTest extends PHPUnit_Framework_TestCase {
    * Tests osapiMediaItem->getMimeType()
    */
   public function testGetMimeType() {
-    $this->assertEquals('MIMETYPE', $this->osapiMediaItem->getMimeType());
+    $this->assertEquals('audio', $this->osapiMediaItem->getField('mimetype'));
   }
 
   /**
    * Tests osapiMediaItem->getType()
    */
   public function testGetType() {
-    $this->assertEquals('audio', $this->osapiMediaItem->getType());
+    $this->assertEquals('AUDIO', $this->osapiMediaItem->getField('type'));
   }
 
   /**
    * Tests osapiMediaItem->getUrl()
    */
   public function testGetUrl() {
-    $this->assertEquals('URL', $this->osapiMediaItem->getUrl());
+    $this->assertEquals('URL', $this->osapiMediaItem->getField('url'));
   }
 
   /**
    * Tests osapiMediaItem->setMimeType()
    */
   public function testSetMimeType() {
-    $this->osapiMediaItem->setMimeType('mimetype');
-    $this->assertEquals('mimetype', $this->osapiMediaItem->mimeType);
+    $this->osapiMediaItem->setField('mimetype', 'VIDEO');
+    $this->assertEquals('video', $this->osapiMediaItem->getField('mimetype'));
   }
 
   /**
    * Tests osapiMediaItem->setType()
    */
   public function testSetType() {
-    $this->osapiMediaItem->setType('VIDEO');
-    $this->assertEquals('video', $this->osapiMediaItem->type);
+    $this->osapiMediaItem->setField('type', 'VIDEO');
+    $this->assertEquals('VIDEO', $this->osapiMediaItem->getField('type'));
   }
 
   /**
    * Tests osapiMediaItem->setUrl()
    */
   public function testSetUrl() {
-    $this->osapiMediaItem->setUrl('url');
-    $this->assertEquals('url', $this->osapiMediaItem->url);
+    $this->osapiMediaItem->setField('url', 'http://example.com');
+    $this->assertEquals('http://example.com', $this->osapiMediaItem->getField('url'));
   }
 }

@@ -36,7 +36,7 @@ if ($osapi) {
 
 <h2>Request:</h2>
 <p>This sample fetched the methods that the container supports (notice:
-this only works on OpenSocial >= 0.9 based sites which also support json-rpc)</p>
+this only works on OpenSocial &gt;= 0.9 based sites which also support json-rpc)</p>
 
 <?php
 

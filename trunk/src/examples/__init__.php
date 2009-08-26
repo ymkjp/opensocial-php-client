@@ -104,8 +104,9 @@ switch ($test) {
     $osapi = new osapi($provider, new osapiOAuth2Legged("orkut.com:623061448914", "uynAeXiWTisflWX99KU1D2q5", '03067092798963641994'));
     break;
   case 'myspace':
-    $userId = '439607992';
-    $osapi = new osapi(new osapiMySpaceProvider(), new osapiOAuth2Legged("http://dev.gain.resource.com", "7ebda6dee096455889bdab23ddacdfae", '439607992'));
+    $userId = '495184236';
+    $osapi = new osapi(new osapiMySpaceProvider(), new osapiOAuth2Legged("http://www.myspace.com/495182150", "20ab52223e684594a8050a8bfd4b06693ba9c9183ee24e1987be87746b1b03f8", $userId));
+    break;
     break;
   case 'google':
     // See http://code.google.com/apis/accounts/docs/OAuthForInstalledApps.html for information about the key/secret
