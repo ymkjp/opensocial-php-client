@@ -25,7 +25,7 @@ class osapiRequest {
   public $method;
   public $params;
   public $id;
-
+  
   public function __construct($method, $params) {
     $this->method = $method;
     $this->params = $params;
@@ -40,8 +40,10 @@ class osapiRequest {
    * @return osapiRequest the generated request
    */
   public static function createRequest($method, $params) {
+      $availableServices = array('people', 'activities', 'appdata', 'messages', 'system', 'cache', 
+        'albums', 'mediaItems', 'statusmood', 'notifications');
     // Verify the service name
-    if (! in_array(self::getService($method), array('people', 'activities', 'appdata', 'messages', 'system', 'cache', 'albums', 'mediaItems'))) {
+    if (! in_array(self::getService($method), $availableServices)) {
       throw new osapiException("Invalid service: ".self::getService($method));
     }
     // Verify the method
