@@ -60,7 +60,9 @@ class osapi {
     'messages' => 'osapiMessages',
     'albums' => 'osapiAlbums',
     'mediaitems' => 'osapiMediaItems',
-    'system' => 'osapiSystem'
+    'system' => 'osapiSystem',
+    'statusmood'=>'osapiStatusMood',
+    'notifications'=>'osapiNotifications'
   );
 
   /**

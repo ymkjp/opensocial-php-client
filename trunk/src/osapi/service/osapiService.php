@@ -23,6 +23,8 @@ require_once "osapiSystem.php";
 
 require_once "osapiAlbums.php";
 require_once "osapiMediaItems.php";
+require_once "osapiStatusMood.php";
+require_once "osapiNotifications.php";
 
 /**
  * Abstract base class for the service definitions
