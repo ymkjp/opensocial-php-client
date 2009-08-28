@@ -101,24 +101,30 @@ switch ($test) {
     $userId = '03067092798963641994';
     $provider = new osapiOrkutProvider();
     $provider->rpcEndpoint = null;
-    $osapi = new osapi($provider, new osapiOAuth2Legged("orkut.com:623061448914", "uynAeXiWTisflWX99KU1D2q5", '03067092798963641994'));
+    $osapi = new osapi($provider, new osapiOAuth2Legged("orkut.com:623061448914", "uynAeXiWTisflWX99KU1D2q5", $userId));
     break;
   case 'myspace':
     $userId = '495184236';
     $osapi = new osapi(new osapiMySpaceProvider(), new osapiOAuth2Legged("http://www.myspace.com/495182150", "20ab52223e684594a8050a8bfd4b06693ba9c9183ee24e1987be87746b1b03f8", $userId));
     break;
     break;
-  case 'google':
+  case 'google3legged':
     // See http://code.google.com/apis/accounts/docs/OAuthForInstalledApps.html for information about the key/secret
     $provider = new osapiGoogleProvider();
     $storage = new osapiFileStorage('/tmp/osapi');
     $auth = osapiOAuth3Legged::performOAuthLogin('anonymous', 'anonymous', $storage, $provider, $localUserId);
     $osapi = new osapi($provider, $auth);
     break;
+  case 'google2legged':
+    $userId = '101911127807751034357';
+    $provider = new osapiGoogleProvider();
+    $provider->rpcEndpoint = null;
+    $osapi = new osapi($provider, new osapiOAuth2Legged("google.com:249475676706", "fWPcoVP6DOLVqZOF2HH+ihU2", $userId));
+    break;
 }
 
 $script_name = $_SERVER["SCRIPT_NAME"];
-$tests = Array("google" => "Google", "myspace" => "MySpace", "orkut" => "orkut", "orkutRest" => "orkut (REST)", "partuza" => "Partuza", "partuzaLocal" => "partuzaLocal", "partuzaLocalRest" => "partuzaLocalRest", "plaxo" => "Plaxo", "netlog" => 'Netlog', 'hi5' => 'Hi5');
+$tests = Array("google2legged" => "Google (2 legged)", "google3legged" => "Google (3 legged)", "myspace" => "MySpace", "orkut" => "orkut", "orkutRest" => "orkut (REST)", "partuza" => "Partuza", "partuzaLocal" => "partuzaLocal", "partuzaLocalRest" => "partuzaLocalRest", "plaxo" => "Plaxo", "netlog" => 'Netlog', 'hi5' => 'Hi5');
 
 $links = Array();
 foreach ($tests as $value => $name) {
