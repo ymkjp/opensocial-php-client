@@ -49,33 +49,32 @@ require_once "osapiAlbum.php";
 require_once "osapiMediaItem.php";
 require_once "osapiStatusMoodModel.php";
 require_once "osapiNotification.php";
-
-//require_once "osapiGroup.php";
+require_once "osapiGroup.php";
 
 //require_once "osapiTemplateParams.php";
-//require_once "osapiAppDataModel.php";
+require_once "osapiAppDataModel.php";
 
 class osapiModel
 {
-	/**
-	 * Standardized method for getting fields from osapiModels
-	 * @param string $field
-	 * @return mixed
-	 */
-	public function getField($field)
-	{
-		return !!$this->{$field} ? $this->{$field} : null;	
-	}
+  /**
+   * Standardized method for getting fields from osapiModels
+   * @param string $field
+   * @return mixed
+   */
+  public function getField($field)
+  {
+    return !!$this->{$field} ? $this->{$field} : null;	
+  }
 	
-	/**
-	 * Standardized method for setting fields for osapiModels
-	 * @param string $field
-	 * @param mixed $value
-	 * @return none
-	 */
-	public function setField($field, $value)
-	{
-		$this->{$field} = $value;
-	}
+  /**
+   * Standardized method for setting fields for osapiModels
+   * @param string $field
+   * @param mixed $value
+   * @return none
+   */
+  public function setField($field, $value)
+  {
+  	$this->{$field} = $value;
+  }
 }
 

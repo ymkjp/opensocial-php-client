@@ -20,42 +20,40 @@
  * @author Jesse Edwards 
  *
  */
-class osapiMediaItem extends osapiModel
-{
-	var $id;
-	var $title;
-	var $created;
-	var $thumbnailUrl;
-	var $description;
-	var $duration;
-	var $location;
-	var $language;
-	var $albumId;
-	var $fileSize;
-	var $startTime;
-	var $rating;
-	var $numVotes;
-	var $numComments;
-	var $numViews;
-	var $tags;
-	var $taggedPeople;
-	var $mimeType;
-	var $type;
-	var $url;
-	
-	function setField($key, $value)
-	{
-        if(strtolower($key) == 'mimetype'){
-            $types = array('AUDIO' => 'audio', 'VIDEO' => 'video', 'IMAGE' => 'image');
-            
-            if (!array_key_exists(strtoupper($value), $types) && !in_array(strtoupper($value), $types )) {  
-	           throw new Exception("Invalid Media type ($value)");   
-            }else{
-                $value = strtolower($value);
-            }
-        }
+class osapiMediaItem extends osapiModel {
+  var $id;
+  var $title;
+  var $created;
+  var $thumbnailUrl;
+  var $description;
+  var $duration;
+  var $location;
+  var $language;
+  var $albumId;
+  var $fileSize;
+  var $startTime;
+  var $rating;
+  var $numVotes;
+  var $numComments;
+  var $numViews;
+  var $tags;
+  var $taggedPeople;
+  var $mimeType;
+  var $type;
+  var $url;
+  
+  function setField($key, $value) {
+    if(strtolower($key) == 'mimetype') {
+        $types = array('AUDIO' => 'audio', 'VIDEO' => 'video', 'IMAGE' => 'image');
         
-        parent::setField($key, $value);
-	}
+      if (!array_key_exists(strtoupper($value), $types) && !in_array(strtoupper($value), $types )) {  
+        throw new Exception("Invalid Media type ($value)");   
+      }else{
+        $value = strtolower($value);
+      }
+    }
+        
+    parent::setField($key, $value);
+  }
 }
 ?>
