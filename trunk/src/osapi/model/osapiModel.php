@@ -52,7 +52,7 @@ require_once "osapiNotification.php";
 require_once "osapiGroup.php";
 
 //require_once "osapiTemplateParams.php";
-require_once "osapiAppDataModel.php";
+//require_once "osapiAppDataModel.php";
 
 class osapiModel
 {
