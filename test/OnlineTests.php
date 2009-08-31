@@ -28,8 +28,8 @@
 require_once '__init__.php';
 require_once 'OrkutSandboxRpcTests.php';
 require_once 'OrkutSandboxRestTests.php';
-require_once 'GoogleSandboxRpcTests.php';
-require_once 'GoogleSandboxRestTests.php';
+require_once 'GoogleRpcTests.php';
+require_once 'GoogleRestTests.php';
 require_once 'FriendConnectRestTests.php';
 require_once 'MySpaceTests.php';
 require_once 'PartuzaRpcTests.php';
@@ -42,8 +42,8 @@ class OnlineTests {
     $suite->setName('OnlineTests');
     $suite->addTestSuite(new OrkutSandboxRpcTests());
     $suite->addTestSuite(new OrkutSandboxRestTests());
-    $suite->addTestSuite(new GoogleSandboxRpcTests());
-    $suite->addTestSuite(new GoogleSandboxRestTests());
+    $suite->addTestSuite(new GoogleRpcTests());
+    $suite->addTestSuite(new GoogleRestTests());
     $suite->addTestSuite(new PartuzaRpcTests());
     $suite->addTestSuite(new PartuzaRestTests());
     $suite->addTestSuite(new FriendConnectRestTests());

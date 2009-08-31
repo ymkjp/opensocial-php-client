@@ -28,7 +28,7 @@
 require_once '__init__.php';
 require_once 'online/OnlineTestSuite.php';
 
-class GoogleSandboxRestTests extends OnlineTestSuite {
+class GoogleRpcTests extends OnlineTestSuite {
   public $CONSUMER_KEY = 'google.com:249475676706';
   public $CONSUMER_SECRET = 'fWPcoVP6DOLVqZOF2HH+ihU2';
   public $USER_A_ID = '101911127807751034357';
@@ -36,12 +36,11 @@ class GoogleSandboxRestTests extends OnlineTestSuite {
 
   protected function getOsapi() {
     $provider = new osapiGoogleProvider();
-    $provider->rpcEndpoint = null;
     $auth = new osapiOAuth2Legged($this->CONSUMER_KEY, $this->CONSUMER_SECRET, $this->USER_A_ID);
     return new osapi($provider, $auth);
   }
 
   public static function suite() {
-    return new GoogleSandboxRestTests();
+    return new GoogleSandboxRpcTests();
   }
 }
