@@ -21,6 +21,7 @@
       <li><a href="listMethods.php">system.listMethods</a> (only supported on 0.9 based sites)</li>
       <li><a href="albums.php">Albums</a> (only supported on 0.9 based sites)</li>
       <li><a href="mediaItems.php">MediaItems</a> (only supported on 0.9 based sites)</li>
+      <li><a href="groups.php">Groups</a> (only supported on 0.9 based sites)</li>
       <li><a href="statusmood.php">StatusMood</a> (myspace only)</li>
       <li><a href="notifications.php">Notifications</a> (myspace only)</li>
     </ul>
