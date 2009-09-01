@@ -30,6 +30,10 @@ class osapiStatusMood extends osapiService {
   public function getSupportedFields() {
   	throw new osapiException("@supportedFields for statusmood is not supported");
   }
+  
+  public function getSupportedMoods($params) {
+    return osapiRequest::createRequest('statusmood.getSupportedMood', $params);
+  }
 
   /**
    * Gets status and mood. Uses specific endpoint for this
