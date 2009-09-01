@@ -60,7 +60,10 @@ if ($osapi) {
       'count' => $friend_count          // Max friends to fetch.
   );
   $batch->add($osapi->people->get($friends_request_params), 'friends');
-
+  
+  // Get supportedFields Request
+  $batch->add($osapi->people->getSupportedFields(), 'supportedFields');
+  
   // Send the batch request.
   $result = $batch->execute();
 
@@ -71,7 +74,7 @@ if ($osapi) {
 <h2>Request:</h2>
 <p>This sample fetched the current viewer and
   <strong><?= $friend_count ?></strong> friends, asking for the fields:
-  <em><?= implode($profile_fields, ", ") ?></em></p>
+  <em><?= implode($profile_fields, ", ") ?></em>. Request supported fields for this service.</p>
 
 <?php
 
