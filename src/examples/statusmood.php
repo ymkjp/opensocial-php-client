@@ -14,7 +14,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-
+    // Default to myspace because this is a myspace specific endpoint.
+    if(!isset($_REQUEST["test"]))
+         $_REQUEST["test"] = 'myspace';
+         
 	require_once "__init__.php";
 	
 	if ($osapi) {
@@ -35,8 +38,21 @@
 	      	'status' => 'Working on PHP SDK'
 	      )
 	   );
-	  
 	  $batch->add($osapi->statusmood->update($params), 'set_status_mood');
+	  
+	  // Get one supported mood
+	  $params = array( 'userId'=>$userId, 
+	                   'groupId'=>'@supportedMood', 
+	                   'moodId'=>90
+	  );
+      $batch->add($osapi->statusmood->getSupportedMoods($params), 'supportedMood');
+      
+	  // Get all supported moods
+	  $params = array( 'userId'=>$userId, 
+                       'groupId'=>'@supportedMood'
+      );
+	  $batch->add($osapi->statusmood->getSupportedMoods($params), 'supportedMoods');
+	  
 	  
 	  // Send the batch request.
 	  $result = $batch->execute();
@@ -44,7 +60,7 @@
 	
 	<h1>StatusMood API Examples</h1>
 	<h2>Request:</h2>
-	<p>This sample fetched statusmood(msypace specific), update statusmood(msypace specific)</p>
+	<p><b>NOTE: this entire endpoint a myspace extension to OpenSocial v0.9.</b><br />This sample fetched statusmood, update statusmood, request a specific moods details, then request all supported moods.</p>
 	<?php
 	
         require_once('response_block.php');

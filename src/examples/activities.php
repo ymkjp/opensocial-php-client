@@ -37,22 +37,34 @@ if ($osapi) {
   $friend_params = array(
       'userId' => $userId,
       'groupId' => '@friends',
-      'count' => 10
+      'count' => 5
   );
   $batch->add($osapi->activities->get($friend_params), 'friendActivities');
 
   // Create an activity (you could add osapiMediaItems to this btw)
   $activity = new osapiActivity(null, null);
-  $activity->setTitle('osapi test activity at ' . time());
-  $activity->setBody('osapi test activity body');
+  $activity->setField('title', 'osapi test activity at ' . time());
+  $activity->setField('body', 'osapi test activity body');
+  
+  // Myspace requires some addtional things to be set.
+  if($_REQUEST["test"] == 'myspace') {
+    $msParameters = array();
+    $msParameters[] = array("key"=>"content", "value"=>"hello there this is my template parama content");
+    $msParameters[] = array("key"=>"friend", "value"=>"487802446");
+    $activity->setField('templateParams', $msParameters);
+    $activity->setField('titleId', 'Template_4');
+  }
+  
   $create_params = array(
       'userId' => $userId,
       'groupId' => '@self',
       'activity' => $activity,
-      //'appId' => $appId
+      'appId' => $appId
   );
   $batch->add($osapi->activities->create($create_params), 'createActivity');
 
+  // supported fields
+  $batch->add($osapi->activities->getSupportedFields(), 'supportedFields');
 
 /* EXAMPLE: create a message
 $batch->add($osapi->messages->create(array('userId' => $userId, 'groupId' => '@self', 'message' => new osapiMessage(array(1), 'test message by osapi', 'send at '.strftime('%X')))), 'createMessage');
@@ -69,23 +81,5 @@ $batch->add($osapi->messages->create(array('userId' => $userId, 'groupId' => '@s
   friends.  Then the sample attempts to create a message.</p>
 
 <?php
-
-  // Demonstrate iterating over a response set, checking for an error,
-  // and working with the result data.
-
-  foreach ($result as $key => $result_item) {
-    if ($result_item instanceof osapiError) {
-      $code = $result_item->getErrorCode();
-      $message = $result_item->getErrorMessage();
-      echo "<h2>There was a <em>$code</em> error with the <em>$key</em> request:</h2>";
-      echo "<pre>";
-      echo htmlentities($message);
-      echo "</pre>";
-    } else {
-      echo "<h2>Response for the <em>$key</em> request:</h2>";
-      echo "<pre>";
-      echo htmlentities(print_r($result_item, True));
-      echo "</pre>";
-    }
-  }
+  require_once('response_block.php');
 }
