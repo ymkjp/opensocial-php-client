@@ -44,15 +44,12 @@ require_once "osapiPhone.php";
 require_once "osapiPhoto.php";
 require_once "osapiUrl.php";
 require_once "osapiError.php";
-
 require_once "osapiAlbum.php";
 require_once "osapiMediaItem.php";
 require_once "osapiStatusMoodModel.php";
 require_once "osapiNotification.php";
 require_once "osapiGroup.php";
-
-//require_once "osapiTemplateParams.php";
-//require_once "osapiAppDataModel.php";
+require_once "osapiAppDataModel.php";
 
 class osapiModel
 {

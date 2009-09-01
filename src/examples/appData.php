@@ -48,8 +48,8 @@ if ($osapi) {
       'appId' => $appId,
       'data' => array(
           'osapiFoo1' => 'bar1', 
-          'osapiFoo2' => 'bar2', 
-          'osapiFoo3' => 'bar3'
+          'osapiFoo2' => 'baz1', 
+          'osapiFoo3' => 'bat1'
       )
   );
   $batch->add($osapi->appData->create($create_params), 'createAppData');
@@ -60,7 +60,7 @@ if ($osapi) {
       'groupId' => '@self', 
       'appId' => $appId,
       'data' => array(
-          'osapiFoo1' => 'newBar1'
+          'osapiFoo1' => date("c")
       )
   );
   $batch->add($osapi->appData->update($update_params), 'updateAppData');
@@ -91,25 +91,6 @@ if ($osapi) {
   );
   $batch->add($osapi->appData->delete($delete_params), 'deleteAppData');
 
-  
-  /*
-   * Updating, fetching, and deleting will actually work since the batch is 
-   * executed in order.   The get should return:
-   * [getAppData] => Array
-        (
-            [USER_ID] => Array
-                (
-                    [osapiFoo2] => bar2
-                    [osapiFoo3] => bar3
-                    [osapiFoo1] => newBar1
-                )
-        )
-  * and create/update/delete should be empty result sets, aka 
-  * [BATCH_ID] => Array (). If an error occured the result will be a 
-  * osapiError, so you should check the result using 
-  * "if ($result[$idx] instanceof osapiError) .. "
-  */
-  
   // Send the batch request.
   $result = $batch->execute();
 ?>
@@ -124,23 +105,5 @@ if ($osapi) {
   then deleted the three keys in the same batch request.</p>
 
 <?php
-
-  // Demonstrate iterating over a response set, checking for an error,
-  // and working with the result data.
-  
-  foreach ($result as $key => $result_item) {
-    if ($result_item instanceof osapiError) {
-      $code = $result_item->getErrorCode();
-      $message = $result_item->getErrorMessage();
-      echo "<h2>There was a <em>$code</em> error with the <em>$key</em> request:</h2>";
-      echo "<pre>";
-      echo htmlentities($message);
-      echo "</pre>";
-    } else {
-      echo "<h2>Response for the <em>$key</em> request:</h2>";
-      echo "<pre>";
-      echo htmlentities(print_r($result_item, True));
-      echo "</pre>";
-    }
-  }
+  require_once('response_block.php');
 }
