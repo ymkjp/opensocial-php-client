@@ -33,6 +33,7 @@ class GoogleRpcTests extends OnlineTestSuite {
   public $CONSUMER_SECRET = 'fWPcoVP6DOLVqZOF2HH+ihU2';
   public $USER_A_ID = '101911127807751034357';
   public $USER_A_DISPLAY_NAME = 'Alice Testington';
+  public $USER_A_EXTENDED_PROFILE_FIELDS = array('aboutMe', 'birthday');
 
   protected function getOsapi() {
     $provider = new osapiGoogleProvider();
@@ -41,6 +42,6 @@ class GoogleRpcTests extends OnlineTestSuite {
   }
 
   public static function suite() {
-    return new GoogleSandboxRpcTests();
+    return new GoogleRpcTests();
   }
 }

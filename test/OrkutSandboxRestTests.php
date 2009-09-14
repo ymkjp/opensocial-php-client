@@ -33,7 +33,7 @@ class OrkutSandboxRestTests extends OnlineTestSuite {
   public $CONSUMER_SECRET = 'fWPcoVP6DOLVqZOF2HH+ihU2';
   public $USER_A_ID = '01912035848546370285';
   public $USER_A_DISPLAY_NAME = 'Alice Testington';
-
+  public $USER_A_EXTENDED_PROFILE_FIELDS = array('aboutMe', 'gender');
   public $UNSUPPORTED_METHODS = array('activities.create');
   
   protected function getOsapi() {
