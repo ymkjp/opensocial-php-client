@@ -61,6 +61,6 @@ abstract class OnlineTestSuite extends PHPUnit_Framework_TestSuite {
   public $CONSUMER_SECRET = '';
   public $USER_A_ID = '';
   public $USER_A_DISPLAY_NAME = '';
-
+  public $USER_A_EXTENDED_PROFILE_FIELDS = null;
   public $UNSUPPORTED_METHODS = null;
 }

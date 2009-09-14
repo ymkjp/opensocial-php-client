@@ -46,6 +46,13 @@ class ActivityTest extends OnlineTestCase {
       $name = $this->suite->getName();
       $code = $result['createActivity']->getErrorCode();
       $message = $result['createActivity']->getErrorMessage();
+
+      if ($code == 417) {
+        //TODO: Have the provider throw an over quota exception, since not every provider uses this code.
+        $this->markTestSkipped("Creating an activity reported 417.  Were you over quota? ($message)");
+        return;
+      }
+      
       $this->fail(sprintf("%s failed to create an activity: %s (%s)", $name, $message, $code));
     }
   }

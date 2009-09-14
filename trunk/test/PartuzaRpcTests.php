@@ -33,6 +33,7 @@ class PartuzaRpcTests extends OnlineTestSuite {
   public $CONSUMER_SECRET = '3fa4c036a48fae03e11a5ae2b073996e';
   public $USER_A_ID = '1311';
   public $USER_A_DISPLAY_NAME = 'Alice Testington';
+  public $USER_A_EXTENDED_PROFILE_FIELDS = array('aboutMe', 'birthday');
 
   protected function getOsapi() {
     $provider = new osapiPartuzaProvider();

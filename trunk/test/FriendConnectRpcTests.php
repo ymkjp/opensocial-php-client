@@ -33,6 +33,7 @@ class FriendConnectRpcTests extends OnlineTestSuite {
   public $CONSUMER_SECRET = '4oB93vo3EvQ=';
   public $USER_A_ID = '10314750576668418529';
   public $USER_A_DISPLAY_NAME = 'Alice Testington';
+  public $USER_A_EXTENDED_PROFILE_FIELDS = array('aboutMe');
 
   protected function getOsapi() {
     $provider = new osapiFriendConnectProvider();

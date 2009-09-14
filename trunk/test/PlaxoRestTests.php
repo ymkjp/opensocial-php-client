@@ -33,6 +33,8 @@ class PlaxoRestTests extends OnlineTestSuite {
   public $CONSUMER_SECRET = 'notasecret';
   public $USER_A_ID = '154619987444';
   public $USER_A_DISPLAY_NAME = 'Alice Testington';
+  public $USER_A_EXTENDED_PROFILE_FIELDS = null;
+  
   // people.get_by_id isn't a real service name, but since fixing this issue
   // would take a while to get working correctly, I'm just using this hack to
   // disable the corresponding unit test.
