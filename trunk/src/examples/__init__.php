@@ -107,6 +107,12 @@ switch ($test) {
     $userId = '495184236';
     $osapi = new osapi(new osapiMySpaceProvider(), new osapiOAuth2Legged("http://www.myspace.com/495182150", "20ab52223e684594a8050a8bfd4b06693ba9c9183ee24e1987be87746b1b03f8", $userId));
     break;
+  case 'myspaceid':
+    // NOTE: to authorize using 3leggedOAuth & MySpace your app MUST be a MySpaceID app otherwise use 2LeggedOAuth
+    $provider = new osapiMySpaceProvider();
+    $storage = new osapiFileStorage('/tmp/osapi');
+    $auth = osapiOAuth3Legged::performOAuthLogin('6043e2bda2e546498928732c01982b24', '14d70750b3ae45c1b8c8b834f145aa3fa632013885964cf6bd41792d51754810', $storage, $provider, $localUserId);
+    $osapi = new osapi($provider, $auth);
     break;
   case 'google3legged':
     // See http://code.google.com/apis/accounts/docs/OAuthForInstalledApps.html for information about the key/secret
@@ -124,7 +130,18 @@ switch ($test) {
 }
 
 $script_name = $_SERVER["SCRIPT_NAME"];
-$tests = Array("google2legged" => "Google (2 legged)", "google3legged" => "Google (3 legged)", "myspace" => "MySpace", "orkut" => "orkut", "orkutRest" => "orkut (REST)", "partuza" => "Partuza", "partuzaLocal" => "partuzaLocal", "partuzaLocalRest" => "partuzaLocalRest", "plaxo" => "Plaxo", "netlog" => 'Netlog', 'hi5' => 'Hi5');
+$tests = Array("google2legged" => "Google (2 legged)", 
+    "google3legged" => "Google (3 legged)", 
+    "myspace" => "MySpace", 
+    "myspaceid"=>"MySpaceID", 
+    "orkut" => "orkut", 
+    "orkutRest" => "orkut (REST)", 
+    "partuza" => "Partuza", 
+    "partuzaLocal" => "partuzaLocal", 
+    "partuzaLocalRest" => "partuzaLocalRest", 
+    "plaxo" => "Plaxo", 
+    "netlog" => 'Netlog', 
+    'hi5' => 'Hi5');
 
 $links = Array();
 foreach ($tests as $value => $name) {

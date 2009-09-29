@@ -47,7 +47,7 @@ if ($osapi) {
   $activity->setField('body', 'osapi test activity body');
   
   // Myspace requires some addtional things to be set.
-  if($_REQUEST["test"] == 'myspace') {
+  if(isset($_REQUEST["test"]) && $_REQUEST["test"] == 'myspace') {
     $msParameters = array();
     $msParameters[] = array("key"=>"content", "value"=>"hello there this is my template parama content");
     $msParameters[] = array("key"=>"friend", "value"=>"487802446");
@@ -61,7 +61,7 @@ if ($osapi) {
       'activity' => $activity,
       'appId' => $appId
   );
-  $batch->add($osapi->activities->create($create_params), 'createActivity');
+  //$batch->add($osapi->activities->create($create_params), 'createActivity');
 
   // supported fields
   $batch->add($osapi->activities->getSupportedFields(), 'supportedFields');

@@ -63,7 +63,7 @@ if ($osapi) {
   	  'contentType'=> 'image/jpg'
   );
   // Commented out so everyone doesn't upload a new file on test. 
-  //$batch->add($osapi->mediaItems->uploadContent($user_params), 'upload_mediaItem');
+  $batch->add($osapi->mediaItems->uploadContent($user_params), 'upload_mediaItem');
   
   // Update mediaItem
   $mediaItem = new osapiMediaItem();
@@ -79,13 +79,23 @@ if ($osapi) {
   );
   $batch->add($osapi->mediaItems->update($user_params), 'update_mediaItem');
   
+  $user_params = array(
+    'userId' => $userId, 
+    'groupId' => '@self', 
+    'albumId' =>'@videos',
+    'count' => 2
+  );
+ 
+  // Request videos (MySpace Specific)
+  $batch->add($osapi->mediaItems->get($user_params), 'get_videos');
+  
   // Send the batch request.
   $result = $batch->execute();
 ?>
 
 <h1>mediaItems Example</h1>
 <h2>Request:</h2>
-<p>This sample fetched the mediaItems for the current user. Then gets mediaItem details for a specific mediaItem. Create a new mediaItem. Then update an existing mediaItem.</p>
+<p>This sample fetched the mediaItems for the current user. Then gets mediaItem details for a specific mediaItem. Create a new mediaItem. Then update an existing mediaItem. Lastly we request videos. (MySpace specific)</p>
 
 <?php
     require_once('response_block.php');
