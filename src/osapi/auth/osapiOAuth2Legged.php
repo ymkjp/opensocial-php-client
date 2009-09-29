@@ -67,6 +67,14 @@ class osapiOAuth2Legged extends osapiAuth {
   }
 
   /**
+   * Sets the user ID on behalf of which this auth is making requests.
+   * @param String $userId A user ID.
+   */
+  public function setUserId($userId) {
+    $this->userId = $userId;
+  }
+
+  /**
    * Sign the request using OAuth. This uses the consumer token and key
    * but 2 legged oauth doesn't require an access token and key. In situations where you want to
    * do a 'reverse phone home' (aka: gadget does a makeRequest to your server

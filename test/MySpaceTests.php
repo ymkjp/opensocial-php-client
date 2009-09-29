@@ -28,11 +28,11 @@ require_once 'online/OnlineTestSuite.php';
 class MySpaceTests extends OnlineTestSuite {
   public $CONSUMER_KEY = 'http://opensocial-php-client.googlecode.com/svn/gadgets/opensocial-php-client.xml';
   public $CONSUMER_SECRET = 'f07208f6993c4db9bac9c23729c558dd';
-  public $USER_A_ID = 'myspace.com:480224342';
+  public $USER_A_ID = 'myspace.com.person.480224342';
   public $USER_A_DISPLAY_NAME = 'Barry';
   public $UNSUPPORTED_METHODS = array('appdata.get', 'appdata.create', 'activities.get', 'activities.create');
-  public $USER_A_EXTENDED_PROFILE_FIELDS = array('aboutMe', 'birthday');
-  
+  public $USER_A_EXTENDED_PROFILE_FIELDS = array('aboutMe', 'displayName','bodyType','currentLocation','drinker','lookingFor');
+
   protected function getOsapi() {
     $provider = new osapiMySpaceProvider();
     $auth = new osapiOAuth2Legged($this->CONSUMER_KEY, $this->CONSUMER_SECRET, $this->USER_A_ID);
