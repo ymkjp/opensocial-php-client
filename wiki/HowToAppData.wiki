@@ -21,7 +21,7 @@ The `$params` parameter is an associative array of values you can use to customi
 || `userId` || `string` || ID of the user to operate on.  You may set this to *"@me"* to fetch data for the current user ||
 || `groupId` || `string` || The name of the group of people to fetch App Data for.  You may set this to *"@self"* to only fetch data for the user corresponding to `userId`, or *"@friends"* to fetch data for the user's friends. ||
 || `appId` || `string` || The ID of the application to fetch App Data for. You may use *"@app"* to fetch data for the current application. ||
-|| `fields` || `array` || An array of App Data keys to fetch.  You may set this to *array("`*`")* to fetch all available keys. || 
+|| `fields` || `array` || An array of App Data keys to fetch. || 
 
 Additional parameters you can use are listed in the [http://www.opensocial.org/Technical-Resources/opensocial-spec-v09/REST-API.html#standardQueryParameters OpenSocial specification].
 
