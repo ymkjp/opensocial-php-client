@@ -38,7 +38,11 @@ class osapiMySpaceProvider extends osapiProvider {
    * @param osapiAuth $signer The signing mechanism used for this request.
    */
   public function preRequestProcess(&$request, &$method, &$url, &$headers, osapiAuth &$signer) {
-
+    // Using the full myspace ID in the xoauth_requestor_id doesn't work
+    if ($signer instanceof osapiOAuth2Legged) {
+      $signer->setUserId(str_replace('myspace.com.person.', '', $signer->getUserId()));
+    }
+    
     if($request->method == 'appdata.update' || $request->method == 'appdata.create') {
       $this->formatAppDataOut($request);
     }
