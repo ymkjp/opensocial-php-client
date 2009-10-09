@@ -13,7 +13,7 @@ Our current roadmap for releases is:
 
 <wiki:toc />
 
-= 1.0.1 (Current) =
+= 1.0.1 =
   * Features
     * People 
       * Retrieve
@@ -45,7 +45,7 @@ Our current roadmap for releases is:
   * Tests:
     * 70% coverage
 
-= 1.1.0 =
+= 1.1.0 (Current) =
  * Features
    * Groups 
      * Retrieve
