@@ -6,6 +6,9 @@
     * [HowToPeople People]
     * [HowToAppData AppData]
     * [HowToActivities Activities]
+    * [HowToGroups Groups]
+    * [HowToStatusMood StatusMood]  (!MySpace only)
+    * [HowToNotifications Notifications] (!MySpace only)
   * [Samples Included samples]
   * [ProjectRoadmap Project roadmap]
     * [BecomingAContributor Contributing]
