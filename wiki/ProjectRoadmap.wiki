@@ -54,7 +54,7 @@ Our current roadmap for releases is:
      * Update
    * Notifications (MySpace only)
      * Create 
-   * Supported Containers
+ * Supported Containers
      * MySpace (full)
 
 = 1.2.0 =
