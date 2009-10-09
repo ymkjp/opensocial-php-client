@@ -45,6 +45,18 @@ Our current roadmap for releases is:
   * Tests:
     * 70% coverage
 
+= 1.0.2 =
+ * Features
+   * Groups 
+     * Retrieve
+   * StatusMood (MySpace only)
+     * Retrieve
+     * Update
+   * Notifications (MySpace only)
+     * Create 
+   * Supported Containers
+     * MySpace (full)
+
 = 1.1.0 =
   * Features
     * Full 0.9 support
