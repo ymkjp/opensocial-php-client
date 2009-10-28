@@ -16,33 +16,20 @@
  */
 
 /**
- * OpenSocial API class for statusmood requests
- * Only the get method is supported in the OpenSocial spec.
+ * OpenSocial API class for Profile Comments requests
  *
  * @author Jesse Edwards
  */
-class osapiStatusMood extends osapiService {
+class osapiProfileComments extends osapiService {
   /**
    * Gets a list of fields supported by this service
    *
    * @return osapiRequest the request
    */
   public function getSupportedFields() {
-  	throw new osapiException("@supportedFields for statusmood is not supported");
+    throw new osapiException("@supportedFields for statusmood is not supported");
   }
   
-  public function getSupportedMoods($params) {
-    return osapiRequest::createRequest('statusmood.getSupportedMood', $params);
-  }
-
-  public function getHistory($params=array()) {
-    $params = array_merge($params, array('userId'=>'@me', 'history'=>'history'));
-    
-    if(!array_key_exists('groupId', $params))
-      $params['groupId'] = '@self';
-      
-    return osapiRequest::createRequest('statusmood.get', $params);
-  }
   /**
    * Gets status and mood. Uses specific endpoint for this
    * Myspace specific
@@ -55,7 +42,7 @@ class osapiStatusMood extends osapiService {
       if(!array_key_exists('groupId', $params))
         $params['groupId'] = '@self';
         
-      return osapiRequest::createRequest('statusmood.get', $params);
+      return osapiRequest::createRequest('profilecomments.get', $params);
   }
   /**
    * Sets status. Uses specific endpoint for this
@@ -64,8 +51,7 @@ class osapiStatusMood extends osapiService {
    */
   public function update($params)
   {
-      $params = array_merge($params, array('userId'=>'@me', 'groupId'=>'@self'));
-      return osapiRequest::createRequest('statusmood.update', $params);
+      throw new osapiException("Updating this endpoint is not supported");
   }
 
   public function delete($params)
@@ -86,15 +72,15 @@ class osapiStatusMood extends osapiService {
    * @return osapiPerson
    */
   static public function convertArray($array, $strictMode = true) {
-  	$instance = new osapiStatusMoodModel();
- 	$defaults = get_class_vars('osapiStatusMoodModel');
- 	
- 	if ($strictMode && sizeof($defaults != sizeof($array))) {
+    $instance = new osapiStatusMoodModel();
+    $defaults = get_class_vars('osapiStatusMoodModel');
+    
+    if ($strictMode && sizeof($defaults != sizeof($array))) {
       throw new osapiException("Unexpected fields in statusmood response". print_r($array, true));
     }
-  	foreach($array as $key=>$value){
-  		$instance->setField($key, $value);
-  	}
+    foreach($array as $key=>$value){
+        $instance->setField($key, $value);
+    }
     return self::trimResponse($instance);
   }
 }
