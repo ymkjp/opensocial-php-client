@@ -28,20 +28,37 @@
 	  // Start a batch so that many requests may be made at once.
 	  $batch = $osapi->newBatch();
 	  
+	  $params = array('fields'=>'recentComments');
 	  // Fetch the status mood MySpace specific.
-	  $batch->add($osapi->statusmood->get(array()), 'get_status_mood');
+	  $batch->add($osapi->statusmood->get($params), 'get_status_mood');
 	  
+      // Fetch the status mood history self
+      $batch->add($osapi->statusmood->getHistory(), 'get_history_self');
+	  
+      $params = array('groupId'=>'@friends');
+      
+      // Fetch the status mood history friends
+      $batch->add($osapi->statusmood->getHistory($params), 'get_history_friends');
+      
+      
+      // Fetch the status mood history specific friend
+      $params = array('groupId'=>'@friends', 'friendId'=>'myspace.com.person.63129100');
+      $batch->add($osapi->statusmood->getHistory($params), 'get_history_friend');
+      
+      
 	  // Set the status mood MySpace specific.
-	  $params = array('statusMood'=>
-	      array(
-	      	'moodName' =>'excited',
-	      	'status' => 'Working on PHP SDK'
-	      )
+	  $params = array( 'userId'=>'@me',
+	                   'groupId'=>'@self',
+                	   'statusMood'=>
+                	      array(
+                	      	'moodName' =>'excited',
+                	      	'status' => 'Working on PHP SDK'
+                	      )
 	   );
-	  $batch->add($osapi->statusmood->update($params), 'set_status_mood');
+	  //$batch->add($osapi->statusmood->update($params), 'set_status_mood');
 	  
 	  // Get one supported mood
-	  $params = array( 'userId'=>$userId, 
+	  $params = array( 'userId'=>'@me', 
 	                   'groupId'=>'@supportedMood', 
 	                   'moodId'=>90
 	  );
@@ -60,7 +77,10 @@
 	
 	<h1>StatusMood API Examples</h1>
 	<h2>Request:</h2>
-	<p><b>NOTE: this entire endpoint a myspace extension to OpenSocial v0.9.</b><br />This sample fetched statusmood, update statusmood, request a specific moods details, then request all supported moods.</p>
+	<p><b>NOTE: This entire endpoint is a myspace extension to OpenSocial v0.9.</b><br />
+	This sample fetched statusmood self and friends. Requested statusmood history for self, friends, and a specific friend.
+	Then it can update statusmood (disabled by default). It also requests a specific moods details, 
+	then request all supported moods.</p>
 	<?php
 	
         require_once('response_block.php');

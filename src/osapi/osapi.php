@@ -63,7 +63,8 @@ class osapi {
     'system' => 'osapiSystem',
     'statusmood'=>'osapiStatusMood',
     'notifications'=>'osapiNotifications',
-    'groups'=>'osapiGroups'
+    'groups'=>'osapiGroups',
+    'profilecomments'=>'osapiProfileComments'
   );
 
   /**

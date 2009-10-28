@@ -33,8 +33,9 @@ class osapiRestIO extends osapiIO {
     'mediaItems'=>'mediaItems/{userId}/{groupId}/{albumId}/{mediaItemId}',
     'groups'=>'groups/{userId}',
     // MySpace Specific
-    'statusmood'=>'statusmood/{userId}/{groupId}/{moodId}',
-    'notifications'=>'notifications/{userId}/{groupId}'
+    'statusmood'=>'statusmood/{userId}/{groupId}/{friendId}/{moodId}/{history}',
+    'notifications'=>'notifications/{userId}/{groupId}',
+    'profilecomments'=>'profilecomments/{userId}/{groupId}'
   );
   
   // Array used to resolve the method to the correct HTTP operation

@@ -26,6 +26,7 @@ require_once "osapiMediaItems.php";
 require_once "osapiStatusMood.php";
 require_once "osapiNotifications.php";
 require_once "osapiGroups.php";
+require_once "osapiProfileComments.php";
 
 /**
  * Abstract base class for the service definitions

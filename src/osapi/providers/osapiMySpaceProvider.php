@@ -143,13 +143,14 @@ class osapiMySpaceProvider extends osapiProvider {
     
     $data = json_decode($response['data']);
     $service = $request->getService($request->method);
-    $model = $plural_rules[$service];
+    $model = array_key_exists($service, $plural_rules) ? $plural_rules[$service] : "null";
     
     if (isset($data->entry)) {
+      
         foreach($data->entry as $key=>$value) {
             if($model == 'appData') {
                 $data->entry[$key] = $value->{'userAppData'};
-            } else {
+            } else if(isset($value->{$model})){
                 $data->entry[$key] = $value->{$model};
             }
         }

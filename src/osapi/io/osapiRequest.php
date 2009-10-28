@@ -41,7 +41,7 @@ class osapiRequest {
    */
   public static function createRequest($method, $params) {
       $availableServices = array('people', 'activities', 'appdata', 'messages', 'system', 'cache', 
-        'albums', 'mediaItems', 'statusmood', 'notifications', 'groups');
+        'albums', 'mediaItems', 'statusmood', 'notifications', 'groups', 'profilecomments');
       $availableMethods = array('get', 'update', 'create', 'delete', 'upload', 
         'getSupportedFields', 'getSupportedMood');
       

@@ -1,4 +1,4 @@
-<?php
+<?php 
 /*
  * Copyright 2008 Google Inc.
  *
@@ -18,7 +18,7 @@
 // Default to myspace because this is a myspace specific endpoint.
 if(!isset($_REQUEST["test"]))
      $_REQUEST["test"] = 'myspace';
-     
+
 require_once "__init__.php";
 
 if ($osapi) {
@@ -29,28 +29,19 @@ if ($osapi) {
   // Start a batch so that many requests may be made at once.
   $batch = $osapi->newBatch();
 
-  // Set the status mood MySpace specific.
-    $mediaItem = new osapiMediaItem();
-    $mediaItem->setField('uri', 'http://api.myspace.com/v1/users/63129100');
-    
-    $notification = new osapiNotification();
-    $notification->setField('recipientIds', array('63129100'));
-    $notification->setField('mediaItems', array($mediaItem));
-    $notification->setTemplateParameter('content', 'Hi ${recipient}, here\'s a notification from ${canvasUrl}');
-    
-  $params = array('notification'=>$notification);
-  
-  $batch->add($osapi->notifications->create($params), 'send_notification');
-  
+  $user_params = array(
+    'userId' => $userId
+  );
+  $batch->add($osapi->profileComments->get($user_params), 'getProfileComments');
+
   // Send the batch request.
   $result = $batch->execute();
 ?>
 
-<h1>Notification API Examples</h1>
+<h1>Messages Example</h1>
 <h2>Request:</h2>
-<p>This sample creates a notification(msypace specific)</p>
-<?php
+<p>This sample attempted to fetch a user's profile comments.</p>
 
-      require_once('response_block.php');
+<?php
+    require_once('response_block.php');
 }
-?>
