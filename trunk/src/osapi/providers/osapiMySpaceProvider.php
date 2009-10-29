@@ -43,9 +43,20 @@ class osapiMySpaceProvider extends osapiProvider {
       $signer->setUserId(str_replace('myspace.com.person.', '', $signer->getUserId()));
     }
     
+    if($request->method == 'activities.create') {
+      $this->fixMsTemplateParameters($request);
+    }
+    
     if($request->method == 'appdata.update' || $request->method == 'appdata.create') {
       $this->formatAppDataOut($request);
     }
+  }
+  
+  private function fixMsTemplateParameters(&$request) {
+    $templateParams = $request->params['activity']->getField('templateParams');
+    
+    $templateParams = array('msParameters'=>$templateParams);
+    $request->params['activity']->setField('templateParams', $templateParams);
   }
 
   private function formatAppDataOut(osapiRequest &$request) {
@@ -67,7 +78,8 @@ class osapiMySpaceProvider extends osapiProvider {
    * @param osapiAuth $signer The signing mechanism used for this request.
    */
   private function fixRequest(osapiRequest &$request, &$method, &$url, &$headers, osapiAuth &$signer) {
-	
+	print_r($request);
+	print_r($headers);
   }
 
   /**
