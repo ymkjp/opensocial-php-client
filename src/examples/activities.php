@@ -42,17 +42,18 @@ if ($osapi) {
   $batch->add($osapi->activities->get($friend_params), 'friendActivities');
 
   // Create an activity (you could add osapiMediaItems to this btw)
-  $activity = new osapiActivity(null, null);
-  $activity->setField('title', 'osapi test activity at ' . time());
-  $activity->setField('body', 'osapi test activity body');
+  $activity = new osapiActivity();
   
   // Myspace requires some addtional things to be set.
   if(isset($_REQUEST["test"]) && $_REQUEST["test"] == 'myspace') {
     $msParameters = array();
-    $msParameters[] = array("key"=>"content", "value"=>"hello there this is my template parama content");
-    $msParameters[] = array("key"=>"friend", "value"=>"487802446");
+    $msParameters[] = array("key"=>"content", "value"=>"Hello there, this is my template parama content.");
+    $msParameters[] = array("key"=>"service", "value"=>"PHP SDK Updated ". time());
     $activity->setField('templateParams', $msParameters);
-    $activity->setField('titleId', 'Template_4');
+    $activity->setField('titleId', 'Template_1');
+  }else {
+    $activity->setField('title', 'osapi test activity at ' . time());
+    $activity->setField('body', 'osapi test activity body');
   }
   
   $create_params = array(
@@ -61,7 +62,7 @@ if ($osapi) {
       'activity' => $activity,
       'appId' => $appId
   );
-  //$batch->add($osapi->activities->create($create_params), 'createActivity');
+  $batch->add($osapi->activities->create($create_params), 'createActivity');
 
   // supported fields
   $batch->add($osapi->activities->getSupportedFields(), 'supportedFields');

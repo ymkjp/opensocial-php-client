@@ -28,7 +28,7 @@ class osapiActivity extends osapiModel {
   public $bodyId;
   public $externalId;
   public $id;
-  public $mediaItems;
+  public $mediaItems = array();
   public $postedTime;
   public $priority;
   public $streamFaviconUrl;
@@ -41,7 +41,7 @@ class osapiActivity extends osapiModel {
   public $url;
   public $userId;
 
-  public function __construct($id, $userId) {
+  public function __construct($id=null, $userId=null) {
     $this->id = $id;
     $this->userId = $userId;
   }
@@ -181,5 +181,4 @@ class osapiActivity extends osapiModel {
   public function setUserId($userId) {
     $this->userId = $userId;
   }
-
 }
