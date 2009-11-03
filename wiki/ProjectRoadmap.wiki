@@ -45,7 +45,7 @@ Our current roadmap for releases is:
   * Tests:
     * 70% coverage
 
-= 1.1.0 (Current) =
+= 1.1.0 =
  * Features
    * Groups 
      * Retrieve
@@ -56,6 +56,10 @@ Our current roadmap for releases is:
      * Create 
  * Supported Containers
      * MySpace (full)
+
+= 1.1.1 (Current) =
+ * Bug Fixes
+   * Activity support for MySpace
 
 = 1.2.0 =
   * Features
